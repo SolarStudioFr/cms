@@ -1,0 +1,6 @@
+{
+    "name": "page",
+    "label": "Pages",
+    "remoteEntry": "/build/plugins/page/remoteEntry.js",
+    "exposedModule": "./AdminModule"
+}

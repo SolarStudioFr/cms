@@ -4,6 +4,18 @@ Un CMS (système de gestion de contenu) personnel, construit sur Symfony 7.4.
 
 Le projet est actuellement à l'état de squelette Symfony : aucune entité, contrôleur ou route métier n'a encore été ajouté.
 
+## Structure du projet
+
+```
+cms/        logique Symfony (composer, src, config, vendor...) + backoffice admin
+plugin/     futurs plugins (vide pour l'instant)
+template/   thèmes du site public, interchangeables (template/default/ fourni)
+var/        cache, logs
+upload/     fichiers uploadés
+```
+
+La racine du dépôt sert directement de racine web (pas de dossier `public/`) : les assets compilés de `template/` et `plugin/` sont accessibles sans étape de copie, tandis que `cms/`, `var/` et le code source des thèmes restent protégés côté Apache. Voir [CLAUDE.md](CLAUDE.md) pour le détail.
+
 ## Stack
 
 - PHP 8.2+ (PHP 8.4 dans les conteneurs), Symfony 7.4.*

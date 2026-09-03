@@ -1,0 +1,10 @@
+doctrine_migrations:
+    migrations_paths:
+        # namespace is arbitrary but should be different from App\Migrations
+        # as migrations classes should NOT be autoloaded
+        'DoctrineMigrations': '%kernel.project_dir%/migrations'
+        'Plugin\Page\Migrations': '%kernel.project_dir%/../plugin/page/migrations'
+    enable_profiler: false
+    # MySQL DDL implicitly commits, so wrapping each migration in an explicit
+    # transaction just triggers a deprecated "already committed" silencing path.
+    all_or_nothing: false

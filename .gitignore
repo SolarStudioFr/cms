@@ -1,20 +1,21 @@
 ###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
+/cms/.env.local
+/cms/.env.local.php
+/cms/.env.*.local
+/cms/config/secrets/prod/prod.decrypt.private.php
+/cms/public/bundles/
 /var/
-/vendor/
+/cms/vendor/
+/docs/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
-/phpunit.xml
-/.phpunit.cache/
+/cms/phpunit.xml
+/cms/.phpunit.cache/
 ###< phpunit/phpunit ###
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
-/public/build/
+/cms/public/build/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
@@ -22,3 +23,8 @@ yarn-error.log
 ###> docker ###
 /docker/db/data/
 ###< docker ###
+
+###> upload ###
+/upload/*
+!/upload/.gitkeep
+###< upload ###

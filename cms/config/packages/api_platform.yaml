@@ -1,0 +1,25 @@
+api_platform:
+    title: Solar CMS API
+    version: 1.0.0
+    defaults:
+        # Our auth is session/cookie-based (json_login + remember-me), not a
+        # stateless token - the security layer needs to read the session.
+        stateless: false
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
+    # Plain JSON as the default format (JSON-LD/Hydra stays available but isn't
+    # forced on API consumers that don't send an Accept header).
+    formats:
+        json: ['application/json']
+        jsonld: ['application/ld+json']
+    docs_formats:
+        json: ['application/json']
+        jsonld: ['application/ld+json']
+        html: ['text/html']
+    patch_formats:
+        json: ['application/merge-patch+json']
+    mapping:
+        paths:
+            - '%kernel.project_dir%/src/ApiResource'
+            - '%kernel.project_dir%/src/Entity'
+            - '%kernel.project_dir%/../plugin/page/src/Entity'
