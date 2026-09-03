@@ -10,8 +10,8 @@ This is a Symfony 7.4 skeleton in its initial state: `src/Controller`, `src/Enti
 
 - PHP 8.2+, Symfony 7.4.*
 - Doctrine ORM 3.x / DBAL, PostgreSQL 16, migrations via `doctrine/doctrine-migrations-bundle`
-- Twig for templates, `symfony/asset-mapper` (no Node/webpack build step) for JS/CSS
-- Stimulus (`symfony/stimulus-bundle`) + Turbo (`symfony/ux-turbo`) for frontend interactivity
+- Twig for templates; JS/CSS is built with Webpack Encore (`symfony/webpack-encore-bundle`), compiled via npm — not AssetMapper
+- React 19 (+ `react-router-dom`, `react-bootstrap`, `react-toastify`, `react-icons`), Bootstrap 5, Sass, axios for the frontend
 - `symfony/security-bundle` is installed but unconfigured beyond an in-memory user provider — no auth flow exists yet
 - PHPUnit 13 for tests
 
@@ -27,9 +27,12 @@ The database (Postgres) and a mail-catcher (Mailpit) run via Docker Compose (`co
 # Install PHP dependencies
 composer install
 
-# Install/build frontend assets (asset-mapper, no bundler)
-php bin/console importmap:install
-php bin/console asset-map:compile   # for prod builds
+# Install/build frontend assets (Webpack Encore)
+npm install
+npm run dev          # one-off dev build
+npm run watch         # dev build, rebuilds on change
+npm run dev-server    # Encore dev server (HMR)
+npm run build          # production build
 
 # Run the dev server
 symfony server:start
@@ -60,4 +63,4 @@ php bin/console cache:clear
 - Entities are mapped via PHP attributes (not YAML/XML), auto-mapped from `src/Entity`, using Doctrine's underscore naming strategy for columns/tables.
 - `config/packages/*.yaml` follows standard Symfony Flex recipe layout — one file per bundle, with `when@test` / `when@prod` blocks for environment-specific overrides in the same file rather than separate `config/packages/{env}/` files.
 - The `dev` firewall in `security.yaml` disables auth for `_profiler`, `_wdt`, `assets`, `build` paths; the `main` firewall is lazy and currently has no authenticator configured.
-- Frontend JS lives in `assets/` and is served through AssetMapper's importmap (`assets/controllers.json`, `importmap.php`) rather than a bundler — new Stimulus controllers go in `assets/controllers/` and get auto-registered.
+- Frontend entrypoints are declared in `webpack.config.js` via `Encore.addEntry(...)` and built into `public/build/`. There are two React entrypoints: `assets/app/index.jsx` (public site) and `assets/adm/index.jsx` (admin backend) — `templates/base.html.twig` currently wires in `app` only via `encore_entry_link_tags`/`encore_entry_script_tags`; an admin-specific base template will need the `adm` entry.
