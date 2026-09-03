@@ -3,19 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}Administration{% endblock %}</title>
+        <title>Solar CMS - Admin</title>
 
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('adm') }}
-        {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('adm') }}
-        {% endblock %}
+        {{ encore_entry_link_tags('adm') }}
+        {{ encore_entry_script_tags('adm') }}
     </head>
     <body>
-        {% block body %}
-            <div id="adm-root"></div>
-        {% endblock %}
+        <div id="adm"></div>
     </body>
 </html>
