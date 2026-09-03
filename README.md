@@ -42,7 +42,7 @@ make migrate   # migrations seules
 make stop      # arrêter les conteneurs
 make log       # logs en direct
 make terminal  # shell dans le conteneur php
-make clear     # cache:clear (env=dev par défaut, ex: make clear env=prod)
+make clear     # cache:clear
 ```
 
 ## Tests

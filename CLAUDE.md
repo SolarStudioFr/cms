@@ -32,7 +32,7 @@ make test       # run PHPUnit inside the php container
 make log        # tail all container logs
 make terminal   # shell into the php container at /var/www/html
 make migrate    # run pending Doctrine migrations inside the php container
-make clear      # cache:clear inside the php container (env=dev by default, e.g. `make clear env=prod`)
+make clear      # cache:clear inside the php container
 
 # Generate code (entities, controllers, etc.) via MakerBundle
 php bin/console make:entity

@@ -1,5 +1,3 @@
-env ?= dev
-
 .PHONY: install init start stop test log terminal migrate clear
 
 install:
@@ -35,4 +33,4 @@ migrate:
 	docker compose exec php php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
 
 clear:
-	docker compose exec php php bin/console cache:clear --env=$(env)
+	docker compose exec php php bin/console cache:clear
