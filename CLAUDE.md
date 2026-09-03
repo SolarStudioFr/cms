@@ -8,8 +8,8 @@ This is a Symfony 7.4 skeleton in its initial state: `src/Controller`, `src/Enti
 
 ## Stack
 
-- PHP 8.2+, Symfony 7.4.*
-- Doctrine ORM 3.x / DBAL, PostgreSQL 16, migrations via `doctrine/doctrine-migrations-bundle`
+- PHP 8.2+ (containers run PHP 8.4), Symfony 7.4.*
+- Doctrine ORM 3.x / DBAL, MySQL 8.4, migrations via `doctrine/doctrine-migrations-bundle`
 - Twig for templates; JS/CSS is built with Webpack Encore (`symfony/webpack-encore-bundle`), compiled via npm — not AssetMapper
 - React 19 (+ `react-router-dom`, `react-bootstrap`, `react-toastify`, `react-icons`), Bootstrap 5, Sass, axios for the frontend
 - `symfony/security-bundle` is installed but unconfigured beyond an in-memory user provider — no auth flow exists yet
@@ -17,44 +17,30 @@ This is a Symfony 7.4 skeleton in its initial state: `src/Controller`, `src/Enti
 
 ## Development environment
 
-The database (Postgres) and a mail-catcher (Mailpit) run via Docker Compose (`compose.yaml` / `compose.override.yaml`). If the project uses Symfony CLI + the `symfony/orm-pack` docker integration, `symfony server:start` / `docker compose up -d` bring up the stack; otherwise start Postgres manually and set `DATABASE_URL` in `.env.local`.
+The full stack runs via Docker Compose (`compose.yaml` / `compose.override.yaml`), wrapped by a `Makefile`: Apache (`localhost:8000`) reverse-proxies PHP requests to a separate PHP-FPM container, MySQL (`localhost:3306`, data bind-mounted at `docker/db/data` so the project folder stays portable across machines), phpMyAdmin (`localhost:8080`), and Mailpit (`localhost:8025`). Config for each service lives under `docker/{apache,php,sql}`.
 
-`DATABASE_URL` in `.env` defaults to `postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=16&charset=utf8` — override in `.env.local` for real credentials, never edit `.env` itself with secrets.
+`DATABASE_URL` in `.env` defaults to `mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8.4&charset=utf8mb4` — override in `.env.local` for real credentials, never edit `.env` itself with secrets.
 
 ## Common commands
 
 ```bash
-# Install PHP dependencies
-composer install
-
-# Install/build frontend assets (Webpack Encore)
-npm install
-npm run dev          # one-off dev build
-npm run watch         # dev build, rebuilds on change
-npm run dev-server    # Encore dev server (HMR)
-npm run build          # production build
-
-# Run the dev server
-symfony server:start
-# or
-php -S 127.0.0.1:8000 -t public
-
-# Database / migrations
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:diff       # generate a migration from entity changes
-php bin/console doctrine:migrations:migrate
+make install    # composer install, npm install/build (host, no docker)
+make init       # drop/recreate/migrate the database (host, requires `make start` already running)
+make start      # docker compose up -d --build; prints the app/phpMyAdmin/Mailpit URLs
+make stop       # docker compose down
+make test       # run PHPUnit inside the php container
+make log        # tail all container logs
+make terminal   # shell into the php container at /var/www/html
+make migrate    # run pending Doctrine migrations inside the php container
+make clear      # cache:clear inside the php container (env=dev by default, e.g. `make clear env=prod`)
 
 # Generate code (entities, controllers, etc.) via MakerBundle
 php bin/console make:entity
 php bin/console make:controller
 
-# Tests
-php bin/phpunit                                 # full suite
+# Single-test runs (inside the php container, e.g. via `make terminal`)
 php bin/phpunit tests/Path/To/SomeTest.php       # single file
 php bin/phpunit --filter testMethodName          # single test method
-
-# Clear cache
-php bin/console cache:clear
 ```
 
 ## Architecture notes

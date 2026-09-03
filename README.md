@@ -6,8 +6,8 @@ Le projet est actuellement à l'état de squelette Symfony : aucune entité, con
 
 ## Stack
 
-- PHP 8.2+, Symfony 7.4.*
-- Doctrine ORM / DBAL, PostgreSQL 16, migrations via `doctrine/doctrine-migrations-bundle`
+- PHP 8.2+ (PHP 8.4 dans les conteneurs), Symfony 7.4.*
+- Doctrine ORM / DBAL, MySQL 8.4, migrations via `doctrine/doctrine-migrations-bundle`
 - Twig pour les templates, Webpack Encore (`symfony/webpack-encore-bundle`) pour les assets JS/CSS
 - React 19, React Router, React-Bootstrap, Bootstrap 5, Sass, axios
 - PHPUnit 13 pour les tests
@@ -15,37 +15,40 @@ Le projet est actuellement à l'état de squelette Symfony : aucune entité, con
 ## Installation
 
 ```bash
-composer install
-npm install
-npm run build   # ou npm run dev / npm run watch en développement
+make install   # composer install, npm install, npm run build
 ```
 
-La base de données (Postgres) et un mail-catcher (Mailpit) tournent via Docker Compose :
+## Lancer le projet (Docker)
+
+Toute la stack (Apache + PHP-FPM, MySQL, phpMyAdmin, Mailpit) tourne via Docker Compose, pilotée par le `Makefile` :
 
 ```bash
-docker compose up -d
+make start   # docker compose up -d --build
 ```
 
-`DATABASE_URL` par défaut (voir `.env`) : `postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=16&charset=utf8`
+- App : http://localhost:8000
+- phpMyAdmin : http://localhost:8080
+- Mailpit : http://localhost:8025
+- MySQL (accessible hors docker) : `localhost:3306`
+
+`DATABASE_URL` par défaut (voir `.env`) : `mysql://app:!ChangeMe!@127.0.0.1:3306/app?serverVersion=8.4&charset=utf8mb4`
 Pour utiliser d'autres identifiants, surcharger dans `.env.local` (ne pas éditer `.env`).
 
-```bash
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate
-```
-
-## Lancer le serveur
+Les données MySQL sont montées depuis `docker/db/data` : déplacer le dossier du projet sur une autre machine conserve la base.
 
 ```bash
-symfony server:start
-# ou
-php -S 127.0.0.1:8000 -t public
+make init      # drop / recreate / migrate la base (nécessite `make start` au préalable)
+make migrate   # migrations seules
+make stop      # arrêter les conteneurs
+make log       # logs en direct
+make terminal  # shell dans le conteneur php
+make clear     # cache:clear (env=dev par défaut, ex: make clear env=prod)
 ```
 
 ## Tests
 
 ```bash
-php bin/phpunit
+make test   # PHPUnit dans le conteneur php
 ```
 
 ## Documentation pour les agents
