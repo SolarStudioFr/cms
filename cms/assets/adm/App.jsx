@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import FileManager from './pages/FileManager';
 import PluginManager from './pages/PluginManager';
 import UserManager from './pages/UserManager';
+import SiteConfig from './pages/SiteConfig';
 import Shell from './layout/Shell';
 import usePlugins from './plugins/usePlugins';
 
@@ -39,6 +40,7 @@ function AdminRoutes() {
                 <Route path="/files" element={<FileManager />} />
                 <Route path="/plugins" element={<PluginManager />} />
                 <Route path="/users" element={<UserManager />} />
+                <Route path="/settings" element={<SiteConfig />} />
                 {pluginRoutes.map(({ path, element: Element }) => (
                     <Route key={path} path={path} element={<Element />} />
                 ))}

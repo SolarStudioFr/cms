@@ -15,6 +15,7 @@ import Register from './Register';
 import VerifyEmail from './VerifyEmail';
 import Profile from './Profile';
 import { AuthProvider, useAuth } from './auth/AuthContext';
+import useSiteConfig from './useSiteConfig';
 
 /** Right-hand side of the navbar: login/register links, or the current user + logout once authenticated. */
 function AuthNav() {
@@ -48,12 +49,15 @@ function AuthNav() {
 }
 
 function AppShell() {
+    const siteConfig = useSiteConfig();
+
     return (
         <BrowserRouter>
             <Navbar bg="light" expand="sm">
                 <Container>
-                    <Navbar.Brand as={Link} to="/">
-                        Solar CMS
+                    <Navbar.Brand as={Link} to="/" className="d-flex align-items-center gap-2">
+                        {siteConfig?.logoUrl && <img src={siteConfig.logoUrl} alt="" height={32} />}
+                        {siteConfig?.siteName ?? 'Solar CMS'}
                     </Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/">
