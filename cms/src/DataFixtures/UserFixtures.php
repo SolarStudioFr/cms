@@ -20,6 +20,8 @@ class UserFixtures extends Fixture
         $admin->setEmail('admin@cms.dev');
         $admin->setRoles(['ROLE_SUPER_ADMIN']);
         $admin->setPassword($this->passwordHasher->hashPassword($admin, '1234567890'));
+        $admin->setVerified(true);
+        $admin->setVerifiedAt(new \DateTimeImmutable());
 
         $manager->persist($admin);
         $manager->flush();

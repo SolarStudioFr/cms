@@ -10,8 +10,41 @@ import NewsArticleList from './NewsArticleList';
 import NewsArticleDetail from './NewsArticleDetail';
 import Home from './Home';
 import NewsletterSignup from './NewsletterSignup';
+import Login from './Login';
+import Register from './Register';
+import VerifyEmail from './VerifyEmail';
+import { AuthProvider, useAuth } from './auth/AuthContext';
 
-export default function App() {
+/** Right-hand side of the navbar: login/register links, or the current user + logout once authenticated. */
+function AuthNav() {
+    const { user, loading, logout } = useAuth();
+
+    if (loading) {
+        return null;
+    }
+
+    if (!user) {
+        return (
+            <Nav>
+                <Nav.Link as={Link} to="/login">
+                    Connexion
+                </Nav.Link>
+                <Nav.Link as={Link} to="/register">
+                    Inscription
+                </Nav.Link>
+            </Nav>
+        );
+    }
+
+    return (
+        <Nav>
+            <Navbar.Text className="me-2">{user.email}</Navbar.Text>
+            <Nav.Link onClick={logout}>Déconnexion</Nav.Link>
+        </Nav>
+    );
+}
+
+function AppShell() {
     return (
         <BrowserRouter>
             <Navbar bg="light" expand="sm">
@@ -19,7 +52,7 @@ export default function App() {
                     <Navbar.Brand as={Link} to="/">
                         Solar CMS
                     </Navbar.Brand>
-                    <Nav>
+                    <Nav className="me-auto">
                         <Nav.Link as={Link} to="/">
                             Accueil
                         </Nav.Link>
@@ -33,6 +66,7 @@ export default function App() {
                             Actualités
                         </Nav.Link>
                     </Nav>
+                    <AuthNav />
                 </Container>
             </Navbar>
             <Routes>
@@ -80,6 +114,9 @@ export default function App() {
                         </Container>
                     }
                 />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/verify-email/:token" element={<VerifyEmail />} />
             </Routes>
             <footer className="bg-dark text-light py-3 mt-4">
                 <Container>
@@ -87,5 +124,13 @@ export default function App() {
                 </Container>
             </footer>
         </BrowserRouter>
+    );
+}
+
+export default function App() {
+    return (
+        <AuthProvider>
+            <AppShell />
+        </AuthProvider>
     );
 }
