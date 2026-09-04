@@ -13,6 +13,7 @@ import NewsletterSignup from './NewsletterSignup';
 import Login from './Login';
 import Register from './Register';
 import VerifyEmail from './VerifyEmail';
+import Profile from './Profile';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 
 /** Right-hand side of the navbar: login/register links, or the current user + logout once authenticated. */
@@ -38,7 +39,9 @@ function AuthNav() {
 
     return (
         <Nav>
-            <Navbar.Text className="me-2">{user.email}</Navbar.Text>
+            <Nav.Link as={Link} to="/profile">
+                {user.email}
+            </Nav.Link>
             <Nav.Link onClick={logout}>Déconnexion</Nav.Link>
         </Nav>
     );
@@ -117,6 +120,7 @@ function AppShell() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/verify-email/:token" element={<VerifyEmail />} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
             <footer className="bg-dark text-light py-3 mt-4">
                 <Container>

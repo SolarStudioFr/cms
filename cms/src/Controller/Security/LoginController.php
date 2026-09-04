@@ -25,6 +25,7 @@ class LoginController
         return new JsonResponse([
             'email' => $user->getEmail(),
             'roles' => $user->getRoles(),
+            'verified' => $user->isVerified(),
         ]);
     }
 }
