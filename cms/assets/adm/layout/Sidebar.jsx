@@ -10,6 +10,7 @@ export default function Sidebar({ extraItems = [] }) {
     const items = [
         { label: 'Dashboard', path: '/', icon: null },
         { label: 'Fichiers', path: '/files', icon: null },
+        { label: 'Plugins', path: '/plugins', icon: null },
         ...extraItems,
     ];
 
