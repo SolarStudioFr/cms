@@ -24,6 +24,15 @@ Encore
     .addEntry('default', './template/default/assets/index.jsx')
     .addEntry('adm', './cms/assets/adm/index.jsx')
 
+    // Static assets shared by both entries (e.g. the file-manager fallback
+    // image used when a File entity's underlying disk file is missing),
+    // copied as-is rather than imported so they get a stable /build/images/
+    // URL independent of either entry's JS bundle.
+    .copyFiles({
+        from: './cms/assets/images',
+        to: 'images/[path][name].[ext]',
+    })
+
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
 
