@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\File;
+use App\Entity\FileType;
 use App\Repository\FileRepository;
 use App\Service\FileUploadService;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,13 +26,23 @@ class FileController
     ) {
     }
 
-    /** Lists every stored file, most recent first. */
+    /**
+     * Lists stored files, most recent first. Accepts an optional
+     * comma-separated "type" query param (e.g. "?type=img" or
+     * "?type=pdf,zip") so the media picker (step 03) can restrict the
+     * listing to the types it was configured with.
+     */
     #[Route('/api/admin/files', name: 'admin_files_list', methods: ['GET'])]
-    public function list(): JsonResponse
+    public function list(Request $request): JsonResponse
     {
+        $types = array_values(array_filter(array_map(
+            static fn (string $value) => FileType::tryFrom(trim($value)),
+            explode(',', (string) $request->query->get('type', '')),
+        )));
+
         $files = array_map(
             fn (File $file) => $this->serialize($file),
-            $this->fileRepository->findAllOrderedByCreatedAt(),
+            $this->fileRepository->findAllOrderedByCreatedAt([] !== $types ? $types : null),
         );
 
         return new JsonResponse($files);

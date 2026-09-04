@@ -46,6 +46,35 @@ class FileAdminApiTest extends WebTestCase
         self::assertCount(0, json_decode($client->getResponse()->getContent(), true));
     }
 
+    public function testListingCanBeFilteredByType(): void
+    {
+        $client = static::createClient();
+        $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
+        $client->loginUser($admin);
+
+        $client->request('POST', '/api/admin/files', [], ['file' => $this->makeImageUpload()]);
+        self::assertResponseStatusCodeSame(201);
+
+        $pdfPath = tempnam(sys_get_temp_dir(), 'upload_test_').'.pdf';
+        file_put_contents($pdfPath, "%PDF-1.4\n1 0 obj<</Type/Catalog>>endobj\ntrailer<</Root 1 0 R>>\n%%EOF");
+        $client->request('POST', '/api/admin/files', [], ['file' => new UploadedFile($pdfPath, 'doc.pdf', 'application/pdf', null, true)]);
+        self::assertResponseStatusCodeSame(201);
+
+        $client->request('GET', '/api/admin/files?type=img');
+        self::assertResponseIsSuccessful();
+        $images = json_decode($client->getResponse()->getContent(), true);
+        self::assertCount(1, $images);
+        self::assertSame('img', $images[0]['type']);
+
+        $client->request('GET', '/api/admin/files?type=pdf,zip');
+        $documents = json_decode($client->getResponse()->getContent(), true);
+        self::assertCount(1, $documents);
+        self::assertSame('pdf', $documents[0]['type']);
+
+        $client->request('GET', '/api/admin/files');
+        self::assertCount(2, json_decode($client->getResponse()->getContent(), true));
+    }
+
     public function testUploadingAnUnsupportedTypeReturnsUnprocessableEntity(): void
     {
         $client = static::createClient();
