@@ -20,6 +20,14 @@ function AdminRoutes() {
         return <Login />;
     }
 
+    // Rendering <Routes> before plugin routes are known would make react-router
+    // log a spurious "No routes matched location" warning (and briefly 404) for
+    // any direct/deep link into a plugin-owned path (e.g. reloading /adm/pages)
+    // - the route table only grows to include it once usePlugins resolves.
+    if (pluginsLoading) {
+        return <p>Chargement...</p>;
+    }
+
     const navItems = plugins.map((plugin) => plugin.navItem).filter(Boolean);
     const pluginRoutes = plugins.flatMap((plugin) => plugin.routes ?? []);
 
@@ -29,10 +37,9 @@ function AdminRoutes() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/files" element={<FileManager />} />
                 <Route path="/plugins" element={<PluginManager />} />
-                {!pluginsLoading &&
-                    pluginRoutes.map(({ path, element: Element }) => (
-                        <Route key={path} path={path} element={<Element />} />
-                    ))}
+                {pluginRoutes.map(({ path, element: Element }) => (
+                    <Route key={path} path={path} element={<Element />} />
+                ))}
             </Route>
         </Routes>
     );

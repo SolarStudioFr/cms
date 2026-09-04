@@ -47,7 +47,18 @@ Encore
      * list of features, see:
      * https://symfony.com/doc/current/frontend.html#adding-more-features
      */
-    .cleanupOutputBeforeBuild()
+    // Plugin remotes (plugin/*/webpack.config.js) emit into
+    // cms/public/build/plugins/**, a raw (non-Encore) webpack build that
+    // runs as a separate `npm run build:plugins` step, not part of this
+    // config's own output. Without `keep`, this defaults to wiping the
+    // *entire* output.path (webpack 5's native output.clean) on every host
+    // build, silently deleting every already-built plugin remote - the
+    // admin then fails to load any plugin ("Remote container ... was not
+    // found") until `build:plugins` is re-run. `keep` (a RegExp tested
+    // against the path relative to output.path) preserves that directory.
+    .cleanupOutputBeforeBuild((options) => {
+        options.keep = /^plugins\//;
+    })
 
     // Displays build status system notifications to the user
     // .enableBuildNotifications()
