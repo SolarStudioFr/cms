@@ -1,3 +1,4 @@
+import DownloadModule from './DownloadModule';
 import ImageModule from './ImageModule';
 import SliderModule from './SliderModule';
 
@@ -15,7 +16,7 @@ import SliderModule from './SliderModule';
  *   render: (props) => string,  pure function producing the public HTML for one block
  * }
  */
-const registry = [ImageModule, SliderModule];
+const registry = [ImageModule, SliderModule, DownloadModule];
 
 export default registry;
 
