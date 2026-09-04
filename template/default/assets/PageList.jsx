@@ -28,7 +28,11 @@ export default function PageList() {
                     <small className="text-muted">
                         {new Date(page.createdAt).toLocaleDateString()}
                     </small>
-                    <p className="mb-0">{page.content}</p>
+                    {/* page.content is HTML authored by an admin (fallback editor
+                        or builder, both step 09/10+), not visitor input - same
+                        trust boundary as any CMS rendering its own admin-authored
+                        content. */}
+                    <div className="mb-0" dangerouslySetInnerHTML={{ __html: page.content }} />
                 </li>
             ))}
         </ul>

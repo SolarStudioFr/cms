@@ -23,6 +23,12 @@ export default function FileUploadForm({ types, onUploaded }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        // MediaPicker (and this form with it) can be opened from inside
+        // another <Form> (e.g. PageForm around the builder). React bubbles
+        // "submit" through the *component* tree even across react-bootstrap
+        // Modal's DOM portal, so without this an upload here also submits
+        // that outer form.
+        event.stopPropagation();
         const input = fileInputRef.current;
         if (!input?.files?.length) {
             return;

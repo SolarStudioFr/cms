@@ -75,6 +75,18 @@ class Page
     #[Groups(['page:read', 'page:write'])]
     private string $content = '';
 
+    /**
+     * Raw builder JSON (step 10's `{"builder": true, "modules": [...]}`),
+     * kept alongside `content` so the builder can re-open a page for
+     * editing. Null when the page was authored with the fallback editor
+     * (step 09) instead - `content` alone is always the public-facing HTML
+     * either way, so nothing downstream of this entity needs to care which
+     * editor produced it.
+     */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['page:read', 'page:write'])]
+    private ?string $builderData = null;
+
     #[ORM\Column(length: 20, enumType: PageStatus::class)]
     #[Groups(['page:read', 'page:write'])]
     private PageStatus $status = PageStatus::Draft;
@@ -124,6 +136,18 @@ class Page
     public function setContent(string $content): static
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getBuilderData(): ?string
+    {
+        return $this->builderData;
+    }
+
+    public function setBuilderData(?string $builderData): static
+    {
+        $this->builderData = $builderData;
 
         return $this;
     }

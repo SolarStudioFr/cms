@@ -65,6 +65,38 @@ class PageAdminApiTest extends WebTestCase
         self::assertResponseStatusCodeSame(404);
     }
 
+    public function testBuilderDataRoundTripsAlongsideContent(): void
+    {
+        $client = static::createClient();
+        $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
+        $client->loginUser($admin);
+
+        $builderJson = '{"builder":true,"modules":[{"id":"a","type":"text","props":{"html":"<p>Hi</p>"}}]}';
+
+        $client->jsonRequest('POST', '/api/admin/pages', [
+            'title' => 'Builder page',
+            'content' => '<div class="builder-text"><p>Hi</p></div>',
+            'builderData' => $builderJson,
+        ]);
+        self::assertResponseIsSuccessful();
+        $created = json_decode($client->getResponse()->getContent(), true);
+        self::assertSame($builderJson, $created['builderData']);
+
+        $client->request('GET', "/api/admin/pages/{$created['id']}");
+        self::assertSame($builderJson, json_decode($client->getResponse()->getContent(), true)['builderData']);
+    }
+
+    public function testBuilderDataDefaultsToNullForTheFallbackEditor(): void
+    {
+        $client = static::createClient();
+        $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
+        $client->loginUser($admin);
+
+        $client->jsonRequest('POST', '/api/admin/pages', ['title' => 'Fallback page', 'content' => 'Plain text']);
+        self::assertResponseIsSuccessful();
+        self::assertNull(json_decode($client->getResponse()->getContent(), true)['builderData']);
+    }
+
     public function testAnonymousCannotWrite(): void
     {
         $client = static::createClient();
