@@ -1,0 +1,6 @@
+{
+    "name": "builder",
+    "label": "Builder",
+    "remoteEntry": "/build/plugins/builder/remoteEntry.js",
+    "exposedModule": "./AdminModule"
+}
