@@ -1,0 +1,6 @@
+{
+    "name": "newsletter",
+    "label": "Newsletter",
+    "remoteEntry": "/build/plugins/newsletter/remoteEntry.js",
+    "exposedModule": "./AdminModule"
+}

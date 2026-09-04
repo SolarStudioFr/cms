@@ -18,6 +18,8 @@ services:
         bind:
             string $pluginDir: '%plugin.dir%'
             string $uploadDir: '%upload.dir%'
+            string $fromAddress: '%env(MAILER_FROM)%'
+            string $fromName: '%env(MAILER_FROM_NAME)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -43,6 +45,10 @@ services:
     # Homepage plugin backend, physically located in plugin/homepage/src/.
     Plugin\Homepage\:
         resource: '../../plugin/homepage/src/'
+
+    # Newsletter plugin backend, physically located in plugin/newsletter/src/.
+    Plugin\Newsletter\:
+        resource: '../../plugin/newsletter/src/'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

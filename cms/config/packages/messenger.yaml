@@ -18,7 +18,13 @@ framework:
             messenger.bus.default: []
 
         routing:
-            Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            # Not routed to the "async" transport (step 22): nothing in this
+            # project's docker-compose stack runs a `messenger:consume`
+            # worker, so routing mail here would silently queue messages in
+            # `messenger_messages` forever instead of sending them -
+            # MailService sends synchronously through the configured
+            # mailer.dsn (Mailpit in dev) instead.
+            # Symfony\Component\Mailer\Messenger\SendEmailMessage: async
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
 

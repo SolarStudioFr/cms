@@ -26,3 +26,4 @@ api_platform:
             - '%kernel.project_dir%/../plugin/portfolio/src/Entity'
             - '%kernel.project_dir%/../plugin/news/src/Entity'
             - '%kernel.project_dir%/../plugin/homepage/src/Entity'
+            - '%kernel.project_dir%/../plugin/newsletter/src/Entity'

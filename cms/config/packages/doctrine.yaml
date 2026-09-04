@@ -48,6 +48,12 @@ doctrine:
                 dir: '%kernel.project_dir%/../plugin/homepage/src/Entity'
                 prefix: 'Plugin\Homepage\Entity'
                 alias: PluginHomepage
+            PluginNewsletter:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/../plugin/newsletter/src/Entity'
+                prefix: 'Plugin\Newsletter\Entity'
+                alias: PluginNewsletter
 
 when@test:
     doctrine:

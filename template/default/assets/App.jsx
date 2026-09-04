@@ -9,6 +9,7 @@ import PortfolioItemDetail from './PortfolioItemDetail';
 import NewsArticleList from './NewsArticleList';
 import NewsArticleDetail from './NewsArticleDetail';
 import Home from './Home';
+import NewsletterSignup from './NewsletterSignup';
 
 export default function App() {
     return (
@@ -80,6 +81,11 @@ export default function App() {
                     }
                 />
             </Routes>
+            <footer className="bg-dark text-light py-3 mt-4">
+                <Container>
+                    <NewsletterSignup />
+                </Container>
+            </footer>
         </BrowserRouter>
     );
 }

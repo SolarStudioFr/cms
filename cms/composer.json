@@ -3,7 +3,7 @@
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "version": "0.22.0",
+    "version": "0.23.0",
     "require": {
         "php": ">=8.2",
         "ext-ctype": "*",
@@ -60,7 +60,8 @@
             "Plugin\\I18n\\": "../plugin/i18n/src/",
             "Plugin\\Portfolio\\": "../plugin/portfolio/src/",
             "Plugin\\News\\": "../plugin/news/src/",
-            "Plugin\\Homepage\\": "../plugin/homepage/src/"
+            "Plugin\\Homepage\\": "../plugin/homepage/src/",
+            "Plugin\\Newsletter\\": "../plugin/newsletter/src/"
         }
     },
     "autoload-dev": {
