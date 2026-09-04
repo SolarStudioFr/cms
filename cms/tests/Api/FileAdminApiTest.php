@@ -8,9 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * Functional test of the admin file manager backend (step 02): upload,
- * list and delete through the real HTTP layer, including the ROLE_SUPER_ADMIN
- * gate inherited from the ^/api/admin firewall access_control rule.
+ * Functional test of the admin file manager backend: upload, list and
+ * delete (step 02), cleanup-unused (step 04) and reoptimize-images (step
+ * 05), through the real HTTP layer, including the ROLE_SUPER_ADMIN gate
+ * inherited from the ^/api/admin firewall access_control rule.
  */
 class FileAdminApiTest extends WebTestCase
 {
@@ -73,6 +74,49 @@ class FileAdminApiTest extends WebTestCase
 
         $client->request('GET', '/api/admin/files');
         self::assertCount(2, json_decode($client->getResponse()->getContent(), true));
+    }
+
+    public function testCleanupUnusedDeletesEveryFileSinceNoUsageCheckerIsRegisteredYet(): void
+    {
+        $client = static::createClient();
+        $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
+        $client->loginUser($admin);
+
+        $client->request('POST', '/api/admin/files', [], ['file' => $this->makeImageUpload()]);
+        self::assertResponseStatusCodeSame(201);
+
+        $client->request('GET', '/api/admin/files');
+        self::assertCount(1, json_decode($client->getResponse()->getContent(), true));
+
+        $client->request('POST', '/api/admin/files/cleanup-unused');
+        self::assertResponseIsSuccessful();
+        self::assertSame(['deleted' => 1], json_decode($client->getResponse()->getContent(), true));
+
+        $client->request('GET', '/api/admin/files');
+        self::assertCount(0, json_decode($client->getResponse()->getContent(), true));
+    }
+
+    public function testReoptimizeImagesRegeneratesMissingThumbnails(): void
+    {
+        $client = static::createClient();
+        $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
+        $client->loginUser($admin);
+
+        $client->request('POST', '/api/admin/files', [], ['file' => $this->makeImageUpload()]);
+        self::assertResponseStatusCodeSame(201);
+        $created = json_decode($client->getResponse()->getContent(), true);
+
+        $uploadDir = \dirname((string) static::getContainer()->getParameter('kernel.project_dir')).'/upload';
+        $thumbnailAbsolutePath = $uploadDir.substr($created['thumbnails'][0], \strlen('/upload'));
+        self::assertFileExists($thumbnailAbsolutePath);
+        unlink($thumbnailAbsolutePath);
+        self::assertFileDoesNotExist($thumbnailAbsolutePath);
+
+        $client->request('POST', '/api/admin/files/reoptimize-images');
+        self::assertResponseIsSuccessful();
+        self::assertSame(['reoptimized' => 1, 'skipped' => 0], json_decode($client->getResponse()->getContent(), true));
+
+        self::assertFileExists($thumbnailAbsolutePath);
     }
 
     public function testUploadingAnUnsupportedTypeReturnsUnprocessableEntity(): void

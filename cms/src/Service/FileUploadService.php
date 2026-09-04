@@ -162,8 +162,12 @@ class FileUploadService
         throw new \InvalidArgumentException(\sprintf('Unsupported file type "%s".', $mimeType));
     }
 
-    /** Maps a stored public path (e.g. "/upload/img/webp/x.webp") back to its absolute filesystem path. */
-    private function toAbsolutePath(string $publicPath): string
+    /**
+     * Maps a stored public path (e.g. "/upload/img/webp/x.webp") back to its
+     * absolute filesystem path. Public: also used by ImageReoptimizeService
+     * (step 05) to locate a File's existing assets on disk.
+     */
+    public function toAbsolutePath(string $publicPath): string
     {
         return \dirname($this->uploadDir).'/'.ltrim($publicPath, '/');
     }

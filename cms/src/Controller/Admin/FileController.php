@@ -5,17 +5,20 @@ namespace App\Controller\Admin;
 use App\Entity\File;
 use App\Entity\FileType;
 use App\Repository\FileRepository;
+use App\Service\FileCleanupService;
 use App\Service\FileUploadService;
+use App\Service\ImageReoptimizeService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Admin file manager backend (step 02): list / upload / delete for the
- * generic File entity from step 01. Not an API Platform resource - file
- * upload needs multipart handling, so a plain controller is simplest, like
- * PluginController. Every route is already gated by the ^/api/admin
+ * Admin file manager backend: list / upload / delete (step 02) for the
+ * generic File entity from step 01, plus the cleanup-unused (step 04) and
+ * reoptimize-images (step 05) admin actions. Not an API Platform resource -
+ * file upload needs multipart handling, so a plain controller is simplest,
+ * like PluginController. Every route is already gated by the ^/api/admin
  * ROLE_SUPER_ADMIN access_control rule in security.yaml.
  */
 class FileController
@@ -23,6 +26,8 @@ class FileController
     public function __construct(
         private readonly FileRepository $fileRepository,
         private readonly FileUploadService $fileUploadService,
+        private readonly FileCleanupService $fileCleanupService,
+        private readonly ImageReoptimizeService $imageReoptimizeService,
     ) {
     }
 
@@ -84,6 +89,26 @@ class FileController
         $this->fileUploadService->remove($file);
 
         return new Response(status: Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Deletes every file not reported as in use by any registered
+     * FileUsageCheckerInterface (step 04).
+     */
+    #[Route('/api/admin/files/cleanup-unused', name: 'admin_files_cleanup_unused', methods: ['POST'])]
+    public function cleanupUnused(): JsonResponse
+    {
+        return new JsonResponse(['deleted' => $this->fileCleanupService->removeUnused()]);
+    }
+
+    /**
+     * Regenerates the webp + thumbnails of every stored image from its
+     * source (step 05).
+     */
+    #[Route('/api/admin/files/reoptimize-images', name: 'admin_files_reoptimize_images', methods: ['POST'])]
+    public function reoptimizeImages(): JsonResponse
+    {
+        return new JsonResponse($this->imageReoptimizeService->reoptimizeAll());
     }
 
     /**
