@@ -4,6 +4,8 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import PageList from './PageList';
+import RealisationList from './RealisationList';
+import RealisationDetail from './RealisationDetail';
 
 function Home() {
     return (
@@ -26,11 +28,31 @@ export default function App() {
                         <Nav.Link as={Link} to="/">
                             Accueil
                         </Nav.Link>
+                        <Nav.Link as={Link} to="/realisations">
+                            Réalisations
+                        </Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route
+                    path="/realisations"
+                    element={
+                        <Container className="py-4">
+                            <h1>Réalisations</h1>
+                            <RealisationList />
+                        </Container>
+                    }
+                />
+                <Route
+                    path="/realisations/:id"
+                    element={
+                        <Container className="py-4">
+                            <RealisationDetail />
+                        </Container>
+                    }
+                />
             </Routes>
         </BrowserRouter>
     );
