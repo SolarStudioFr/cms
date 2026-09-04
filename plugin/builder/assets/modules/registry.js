@@ -1,3 +1,5 @@
+import ImageModule from './ImageModule';
+
 /**
  * The builder's module registry (step 10): every block type the canvas can
  * add. Populated incrementally by steps 11-15 (image, slider, download,
@@ -12,7 +14,7 @@
  *   render: (props) => string,  pure function producing the public HTML for one block
  * }
  */
-const registry = [];
+const registry = [ImageModule];
 
 export default registry;
 
