@@ -1,4 +1,5 @@
 import ImageModule from './ImageModule';
+import SliderModule from './SliderModule';
 
 /**
  * The builder's module registry (step 10): every block type the canvas can
@@ -14,7 +15,7 @@ import ImageModule from './ImageModule';
  *   render: (props) => string,  pure function producing the public HTML for one block
  * }
  */
-const registry = [ImageModule];
+const registry = [ImageModule, SliderModule];
 
 export default registry;
 
