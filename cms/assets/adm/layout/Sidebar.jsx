@@ -11,6 +11,7 @@ export default function Sidebar({ extraItems = [] }) {
         { label: 'Dashboard', path: '/', icon: null },
         { label: 'Fichiers', path: '/files', icon: null },
         { label: 'Plugins', path: '/plugins', icon: null },
+        { label: 'Utilisateurs', path: '/users', icon: null },
         ...extraItems,
     ];
 

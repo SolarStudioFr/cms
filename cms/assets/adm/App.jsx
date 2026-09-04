@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import FileManager from './pages/FileManager';
 import PluginManager from './pages/PluginManager';
+import UserManager from './pages/UserManager';
 import Shell from './layout/Shell';
 import usePlugins from './plugins/usePlugins';
 
@@ -37,6 +38,7 @@ function AdminRoutes() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/files" element={<FileManager />} />
                 <Route path="/plugins" element={<PluginManager />} />
+                <Route path="/users" element={<UserManager />} />
                 {pluginRoutes.map(({ path, element: Element }) => (
                     <Route key={path} path={path} element={<Element />} />
                 ))}
