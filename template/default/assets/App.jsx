@@ -6,6 +6,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import PageList from './PageList';
 import RealisationList from './RealisationList';
 import RealisationDetail from './RealisationDetail';
+import ActualiteList from './ActualiteList';
+import ActualiteDetail from './ActualiteDetail';
 
 function Home() {
     return (
@@ -31,6 +33,9 @@ export default function App() {
                         <Nav.Link as={Link} to="/realisations">
                             Réalisations
                         </Nav.Link>
+                        <Nav.Link as={Link} to="/actualites">
+                            Actualités
+                        </Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
@@ -50,6 +55,23 @@ export default function App() {
                     element={
                         <Container className="py-4">
                             <RealisationDetail />
+                        </Container>
+                    }
+                />
+                <Route
+                    path="/actualites"
+                    element={
+                        <Container className="py-4">
+                            <h1>Actualités</h1>
+                            <ActualiteList />
+                        </Container>
+                    }
+                />
+                <Route
+                    path="/actualites/:id"
+                    element={
+                        <Container className="py-4">
+                            <ActualiteDetail />
                         </Container>
                     }
                 />
