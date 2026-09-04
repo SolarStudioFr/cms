@@ -132,8 +132,16 @@ class ImageProcessor
 
     private function ensureDirectory(string $directory): void
     {
-        if (!is_dir($directory) && !mkdir($directory, 0775, true) && !is_dir($directory)) {
+        if (is_dir($directory)) {
+            return;
+        }
+
+        if (!mkdir($directory, 0777, true) && !is_dir($directory)) {
             throw new \RuntimeException(\sprintf('Unable to create directory "%s".', $directory));
         }
+
+        // See FileUploadService::ensureDirectory() for why this only runs for
+        // directories we just created, forcing them to 0777.
+        chmod($directory, 0777);
     }
 }

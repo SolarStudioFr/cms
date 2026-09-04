@@ -7,7 +7,11 @@ import { NavLink } from 'react-router-dom';
  * items (e.g. from the Page plugin, phase 4) are appended via `extraItems`.
  */
 export default function Sidebar({ extraItems = [] }) {
-    const items = [{ label: 'Dashboard', path: '/', icon: null }, ...extraItems];
+    const items = [
+        { label: 'Dashboard', path: '/', icon: null },
+        { label: 'Fichiers', path: '/files', icon: null },
+        ...extraItems,
+    ];
 
     return (
         <Nav

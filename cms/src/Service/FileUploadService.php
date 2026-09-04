@@ -65,6 +65,24 @@ class FileUploadService
     }
 
     /**
+     * Deletes a File's on-disk assets (source, main file, thumbnails) and
+     * the entity itself. Reused as-is by the file-cleanup action (step 04).
+     */
+    public function remove(File $file): void
+    {
+        foreach (array_filter([$file->getSource(), $file->getFile(), ...$file->getThumbnail()]) as $publicPath) {
+            $absolutePath = $this->toAbsolutePath($publicPath);
+
+            if (is_file($absolutePath)) {
+                unlink($absolutePath);
+            }
+        }
+
+        $this->entityManager->remove($file);
+        $this->entityManager->flush();
+    }
+
+    /**
      * Resolves a stored public path to a URL, falling back to the default
      * placeholder image when the underlying disk file no longer exists.
      */
@@ -152,8 +170,20 @@ class FileUploadService
 
     private function ensureDirectory(string $directory): void
     {
-        if (!is_dir($directory) && !mkdir($directory, 0775, true) && !is_dir($directory)) {
+        if (is_dir($directory)) {
+            return;
+        }
+
+        if (!mkdir($directory, 0777, true) && !is_dir($directory)) {
             throw new \RuntimeException(\sprintf('Unable to create directory "%s".', $directory));
         }
+
+        // The bind-mounted upload/ tree is written by different uids depending
+        // on the caller (the php-fpm worker vs. CLI/tooling, typically root) -
+        // force it group/world-writable so neither context gets locked out of
+        // a directory another one created, since mkdir()'s mode is reduced by
+        // the process umask. Only done for directories we just created:
+        // chmod on one we don't own (already existing) would fail outright.
+        chmod($directory, 0777);
     }
 }
