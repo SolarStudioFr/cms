@@ -53,6 +53,14 @@ export default {
             exposes: {
                 './AdminModule': './assets/AdminModule.jsx',
             },
+            // The admin host exposes shared components (MediaPicker,
+            // RichTextEditor - step 09) from its own build; this URL-based
+            // remote lets this plugin consume them without duplicating
+            // them. Resolved lazily at runtime like any MF remote, so no
+            // build-order dependency between the two.
+            remotes: {
+                adm_host: 'adm_host@/build/admHostRemoteEntry.js',
+            },
             shared: {
                 react: { singleton: true, requiredVersion: '^19.2.8' },
                 'react-dom': { singleton: true, requiredVersion: '^19.2.8' },

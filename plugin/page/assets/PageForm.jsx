@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import client from './api/client';
+
+// Consumed from the admin host's Module Federation remote (step 09) rather
+// than duplicated here - see webpack.config.js's `remotes` entry. Lazy since
+// resolving a remote container is inherently async.
+const RichTextEditor = lazy(() => import('adm_host/RichTextEditor'));
 
 export default function PageForm() {
     const { id } = useParams();
@@ -73,13 +78,11 @@ export default function PageForm() {
 
                 <Form.Group className="mb-3" controlId="pageContent">
                     <Form.Label>Contenu</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        rows={8}
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        required
-                    />
+                    {/* RichTextEditor only mounts once `loading` is false above,
+                        so its initial `value` is already the real content. */}
+                    <Suspense fallback={<p>Chargement de l'éditeur...</p>}>
+                        <RichTextEditor value={content} onChange={setContent} placeholder="Contenu de la page..." />
+                    </Suspense>
                 </Form.Group>
 
                 {isEditing && (

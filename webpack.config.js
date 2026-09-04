@@ -95,9 +95,18 @@ Encore
     // loaded dynamically at runtime, see cms/assets/adm/plugins/), this
     // just exposes the __webpack_init_sharing__/__webpack_share_scopes__
     // globals that dynamic remote loading needs, with React shared as a
-    // singleton so plugin remotes reuse the host's instance.
+    // singleton so plugin remotes reuse the host's instance. It also
+    // exposes a small set of shared admin components (MediaPicker, step 03;
+    // RichTextEditor, step 09) so plugins can consume them instead of
+    // duplicating them - a plugin remote declares `remotes: { adm_host: ... }`
+    // pointing at this container's filename (see plugin/page/webpack.config.js).
     .addPlugin(new webpack.container.ModuleFederationPlugin({
         name: 'adm_host',
+        filename: 'admHostRemoteEntry.js',
+        exposes: {
+            './MediaPicker': './cms/assets/adm/components/MediaPicker.jsx',
+            './RichTextEditor': './cms/assets/adm/components/RichTextEditor.jsx',
+        },
         shared: {
             react: { singleton: true, requiredVersion: '^19.2.8' },
             'react-dom': { singleton: true, requiredVersion: '^19.2.8' },
