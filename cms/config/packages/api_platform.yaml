@@ -24,3 +24,4 @@ api_platform:
             - '%kernel.project_dir%/src/Entity'
             - '%kernel.project_dir%/../plugin/page/src/Entity'
             - '%kernel.project_dir%/../plugin/realisations/src/Entity'
+            - '%kernel.project_dir%/../plugin/actualites/src/Entity'

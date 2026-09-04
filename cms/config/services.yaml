@@ -36,5 +36,9 @@ services:
     Plugin\Realisations\:
         resource: '../../plugin/realisations/src/'
 
+    # Actualites plugin backend, physically located in plugin/actualites/src/.
+    Plugin\Actualites\:
+        resource: '../../plugin/actualites/src/'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

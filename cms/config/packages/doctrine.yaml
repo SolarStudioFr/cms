@@ -36,6 +36,12 @@ doctrine:
                 dir: '%kernel.project_dir%/../plugin/realisations/src/Entity'
                 prefix: 'Plugin\Realisations\Entity'
                 alias: PluginRealisations
+            PluginActualites:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/../plugin/actualites/src/Entity'
+                prefix: 'Plugin\Actualites\Entity'
+                alias: PluginActualites
 
 when@test:
     doctrine:
