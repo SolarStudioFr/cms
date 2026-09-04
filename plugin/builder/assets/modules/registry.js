@@ -1,3 +1,4 @@
+import CtaModule from './CtaModule';
 import DownloadModule from './DownloadModule';
 import ImageModule from './ImageModule';
 import SliderModule from './SliderModule';
@@ -16,7 +17,7 @@ import SliderModule from './SliderModule';
  *   render: (props) => string,  pure function producing the public HTML for one block
  * }
  */
-const registry = [ImageModule, SliderModule, DownloadModule];
+const registry = [ImageModule, SliderModule, DownloadModule, CtaModule];
 
 export default registry;
 
