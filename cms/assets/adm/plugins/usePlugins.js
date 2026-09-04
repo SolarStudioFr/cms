@@ -34,7 +34,11 @@ export default function usePlugins(enabled) {
                                 manifest.remoteEntry,
                                 manifest.exposedModule,
                             );
-                            return remoteModule.default ?? remoteModule;
+                            // `pluginName` isn't part of the remote's own export - it's
+                            // stitched in from the manifest so the admin sidebar order
+                            // feature (AdminMenuConfig) can key a plugin's nav item as
+                            // `plugin:<name>`, independently of its (French, editable) label.
+                            return { ...(remoteModule.default ?? remoteModule), pluginName: manifest.name };
                         } catch (error) {
                             // eslint-disable-next-line no-console
                             console.error(`Failed to load plugin "${manifest.name}"`, error);

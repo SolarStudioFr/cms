@@ -16,6 +16,8 @@ import VerifyEmail from './VerifyEmail';
 import Profile from './Profile';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import useSiteConfig from './useSiteConfig';
+import useMenus from './useMenus';
+import MenuHook from './MenuHook';
 
 /** Right-hand side of the navbar: login/register links, or the current user + logout once authenticated. */
 function AuthNav() {
@@ -50,6 +52,7 @@ function AuthNav() {
 
 function AppShell() {
     const siteConfig = useSiteConfig();
+    const menus = useMenus();
 
     return (
         <BrowserRouter>
@@ -72,6 +75,7 @@ function AppShell() {
                         <Nav.Link as={Link} to="/news">
                             Actualités
                         </Nav.Link>
+                        <MenuHook name="header-menu" menus={menus} />
                     </Nav>
                     <AuthNav />
                 </Container>
@@ -128,6 +132,7 @@ function AppShell() {
             </Routes>
             <footer className="bg-dark text-light py-3 mt-4">
                 <Container>
+                    <MenuHook name="footer-menu" menus={menus} className="mb-2" />
                     <NewsletterSignup />
                 </Container>
             </footer>

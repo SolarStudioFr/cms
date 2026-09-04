@@ -2,10 +2,10 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 
-export default function Shell({ extraNavItems = [] }) {
+export default function Shell({ pluginItems = [] }) {
     return (
         <div className="d-flex">
-            <Sidebar extraItems={extraNavItems} />
+            <Sidebar pluginItems={pluginItems} />
             <div className="flex-grow-1 p-4">
                 <Outlet />
             </div>

@@ -1,0 +1,6 @@
+{
+    "hooks": [
+        { "name": "header-menu", "label": "Menu d'en-tête" },
+        { "name": "footer-menu", "label": "Menu de pied de page" }
+    ]
+}
