@@ -18,7 +18,7 @@
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build:plugins": "webpack --config plugin/page/webpack.config.js && webpack --config plugin/i18n/webpack.config.js && webpack --config plugin/builder/webpack.config.js && webpack --config plugin/realisations/webpack.config.js && webpack --config plugin/actualites/webpack.config.js",
+        "build:plugins": "webpack --config plugin/page/webpack.config.js && webpack --config plugin/i18n/webpack.config.js && webpack --config plugin/builder/webpack.config.js && webpack --config plugin/realisations/webpack.config.js && webpack --config plugin/actualites/webpack.config.js && webpack --config plugin/accueil/webpack.config.js",
         "build": "encore production --progress && NODE_ENV=production npm run build:plugins"
     },
     "dependencies": {

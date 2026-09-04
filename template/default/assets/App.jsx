@@ -8,15 +8,7 @@ import RealisationList from './RealisationList';
 import RealisationDetail from './RealisationDetail';
 import ActualiteList from './ActualiteList';
 import ActualiteDetail from './ActualiteDetail';
-
-function Home() {
-    return (
-        <Container className="py-4">
-            <h1>Solar CMS</h1>
-            <PageList />
-        </Container>
-    );
-}
+import Home from './Home';
 
 export default function App() {
     return (
@@ -30,6 +22,9 @@ export default function App() {
                         <Nav.Link as={Link} to="/">
                             Accueil
                         </Nav.Link>
+                        <Nav.Link as={Link} to="/pages">
+                            Pages
+                        </Nav.Link>
                         <Nav.Link as={Link} to="/realisations">
                             Réalisations
                         </Nav.Link>
@@ -41,6 +36,15 @@ export default function App() {
             </Navbar>
             <Routes>
                 <Route path="/" element={<Home />} />
+                <Route
+                    path="/pages"
+                    element={
+                        <Container className="py-4">
+                            <h1>Pages</h1>
+                            <PageList />
+                        </Container>
+                    }
+                />
                 <Route
                     path="/realisations"
                     element={

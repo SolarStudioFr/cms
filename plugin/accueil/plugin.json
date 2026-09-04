@@ -1,0 +1,6 @@
+{
+    "name": "accueil",
+    "label": "Accueil",
+    "remoteEntry": "/build/plugins/accueil/remoteEntry.js",
+    "exposedModule": "./AdminModule"
+}

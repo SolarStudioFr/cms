@@ -40,5 +40,9 @@ services:
     Plugin\Actualites\:
         resource: '../../plugin/actualites/src/'
 
+    # Accueil plugin backend, physically located in plugin/accueil/src/.
+    Plugin\Accueil\:
+        resource: '../../plugin/accueil/src/'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
