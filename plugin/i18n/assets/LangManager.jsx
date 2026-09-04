@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Form, Table } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import client from './api/client';
 
 /**
@@ -59,7 +60,12 @@ export default function LangManager() {
 
     return (
         <div>
-            <h1 className="mb-4">Langues</h1>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h1>Langues</h1>
+                <Button as={Link} to="/translations" variant="outline-secondary">
+                    Traductions
+                </Button>
+            </div>
 
             <Form onSubmit={addLang} className="d-flex align-items-end gap-2 mb-4">
                 <Form.Group controlId="langCode">
