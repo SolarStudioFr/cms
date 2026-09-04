@@ -2,6 +2,7 @@ import CtaModule from './CtaModule';
 import DownloadModule from './DownloadModule';
 import ImageModule from './ImageModule';
 import SliderModule from './SliderModule';
+import TextModule from './TextModule';
 
 /**
  * The builder's module registry (step 10): every block type the canvas can
@@ -17,7 +18,7 @@ import SliderModule from './SliderModule';
  *   render: (props) => string,  pure function producing the public HTML for one block
  * }
  */
-const registry = [ImageModule, SliderModule, DownloadModule, CtaModule];
+const registry = [ImageModule, SliderModule, DownloadModule, CtaModule, TextModule];
 
 export default registry;
 
