@@ -32,5 +32,9 @@ services:
     Plugin\I18n\:
         resource: '../../plugin/i18n/src/'
 
+    # Realisations plugin backend, physically located in plugin/realisations/src/.
+    Plugin\Realisations\:
+        resource: '../../plugin/realisations/src/'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

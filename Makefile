@@ -10,7 +10,7 @@ init:
 	php cms/bin/console doctrine:database:drop --force --if-exists
 	php cms/bin/console doctrine:database:create
 	php cms/bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
-	php cms/bin/console doctrine:fixtures:load --no-interaction
+	php cms/bin/console doctrine:fixtures:load --no-interaction --purge-exclusions=lang
 
 start:
 	docker compose up -d --build
@@ -24,7 +24,7 @@ stop:
 test:
 	docker compose exec php php cms/bin/console doctrine:database:create --if-not-exists --env=test
 	docker compose exec php php cms/bin/console doctrine:migrations:migrate --no-interaction --env=test
-	docker compose exec php php cms/bin/console doctrine:fixtures:load --no-interaction --env=test
+	docker compose exec php php cms/bin/console doctrine:fixtures:load --no-interaction --env=test --purge-exclusions=lang
 	docker compose exec php php cms/bin/phpunit -c cms/phpunit.dist.xml
 
 log:

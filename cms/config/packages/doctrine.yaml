@@ -30,6 +30,12 @@ doctrine:
                 dir: '%kernel.project_dir%/../plugin/i18n/src/Entity'
                 prefix: 'Plugin\I18n\Entity'
                 alias: PluginI18n
+            PluginRealisations:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/../plugin/realisations/src/Entity'
+                prefix: 'Plugin\Realisations\Entity'
+                alias: PluginRealisations
 
 when@test:
     doctrine:
