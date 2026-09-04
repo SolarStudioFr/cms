@@ -1,6 +1,0 @@
-{
-    "name": "realisations",
-    "label": "Réalisations",
-    "remoteEntry": "/build/plugins/realisations/remoteEntry.js",
-    "exposedModule": "./AdminModule"
-}

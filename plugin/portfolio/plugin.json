@@ -1,0 +1,6 @@
+{
+    "name": "portfolio",
+    "label": "Réalisations",
+    "remoteEntry": "/build/plugins/portfolio/remoteEntry.js",
+    "exposedModule": "./AdminModule"
+}

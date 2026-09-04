@@ -7,7 +7,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Functional test of the Accueil plugin's homepage content backend (step 21):
+ * Functional test of the Homepage plugin's homepage content backend (step 21):
  * singleton auto-creation, admin get/patch, and the public read.
  */
 class HomeContentApiTest extends WebTestCase
@@ -25,7 +25,7 @@ class HomeContentApiTest extends WebTestCase
         $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
         $client->loginUser($admin);
 
-        $client->request('GET', '/api/admin/home');
+        $client->request('GET', '/api/admin/homepage');
 
         self::assertResponseIsSuccessful();
         $data = json_decode($client->getResponse()->getContent(), true);
@@ -41,7 +41,7 @@ class HomeContentApiTest extends WebTestCase
 
         $client->request(
             'PATCH',
-            '/api/admin/home',
+            '/api/admin/homepage',
             [],
             [],
             ['CONTENT_TYPE' => 'application/merge-patch+json'],
@@ -51,12 +51,12 @@ class HomeContentApiTest extends WebTestCase
         self::assertSame('<h1>Bienvenue</h1>', json_decode($client->getResponse()->getContent(), true)['content']);
 
         // Patching again must update the same row, not create a second one.
-        $client->request('GET', '/api/admin/home');
+        $client->request('GET', '/api/admin/homepage');
         $afterFirstPatch = json_decode($client->getResponse()->getContent(), true);
 
         $client->request(
             'PATCH',
-            '/api/admin/home',
+            '/api/admin/homepage',
             [],
             [],
             ['CONTENT_TYPE' => 'application/merge-patch+json'],
@@ -66,7 +66,7 @@ class HomeContentApiTest extends WebTestCase
         $afterSecondPatch = json_decode($client->getResponse()->getContent(), true);
         self::assertSame($afterFirstPatch['id'], $afterSecondPatch['id']);
 
-        $client->request('GET', '/api/home');
+        $client->request('GET', '/api/homepage');
         self::assertResponseIsSuccessful();
         self::assertSame('<h1>Bienvenue v2</h1>', json_decode($client->getResponse()->getContent(), true)['content']);
     }
@@ -75,7 +75,7 @@ class HomeContentApiTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', '/api/home');
+        $client->request('GET', '/api/homepage');
 
         self::assertResponseIsSuccessful();
     }
@@ -86,7 +86,7 @@ class HomeContentApiTest extends WebTestCase
 
         $client->request(
             'PATCH',
-            '/api/admin/home',
+            '/api/admin/homepage',
             [],
             [],
             ['CONTENT_TYPE' => 'application/merge-patch+json'],
@@ -100,7 +100,7 @@ class HomeContentApiTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('GET', '/api/admin/home');
+        $client->request('GET', '/api/admin/homepage');
 
         self::assertResponseStatusCodeSame(401);
     }

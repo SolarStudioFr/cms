@@ -5,7 +5,7 @@ import webpack from 'webpack';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Output lands under cms/public/build/ so it's covered by the existing
 // Apache /build alias - plugin/ itself is HTTP-denied, no vhost.conf change.
-const outputPath = path.resolve(__dirname, '../../cms/public/build/plugins/page');
+const outputPath = path.resolve(__dirname, '../../cms/public/build/plugins/portfolio');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -16,8 +16,8 @@ export default {
     devtool: isProduction ? false : 'source-map',
     output: {
         path: outputPath,
-        publicPath: '/build/plugins/page/',
-        uniqueName: 'page_admin',
+        publicPath: '/build/plugins/portfolio/',
+        uniqueName: 'portfolio_admin',
     },
     module: {
         rules: [
@@ -48,16 +48,14 @@ export default {
         new webpack.container.ModuleFederationPlugin({
             // Must match plugin.json's "name" - the host loads this remote
             // by looking up window[manifest.name].
-            name: 'page',
+            name: 'portfolio',
             filename: 'remoteEntry.js',
             exposes: {
                 './AdminModule': './assets/AdminModule.jsx',
             },
             // The admin host exposes shared components (MediaPicker,
-            // RichTextEditor - step 09) from its own build; the builder
-            // plugin exposes BuilderCanvas/renderToHtml (steps 10-16).
-            // These URL-based remotes let this plugin consume them without
-            // duplicating them. Resolved lazily at runtime like any MF
+            // RichTextEditor); the builder plugin exposes
+            // BuilderCanvas/renderToHtml. Resolved lazily like any MF
             // remote, so no build-order dependency between the three.
             remotes: {
                 adm_host: 'adm_host@/build/admHostRemoteEntry.js',

@@ -7,17 +7,22 @@ import client from './api/client';
 // resolving a remote container is inherently async.
 const RichTextEditor = lazy(() => import('adm_host/RichTextEditor'));
 const BuilderCanvas = lazy(() => import('page_builder/BuilderCanvas'));
+const MediaPicker = lazy(() => import('adm_host/MediaPicker'));
 
-export default function PageForm() {
+/** Admin create/edit form for a PortfolioItem (step 17), same editor-switch logic as Plugin\Page's PageForm, plus a cover image field. */
+export default function PortfolioItemForm() {
     const { id } = useParams();
     const navigate = useNavigate();
     const isEditing = Boolean(id);
 
     const [title, setTitle] = useState('');
     // Whichever editor is active, this holds its native value: builder JSON
-    // when the builder is active, plain HTML otherwise - see step 10/16.
+    // when the builder is active, plain HTML otherwise.
     const [contentValue, setContentValue] = useState('');
     const [status, setStatus] = useState('draft');
+    const [coverImageUrl, setCoverImageUrl] = useState('');
+    const [coverImageAlt, setCoverImageAlt] = useState('');
+    const [pickerOpen, setPickerOpen] = useState(false);
     const [loading, setLoading] = useState(isEditing);
     const [error, setError] = useState(null);
     // null while still checking, so the form doesn't flash one editor then
@@ -37,13 +42,15 @@ export default function PageForm() {
         }
 
         client
-            .get(`/admin/pages/${id}`)
+            .get(`/admin/portfolio/${id}`)
             .then(({ data }) => {
                 setTitle(data.title);
                 setStatus(data.status);
+                setCoverImageUrl(data.coverImageUrl || '');
+                setCoverImageAlt(data.coverImageAlt || '');
                 setContentValue(builderActive && data.builderData ? data.builderData : data.content);
             })
-            .catch(() => setError('Impossible de charger la page.'))
+            .catch(() => setError('Impossible de charger la réalisation.'))
             .finally(() => setLoading(false));
     }, [id, isEditing, builderActive]);
 
@@ -53,8 +60,8 @@ export default function PageForm() {
 
         // The builder's JSON value is never sent as `content` directly -
         // it's rendered to plain HTML at save time, so the public site (and
-        // anything else reading Page.content) never needs to know which
-        // editor produced it.
+        // anything else reading PortfolioItem.content) never needs to know
+        // which editor produced it.
         let content = contentValue;
         let builderData = null;
         if (builderActive) {
@@ -66,14 +73,20 @@ export default function PageForm() {
         try {
             if (isEditing) {
                 await client.patch(
-                    `/admin/pages/${id}`,
-                    { title, content, builderData, status },
+                    `/admin/portfolio/${id}`,
+                    { title, content, builderData, status, coverImageUrl: coverImageUrl || null, coverImageAlt: coverImageAlt || null },
                     { headers: { 'Content-Type': 'application/merge-patch+json' } },
                 );
             } else {
-                await client.post('/admin/pages', { title, content, builderData });
+                await client.post('/admin/portfolio', {
+                    title,
+                    content,
+                    builderData,
+                    coverImageUrl: coverImageUrl || null,
+                    coverImageAlt: coverImageAlt || null,
+                });
             }
-            navigate('/pages');
+            navigate('/portfolio');
         } catch {
             setError("Échec de l'enregistrement.");
         }
@@ -85,12 +98,12 @@ export default function PageForm() {
 
     return (
         <div>
-            <h1>{isEditing ? 'Modifier la page' : 'Nouvelle page'}</h1>
+            <h1>{isEditing ? 'Modifier la réalisation' : 'Nouvelle réalisation'}</h1>
 
             {error && <div className="alert alert-danger">{error}</div>}
 
             <Form onSubmit={handleSubmit} style={{ maxWidth: '640px' }}>
-                <Form.Group className="mb-3" controlId="pageTitle">
+                <Form.Group className="mb-3" controlId="portfolioItemTitle">
                     <Form.Label>Titre</Form.Label>
                     <Form.Control
                         type="text"
@@ -100,7 +113,39 @@ export default function PageForm() {
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="pageContent">
+                <Form.Group className="mb-3" controlId="portfolioItemCover">
+                    <Form.Label>Image de couverture</Form.Label>
+                    <div>
+                        {coverImageUrl ? (
+                            <img
+                                src={coverImageUrl}
+                                alt={coverImageAlt}
+                                style={{ maxWidth: '240px', maxHeight: '160px', display: 'block', marginBottom: '8px' }}
+                            />
+                        ) : (
+                            <p className="text-muted small">Aucune image sélectionnée.</p>
+                        )}
+                        <Button size="sm" variant="outline-secondary" className="mb-2" onClick={() => setPickerOpen(true)}>
+                            {coverImageUrl ? "Changer l'image" : 'Choisir une image'}
+                        </Button>
+                        {pickerOpen && (
+                            <Suspense fallback={null}>
+                                <MediaPicker
+                                    show={pickerOpen}
+                                    onHide={() => setPickerOpen(false)}
+                                    onSelect={(file) => {
+                                        setCoverImageUrl(file.url);
+                                        setCoverImageAlt(coverImageAlt || file.name);
+                                    }}
+                                    types={['img']}
+                                    title="Choisir une image de couverture"
+                                />
+                            </Suspense>
+                        )}
+                    </div>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="portfolioItemContent">
                     <Form.Label>Contenu</Form.Label>
                     {/* Editor only mounts once `loading`/`builderActive` are settled
                         above, so its initial value is already the real content. */}
@@ -108,13 +153,13 @@ export default function PageForm() {
                         {builderActive ? (
                             <BuilderCanvas value={contentValue} onChange={setContentValue} />
                         ) : (
-                            <RichTextEditor value={contentValue} onChange={setContentValue} placeholder="Contenu de la page..." />
+                            <RichTextEditor value={contentValue} onChange={setContentValue} placeholder="Contenu de la réalisation..." />
                         )}
                     </Suspense>
                 </Form.Group>
 
                 {isEditing && (
-                    <Form.Group className="mb-3" controlId="pageStatus">
+                    <Form.Group className="mb-3" controlId="portfolioItemStatus">
                         <Form.Label>Statut</Form.Label>
                         <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}>
                             <option value="draft">Brouillon</option>
@@ -127,7 +172,7 @@ export default function PageForm() {
                 <Button type="submit" variant="primary">
                     Enregistrer
                 </Button>
-                <Button type="button" variant="link" onClick={() => navigate('/pages')}>
+                <Button type="button" variant="link" onClick={() => navigate('/portfolio')}>
                     Annuler
                 </Button>
             </Form>

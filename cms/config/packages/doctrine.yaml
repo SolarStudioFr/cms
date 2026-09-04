@@ -30,24 +30,24 @@ doctrine:
                 dir: '%kernel.project_dir%/../plugin/i18n/src/Entity'
                 prefix: 'Plugin\I18n\Entity'
                 alias: PluginI18n
-            PluginRealisations:
+            PluginPortfolio:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/../plugin/realisations/src/Entity'
-                prefix: 'Plugin\Realisations\Entity'
-                alias: PluginRealisations
-            PluginActualites:
+                dir: '%kernel.project_dir%/../plugin/portfolio/src/Entity'
+                prefix: 'Plugin\Portfolio\Entity'
+                alias: PluginPortfolio
+            PluginNews:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/../plugin/actualites/src/Entity'
-                prefix: 'Plugin\Actualites\Entity'
-                alias: PluginActualites
-            PluginAccueil:
+                dir: '%kernel.project_dir%/../plugin/news/src/Entity'
+                prefix: 'Plugin\News\Entity'
+                alias: PluginNews
+            PluginHomepage:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/../plugin/accueil/src/Entity'
-                prefix: 'Plugin\Accueil\Entity'
-                alias: PluginAccueil
+                dir: '%kernel.project_dir%/../plugin/homepage/src/Entity'
+                prefix: 'Plugin\Homepage\Entity'
+                alias: PluginHomepage
 
 when@test:
     doctrine:

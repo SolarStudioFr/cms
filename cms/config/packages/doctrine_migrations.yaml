@@ -5,9 +5,9 @@ doctrine_migrations:
         'DoctrineMigrations': '%kernel.project_dir%/migrations'
         'Plugin\Page\Migrations': '%kernel.project_dir%/../plugin/page/migrations'
         'Plugin\I18n\Migrations': '%kernel.project_dir%/../plugin/i18n/migrations'
-        'Plugin\Realisations\Migrations': '%kernel.project_dir%/../plugin/realisations/migrations'
-        'Plugin\Actualites\Migrations': '%kernel.project_dir%/../plugin/actualites/migrations'
-        'Plugin\Accueil\Migrations': '%kernel.project_dir%/../plugin/accueil/migrations'
+        'Plugin\Portfolio\Migrations': '%kernel.project_dir%/../plugin/portfolio/migrations'
+        'Plugin\News\Migrations': '%kernel.project_dir%/../plugin/news/migrations'
+        'Plugin\Homepage\Migrations': '%kernel.project_dir%/../plugin/homepage/migrations'
     enable_profiler: false
     # MySQL DDL implicitly commits, so wrapping each migration in an explicit
     # transaction just triggers a deprecated "already committed" silencing path.

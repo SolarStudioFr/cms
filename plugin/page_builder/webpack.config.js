@@ -5,7 +5,7 @@ import webpack from 'webpack';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Output lands under cms/public/build/ so it's covered by the existing
 // Apache /build alias - plugin/ itself is HTTP-denied, no vhost.conf change.
-const outputPath = path.resolve(__dirname, '../../cms/public/build/plugins/page');
+const outputPath = path.resolve(__dirname, '../../cms/public/build/plugins/page_builder');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -16,8 +16,8 @@ export default {
     devtool: isProduction ? false : 'source-map',
     output: {
         path: outputPath,
-        publicPath: '/build/plugins/page/',
-        uniqueName: 'page_admin',
+        publicPath: '/build/plugins/page_builder/',
+        uniqueName: 'page_builder_admin',
     },
     module: {
         rules: [
@@ -48,20 +48,25 @@ export default {
         new webpack.container.ModuleFederationPlugin({
             // Must match plugin.json's "name" - the host loads this remote
             // by looking up window[manifest.name].
-            name: 'page',
+            name: 'page_builder',
             filename: 'remoteEntry.js',
             exposes: {
                 './AdminModule': './assets/AdminModule.jsx',
+                // Consumed by content plugins (e.g. plugin/page, step 16)
+                // as a drop-in replacement for the fallback editor
+                // (RichTextEditor, step 09): same value/onChange(JSON
+                // string) contract.
+                './BuilderCanvas': './assets/BuilderCanvas.jsx',
+                // Pure function, no React needed by the caller: converts a
+                // BuilderCanvas JSON value into the HTML a content plugin
+                // stores/serves publicly - same string a consuming plugin
+                // would otherwise get from RichTextEditor directly.
+                './renderToHtml': './assets/renderToHtml.js',
             },
-            // The admin host exposes shared components (MediaPicker,
-            // RichTextEditor - step 09) from its own build; the builder
-            // plugin exposes BuilderCanvas/renderToHtml (steps 10-16).
-            // These URL-based remotes let this plugin consume them without
-            // duplicating them. Resolved lazily at runtime like any MF
-            // remote, so no build-order dependency between the three.
+            // Needed by builder modules that use the shared media picker
+            // (step 03), e.g. the Image/Slider/Download modules (11-13).
             remotes: {
                 adm_host: 'adm_host@/build/admHostRemoteEntry.js',
-                page_builder: 'page_builder@/build/plugins/page_builder/remoteEntry.js',
             },
             shared: {
                 react: { singleton: true, requiredVersion: '^19.2.8' },

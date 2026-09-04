@@ -1,0 +1,6 @@
+{
+    "name": "news",
+    "label": "Blog et actualité",
+    "remoteEntry": "/build/plugins/news/remoteEntry.js",
+    "exposedModule": "./AdminModule"
+}

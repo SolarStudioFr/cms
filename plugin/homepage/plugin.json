@@ -1,0 +1,6 @@
+{
+    "name": "homepage",
+    "label": "Gestion de la page d'accueil",
+    "remoteEntry": "/build/plugins/homepage/remoteEntry.js",
+    "exposedModule": "./AdminModule"
+}

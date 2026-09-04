@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import client from './api/client';
 
 /**
- * Public homepage (step 21): renders the content configured via the Accueil
- * admin plugin (fallback editor or builder HTML - same contract as
- * PageList's `content`). `GET /api/home` always returns something (the
+ * Public homepage (step 21): renders the content configured via the
+ * Homepage admin plugin (fallback editor or builder HTML - same contract as
+ * PageList's `content`). `GET /api/homepage` always returns something (the
  * backend auto-creates an empty row on first read), so an unconfigured
  * homepage just renders as empty rather than erroring.
  */
@@ -14,7 +14,7 @@ export default function Home() {
 
     useEffect(() => {
         client
-            .get('/home')
+            .get('/homepage')
             .then(({ data }) => setContent(data.content))
             .finally(() => setLoading(false));
     }, []);

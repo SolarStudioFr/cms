@@ -32,17 +32,17 @@ services:
     Plugin\I18n\:
         resource: '../../plugin/i18n/src/'
 
-    # Realisations plugin backend, physically located in plugin/realisations/src/.
-    Plugin\Realisations\:
-        resource: '../../plugin/realisations/src/'
+    # Portfolio plugin backend, physically located in plugin/portfolio/src/.
+    Plugin\Portfolio\:
+        resource: '../../plugin/portfolio/src/'
 
-    # Actualites plugin backend, physically located in plugin/actualites/src/.
-    Plugin\Actualites\:
-        resource: '../../plugin/actualites/src/'
+    # News plugin backend, physically located in plugin/news/src/.
+    Plugin\News\:
+        resource: '../../plugin/news/src/'
 
-    # Accueil plugin backend, physically located in plugin/accueil/src/.
-    Plugin\Accueil\:
-        resource: '../../plugin/accueil/src/'
+    # Homepage plugin backend, physically located in plugin/homepage/src/.
+    Plugin\Homepage\:
+        resource: '../../plugin/homepage/src/'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

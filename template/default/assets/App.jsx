@@ -4,10 +4,10 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import PageList from './PageList';
-import RealisationList from './RealisationList';
-import RealisationDetail from './RealisationDetail';
-import ActualiteList from './ActualiteList';
-import ActualiteDetail from './ActualiteDetail';
+import PortfolioItemList from './PortfolioItemList';
+import PortfolioItemDetail from './PortfolioItemDetail';
+import NewsArticleList from './NewsArticleList';
+import NewsArticleDetail from './NewsArticleDetail';
 import Home from './Home';
 
 export default function App() {
@@ -25,10 +25,10 @@ export default function App() {
                         <Nav.Link as={Link} to="/pages">
                             Pages
                         </Nav.Link>
-                        <Nav.Link as={Link} to="/realisations">
+                        <Nav.Link as={Link} to="/portfolio">
                             Réalisations
                         </Nav.Link>
-                        <Nav.Link as={Link} to="/actualites">
+                        <Nav.Link as={Link} to="/news">
                             Actualités
                         </Nav.Link>
                     </Nav>
@@ -46,36 +46,36 @@ export default function App() {
                     }
                 />
                 <Route
-                    path="/realisations"
+                    path="/portfolio"
                     element={
                         <Container className="py-4">
                             <h1>Réalisations</h1>
-                            <RealisationList />
+                            <PortfolioItemList />
                         </Container>
                     }
                 />
                 <Route
-                    path="/realisations/:id"
+                    path="/portfolio/:id"
                     element={
                         <Container className="py-4">
-                            <RealisationDetail />
+                            <PortfolioItemDetail />
                         </Container>
                     }
                 />
                 <Route
-                    path="/actualites"
+                    path="/news"
                     element={
                         <Container className="py-4">
                             <h1>Actualités</h1>
-                            <ActualiteList />
+                            <NewsArticleList />
                         </Container>
                     }
                 />
                 <Route
-                    path="/actualites/:id"
+                    path="/news/:id"
                     element={
                         <Container className="py-4">
-                            <ActualiteDetail />
+                            <NewsArticleDetail />
                         </Container>
                     }
                 />

@@ -1,0 +1,6 @@
+{
+    "name": "page_builder",
+    "label": "Constructeur de page (Drag & Drop)",
+    "remoteEntry": "/build/plugins/page_builder/remoteEntry.js",
+    "exposedModule": "./AdminModule"
+}
