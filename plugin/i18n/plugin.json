@@ -1,0 +1,6 @@
+{
+    "name": "i18n",
+    "label": "Multilangue",
+    "remoteEntry": "/build/plugins/i18n/remoteEntry.js",
+    "exposedModule": "./AdminModule"
+}

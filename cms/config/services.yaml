@@ -28,5 +28,9 @@ services:
     Plugin\Page\:
         resource: '../../plugin/page/src/'
 
+    # i18n plugin backend, physically located in plugin/i18n/src/.
+    Plugin\I18n\:
+        resource: '../../plugin/i18n/src/'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
