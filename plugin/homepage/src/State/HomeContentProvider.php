@@ -4,6 +4,7 @@ namespace Plugin\Homepage\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Service\PluginRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Plugin\Homepage\Entity\HomeContent;
 use Plugin\Homepage\Repository\HomeContentRepository;
@@ -22,11 +23,26 @@ class HomeContentProvider implements ProviderInterface
     public function __construct(
         private readonly HomeContentRepository $homeContentRepository,
         private readonly EntityManagerInterface $entityManager,
+        private readonly PluginRegistry $pluginRegistry,
     ) {
     }
 
+    /**
+     * Only the public `/homepage` operation is gated by the plugin's enabled
+     * state - the admin get/patch operations keep working on the real
+     * singleton regardless (already unreachable through the admin UI once
+     * disabled, since its Module Federation remote stops loading). A
+     * transient, unpersisted empty instance is returned for the disabled
+     * public case rather than touching the real row: it renders as "no
+     * content configured" (Home.jsx's existing fallback) without losing the
+     * admin-authored content for whenever the plugin is re-enabled.
+     */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): HomeContent
     {
+        if ('/homepage' === $operation->getUriTemplate() && !$this->pluginRegistry->isEnabled('homepage')) {
+            return new HomeContent();
+        }
+
         $homeContent = $this->homeContentRepository->findSingleton();
 
         if (null === $homeContent) {

@@ -17,6 +17,7 @@ import Profile from './Profile';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import useSiteConfig from './useSiteConfig';
 import useMenus from './useMenus';
+import usePlugins from './usePlugins';
 import MenuHook from './MenuHook';
 
 /** Right-hand side of the navbar: login/register links, or the current user + logout once authenticated. */
@@ -53,6 +54,7 @@ function AuthNav() {
 function AppShell() {
     const siteConfig = useSiteConfig();
     const menus = useMenus();
+    const { enabled: enabledPlugins } = usePlugins();
 
     return (
         <BrowserRouter>
@@ -69,12 +71,16 @@ function AppShell() {
                         <Nav.Link as={Link} to="/pages">
                             Pages
                         </Nav.Link>
-                        <Nav.Link as={Link} to="/portfolio">
-                            Réalisations
-                        </Nav.Link>
-                        <Nav.Link as={Link} to="/news">
-                            Actualités
-                        </Nav.Link>
+                        {enabledPlugins.has('portfolio') && (
+                            <Nav.Link as={Link} to="/portfolio">
+                                Réalisations
+                            </Nav.Link>
+                        )}
+                        {enabledPlugins.has('news') && (
+                            <Nav.Link as={Link} to="/news">
+                                Actualités
+                            </Nav.Link>
+                        )}
                         <MenuHook name="header-menu" menus={menus} />
                     </Nav>
                     <AuthNav />
@@ -133,7 +139,7 @@ function AppShell() {
             <footer className="bg-dark text-light py-3 mt-4">
                 <Container>
                     <MenuHook name="footer-menu" menus={menus} className="mb-2" />
-                    <NewsletterSignup />
+                    {enabledPlugins.has('newsletter') && <NewsletterSignup />}
                 </Container>
             </footer>
         </BrowserRouter>
