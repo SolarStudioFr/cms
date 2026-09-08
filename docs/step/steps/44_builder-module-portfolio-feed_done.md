@@ -1,7 +1,6 @@
 # Étape 44 — Module Réalisations (dynamique)
 
-> Statut : **on-hold**. Fait partie du découpage documenté dans `../MAIN.md`. Ajoutée sur demande explicite de l'utilisateur, hors backlog initial de `../../INIT_ETAPES.md` — spécification complète dans `../../NEW_BLOCK_PAGE_BUILDER.md` (section "Réalisations (dynamique)").
-> Ne pas démarrer sans demande explicite de l'utilisateur.
+> Statut : **done** (v0.31.0). Fait partie du découpage documenté dans `../MAIN.md`. Ajoutée sur demande explicite de l'utilisateur, hors backlog initial de `../../INIT_ETAPES.md` — spécification complète dans `../../NEW_BLOCK_PAGE_BUILDER.md` (section "Réalisations (dynamique)").
 
 **Fonctionnalité** : Page builder (plugin `page_builder`) — nouveaux blocks
 **Slug** : `builder-module-portfolio-feed`
@@ -19,15 +18,15 @@ Dépend de 10 (`builder-core`) et du plugin Réalisations (17-18, pour la liste 
 Protocole générique documenté dans `../action/`. Cases à cocher pour cette étape une
 fois le travail démarré :
 
-- [ ] 1. Lire `docs/RELEASE.md`
-- [ ] 2. Réaliser le travail
-- [ ] 3. Commenter le code en anglais
-- [ ] 4. Tester avec PHPUnit (aucune dépréciation)
-- [ ] 5. Monter la version (`cms/composer.json` + `cms/.env`)
-- [ ] 6. Journaliser dans `docs/RELEASE.md`
-- [ ] 7. Commit puis push
-- [ ] 8. Rapport à l'utilisateur + validation avant l'étape suivante
+- [x] 1. Lire `docs/RELEASE.md`
+- [x] 2. Réaliser le travail
+- [x] 3. Commenter le code en anglais
+- [x] 4. Tester avec PHPUnit (aucune dépréciation)
+- [x] 5. Monter la version (`cms/composer.json` + `cms/.env`)
+- [x] 6. Journaliser dans `docs/RELEASE.md`
+- [x] 7. Commit puis push
+- [x] 8. Rapport à l'utilisateur + validation avant l'étape suivante
 
 ## Journal de l'étape
 
-_(vide — à compléter pendant le déroulement de l'étape)_
+Livrée avec 40 à 43, 45 en un seul commit/version (0.31.0) — voir `docs/RELEASE.md` pour le détail complet. Mécanisme de rendu dynamique conçu ici (placeholder `[data-builder-feed]` dans le HTML statique, hydraté côté thème public par `template/default/assets/builderFeedHydrator.js`/`BuilderContent.jsx`) — voir la section dédiée de `docs/RELEASE.md` pour le détail, y compris un bug de timing réel trouvé et corrigé pendant la vérification (référence de nœud DOM capturée avant un `await` devenue obsolète). Réutilisé tel quel par 45.

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import client from './api/client';
+import BuilderContent from './BuilderContent';
 
 /** Public detail view of one published PortfolioItem (step 18). */
 export default function PortfolioItemDetail() {
@@ -41,8 +42,9 @@ export default function PortfolioItemDetail() {
                 />
             )}
             {/* Admin-authored HTML (fallback editor or builder) - same trust
-                boundary as PageList's content rendering. */}
-            <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                boundary as PageList's content rendering. BuilderContent also
+                hydrates any dynamic feed placeholder (steps 44/45). */}
+            <BuilderContent html={item.content} />
         </div>
     );
 }

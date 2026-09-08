@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import client from './api/client';
+import BuilderContent from './BuilderContent';
 
 /**
  * Public homepage (step 21): renders the content configured via the
@@ -28,6 +29,7 @@ export default function Home() {
     }
 
     // Admin-authored HTML (fallback editor or builder) - same trust boundary
-    // as PageList's content rendering.
-    return <div dangerouslySetInnerHTML={{ __html: content }} />;
+    // as PageList's content rendering. BuilderContent also hydrates any
+    // dynamic feed placeholder the builder may have produced (steps 44/45).
+    return <BuilderContent html={content} />;
 }

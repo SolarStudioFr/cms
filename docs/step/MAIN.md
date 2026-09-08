@@ -121,12 +121,12 @@ Ajoutées sur demande explicite de l'utilisateur, hors backlog initial de `../IN
 
 | ID | Slug | Étape | Statut |
 |----|------|-------|--------|
-| 40 | `builder-module-hero` | Héro : eyebrow, titre principal (h1), texte d'accroche, bouton principal + bouton secondaire (texte/URL) | on-hold |
-| 41 | `builder-module-trusted-by` | "Ils nous font confiance" : texte d'intro + liste de clients/logos ajoutée dynamiquement | on-hold |
-| 42 | `builder-module-services-grid` | Grille des services : eyebrow, titre, texte d'intro, liste de services (icône + titre + description) ajoutée dynamiquement | on-hold |
-| 43 | `builder-module-process-steps` | "Notre approche" : eyebrow, titre, 4 étapes fixes (numéro, titre, description) | on-hold |
-| 44 | `builder-module-portfolio-feed` | Réalisations (dynamique) : eyebrow, titre de section, nombre à afficher, texte du lien "Tout voir", fond de section (blanc/gris doux) | on-hold |
-| 45 | `builder-module-news-feed` | Actualités (dynamique) : mêmes champs que 44 pour les actualités | on-hold |
+| 40 | `builder-module-hero` | Héro : eyebrow, titre principal (h1), texte d'accroche, bouton principal + bouton secondaire (texte/URL) | done |
+| 41 | `builder-module-trusted-by` | "Ils nous font confiance" : texte d'intro + liste de clients/logos ajoutée dynamiquement | done |
+| 42 | `builder-module-services-grid` | Grille des services : eyebrow, titre, texte d'intro, liste de services (icône + titre + description) ajoutée dynamiquement | done |
+| 43 | `builder-module-process-steps` | "Notre approche" : eyebrow, titre, 4 étapes fixes (numéro, titre, description) | done |
+| 44 | `builder-module-portfolio-feed` | Réalisations (dynamique) : eyebrow, titre de section, nombre à afficher, texte du lien "Tout voir", fond de section (blanc/gris doux) | done |
+| 45 | `builder-module-news-feed` | Actualités (dynamique) : mêmes champs que 44 pour les actualités | done |
 | 46 | `builder-module-heading` | Titre : sélection du niveau H1 à H6 + texte | on-hold |
 | 47 | `builder-module-button` | Bouton : texte, URL, couleur (liste Bootstrap), taille, cible (même onglet/nouvel onglet) | on-hold |
 | 48 | `builder-module-service-card` | Service (carte seule) : couleur, icône, titre, description — même forme qu'une carte de 42, isolée | on-hold |

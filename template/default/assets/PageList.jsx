@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import client from './api/client';
+import BuilderContent from './BuilderContent';
 
 export default function PageList() {
     const [pages, setPages] = useState([]);
@@ -31,8 +32,9 @@ export default function PageList() {
                     {/* page.content is HTML authored by an admin (fallback editor
                         or builder, both step 09/10+), not visitor input - same
                         trust boundary as any CMS rendering its own admin-authored
-                        content. */}
-                    <div className="mb-0" dangerouslySetInnerHTML={{ __html: page.content }} />
+                        content. BuilderContent also hydrates any dynamic feed
+                        placeholder the builder may have produced (steps 44/45). */}
+                    <BuilderContent className="mb-0" html={page.content} />
                 </li>
             ))}
         </ul>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import client from './api/client';
+import BuilderContent from './BuilderContent';
 
 /** Public detail view of one published NewsArticle (step 20). */
 export default function NewsArticleDetail() {
@@ -42,8 +43,9 @@ export default function NewsArticleDetail() {
                 />
             )}
             {/* Admin-authored HTML (fallback editor or builder) - same trust
-                boundary as PageList's content rendering. */}
-            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+                boundary as PageList's content rendering. BuilderContent also
+                hydrates any dynamic feed placeholder (steps 44/45). */}
+            <BuilderContent html={article.content} />
         </div>
     );
 }
