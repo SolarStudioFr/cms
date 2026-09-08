@@ -54,6 +54,12 @@ doctrine:
                 dir: '%kernel.project_dir%/../plugin/newsletter/src/Entity'
                 prefix: 'Plugin\Newsletter\Entity'
                 alias: PluginNewsletter
+            PluginStats:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/../plugin/stats/src/Entity'
+                prefix: 'Plugin\Stats\Entity'
+                alias: PluginStats
 
 when@test:
     doctrine:

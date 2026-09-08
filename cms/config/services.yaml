@@ -56,5 +56,9 @@ services:
     Plugin\Newsletter\:
         resource: '../../plugin/newsletter/src/'
 
+    # Stats plugin backend, physically located in plugin/stats/src/.
+    Plugin\Stats\:
+        resource: '../../plugin/stats/src/'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

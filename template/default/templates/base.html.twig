@@ -10,5 +10,15 @@
     </head>
     <body>
         <div id="app"></div>
+
+        {# Stats plugin tracking beacon (steps 34-35): its own tiny, deferred,
+           dependency-free script - never part of the `default` bundle above,
+           so it can never add to its parse/load cost. A plain <script> tag
+           (not encore_entry_script_tags) since it isn't an Encore entry - it's
+           built by the Stats plugin's own webpack config, like every other
+           plugin remote, under the existing /build alias. 404s harmlessly if
+           the plugin isn't installed, same non-blocking assumption already
+           made for the Portfolio/News/Newsletter routes below. #}
+        <script src="/build/plugins/stats/tracker.js" defer></script>
     </body>
 </html>

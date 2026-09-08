@@ -3,7 +3,7 @@
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "version": "0.28.0",
+    "version": "0.29.0",
     "require": {
         "php": ">=8.2",
         "ext-ctype": "*",
@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^3.3",
         "doctrine/doctrine-migrations-bundle": "^4.0",
         "doctrine/orm": "^3.6",
+        "matomo/device-detector": "^6.0",
         "phpdocumentor/reflection-docblock": "^6.0",
         "phpstan/phpdoc-parser": "^2.3",
         "symfony/asset": "7.4.*",
@@ -61,7 +62,8 @@
             "Plugin\\Portfolio\\": "../plugin/portfolio/src/",
             "Plugin\\News\\": "../plugin/news/src/",
             "Plugin\\Homepage\\": "../plugin/homepage/src/",
-            "Plugin\\Newsletter\\": "../plugin/newsletter/src/"
+            "Plugin\\Newsletter\\": "../plugin/newsletter/src/",
+            "Plugin\\Stats\\": "../plugin/stats/src/"
         }
     },
     "autoload-dev": {

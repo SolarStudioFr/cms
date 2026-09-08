@@ -1,0 +1,6 @@
+{
+    "name": "stats",
+    "label": "Statistiques",
+    "remoteEntry": "/build/plugins/stats/remoteEntry.js",
+    "exposedModule": "./AdminModule"
+}
