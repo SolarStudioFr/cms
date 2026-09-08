@@ -6,7 +6,6 @@
 /cms/public/bundles/
 /var/
 /cms/vendor/
-/docs/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
