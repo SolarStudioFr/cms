@@ -95,6 +95,41 @@ class Page
     #[Groups(['page:read'])]
     private string $slug = '';
 
+    /** S.E.O. & social fields (step 37) - all optional, override the defaults a public template would otherwise derive from title/content. */
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['page:read', 'page:write'])]
+    private ?string $seoTitle = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['page:read', 'page:write'])]
+    private ?string $seoDescription = null;
+
+    #[ORM\Column(length: 512, nullable: true)]
+    #[Groups(['page:read', 'page:write'])]
+    private ?string $ogImageUrl = null;
+
+    #[ORM\Column(length: 20, enumType: OgType::class)]
+    #[Groups(['page:read', 'page:write'])]
+    private OgType $ogType = OgType::Website;
+
+    #[ORM\Column(length: 512, nullable: true)]
+    #[Groups(['page:read', 'page:write'])]
+    private ?string $canonicalUrl = null;
+
+    /**
+     * Featured image (step 37) - Page had no image field at all before this
+     * step, unlike PortfolioItem/NewsArticle which already have
+     * coverImageUrl/coverImageAlt (steps 17/19) and reuse that pair as their
+     * featured image instead of duplicating a second field.
+     */
+    #[ORM\Column(length: 512, nullable: true)]
+    #[Groups(['page:read', 'page:write'])]
+    private ?string $featuredImageUrl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['page:read', 'page:write'])]
+    private ?string $featuredImageAlt = null;
+
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups(['page:read'])]
     private \DateTimeImmutable $createdAt;
@@ -172,5 +207,89 @@ class Page
     public function getCreatedAt(): \DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function getSeoTitle(): ?string
+    {
+        return $this->seoTitle;
+    }
+
+    public function setSeoTitle(?string $seoTitle): static
+    {
+        $this->seoTitle = $seoTitle;
+
+        return $this;
+    }
+
+    public function getSeoDescription(): ?string
+    {
+        return $this->seoDescription;
+    }
+
+    public function setSeoDescription(?string $seoDescription): static
+    {
+        $this->seoDescription = $seoDescription;
+
+        return $this;
+    }
+
+    public function getOgImageUrl(): ?string
+    {
+        return $this->ogImageUrl;
+    }
+
+    public function setOgImageUrl(?string $ogImageUrl): static
+    {
+        $this->ogImageUrl = $ogImageUrl;
+
+        return $this;
+    }
+
+    public function getOgType(): OgType
+    {
+        return $this->ogType;
+    }
+
+    public function setOgType(OgType $ogType): static
+    {
+        $this->ogType = $ogType;
+
+        return $this;
+    }
+
+    public function getCanonicalUrl(): ?string
+    {
+        return $this->canonicalUrl;
+    }
+
+    public function setCanonicalUrl(?string $canonicalUrl): static
+    {
+        $this->canonicalUrl = $canonicalUrl;
+
+        return $this;
+    }
+
+    public function getFeaturedImageUrl(): ?string
+    {
+        return $this->featuredImageUrl;
+    }
+
+    public function setFeaturedImageUrl(?string $featuredImageUrl): static
+    {
+        $this->featuredImageUrl = $featuredImageUrl;
+
+        return $this;
+    }
+
+    public function getFeaturedImageAlt(): ?string
+    {
+        return $this->featuredImageAlt;
+    }
+
+    public function setFeaturedImageAlt(?string $featuredImageAlt): static
+    {
+        $this->featuredImageAlt = $featuredImageAlt;
+
+        return $this;
     }
 }

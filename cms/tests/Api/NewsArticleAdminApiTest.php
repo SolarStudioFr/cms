@@ -11,6 +11,7 @@ class NewsArticleAdminApiTest extends WebTestCase
     protected function tearDown(): void
     {
         static::getContainer()->get(Connection::class)->executeStatement('DELETE FROM news_article');
+        static::getContainer()->get(Connection::class)->executeStatement('DELETE FROM news_category');
 
         parent::tearDown();
     }
@@ -92,6 +93,95 @@ class NewsArticleAdminApiTest extends WebTestCase
         $client->jsonRequest('POST', '/api/admin/news', ['title' => 'Fallback', 'content' => 'Plain text']);
         self::assertResponseIsSuccessful();
         self::assertNull(json_decode($client->getResponse()->getContent(), true)['builderData']);
+    }
+
+    public function testSeoAndSocialFieldsRoundTrip(): void
+    {
+        $client = static::createClient();
+        $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
+        $client->loginUser($admin);
+
+        $client->jsonRequest('POST', '/api/admin/news', [
+            'title' => 'SEO actualite',
+            'content' => 'Content',
+            'seoTitle' => 'SEO title',
+            'seoDescription' => 'SEO description',
+            'ogImageUrl' => '/upload/img/webp/og.webp',
+            'ogType' => 'profile',
+            'canonicalUrl' => 'https://example.com/seo-actualite',
+        ]);
+        self::assertResponseIsSuccessful();
+        $created = json_decode($client->getResponse()->getContent(), true);
+        self::assertSame('SEO title', $created['seoTitle']);
+        self::assertSame('SEO description', $created['seoDescription']);
+        self::assertSame('/upload/img/webp/og.webp', $created['ogImageUrl']);
+        self::assertSame('profile', $created['ogType']);
+        self::assertSame('https://example.com/seo-actualite', $created['canonicalUrl']);
+    }
+
+    public function testCategoryCanBeAssignedChangedAndCleared(): void
+    {
+        $client = static::createClient();
+        $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
+        $client->loginUser($admin);
+
+        $client->jsonRequest('POST', '/api/admin/news/categories', ['name' => 'Vie du studio']);
+        self::assertResponseIsSuccessful();
+        $category = json_decode($client->getResponse()->getContent(), true);
+        self::assertSame('vie-du-studio', $category['slug']);
+
+        $client->jsonRequest('POST', '/api/admin/news', [
+            'title' => 'Categorized article',
+            'content' => 'Content',
+            'categoryId' => $category['id'],
+        ]);
+        self::assertResponseIsSuccessful();
+        $created = json_decode($client->getResponse()->getContent(), true);
+        self::assertSame('Vie du studio', $created['category']['name']);
+
+        $client->request(
+            'PATCH',
+            "/api/admin/news/{$created['id']}",
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/merge-patch+json'],
+            json_encode(['categoryId' => null]),
+        );
+        self::assertResponseIsSuccessful();
+        self::assertNull(json_decode($client->getResponse()->getContent(), true)['category']);
+    }
+
+    public function testPartialPatchWithoutCategoryIdLeavesCategoryUntouched(): void
+    {
+        $client = static::createClient();
+        $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
+        $client->loginUser($admin);
+
+        $client->jsonRequest('POST', '/api/admin/news/categories', ['name' => 'Kept']);
+        self::assertResponseIsSuccessful();
+        $category = json_decode($client->getResponse()->getContent(), true);
+
+        $client->jsonRequest('POST', '/api/admin/news', [
+            'title' => 'Quick archive',
+            'content' => 'Content',
+            'categoryId' => $category['id'],
+        ]);
+        self::assertResponseIsSuccessful();
+        $created = json_decode($client->getResponse()->getContent(), true);
+
+        // Same shape as the list view's quick "archive" action, which only sends `status`.
+        $client->request(
+            'PATCH',
+            "/api/admin/news/{$created['id']}",
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/merge-patch+json'],
+            json_encode(['status' => 'archived']),
+        );
+        self::assertResponseIsSuccessful();
+        $updated = json_decode($client->getResponse()->getContent(), true);
+        self::assertSame('archived', $updated['status']);
+        self::assertSame('Kept', $updated['category']['name']);
     }
 
     public function testAnonymousCannotWrite(): void

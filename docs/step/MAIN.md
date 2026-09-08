@@ -111,9 +111,9 @@ Ajoutées sur demande explicite de l'utilisateur, hors backlog initial de `../IN
 
 | ID | Slug | Étape | Statut |
 |----|------|-------|--------|
-| 37 | `content-form-seo-fields` | Champs SEO & réseaux sociaux (titre SEO, meta description, image OG, type OG, URL canonique) + image à la une + formulaire réorganisé en 2 colonnes (gauche : identité/contenu/SEO ; droite : publication/image à la une) sur les formulaires Page, Réalisations et Actualités | on-hold |
-| 38 | `portfolio-tags` | Tags pour les réalisations (sélection multiple + création à la volée) | on-hold |
-| 39 | `news-categories` | Catégorie pour les actualités (liste + création à la volée) | on-hold |
+| 37 | `content-form-seo-fields` | Champs SEO & réseaux sociaux (titre SEO, meta description, image OG, type OG, URL canonique) + image à la une + formulaire réorganisé en 2 colonnes (gauche : identité/contenu/SEO ; droite : publication/image à la une) sur les formulaires Page, Réalisations et Actualités | done |
+| 38 | `portfolio-tags` | Tags pour les réalisations (sélection multiple + création à la volée) | done |
+| 39 | `news-categories` | Catégorie pour les actualités (liste + création à la volée) | done |
 
 ## Nouveaux blocks du page builder (plugin `page_builder`)
 
@@ -134,6 +134,35 @@ Ajoutées sur demande explicite de l'utilisateur, hors backlog initial de `../IN
 | 50 | `builder-module-news-list` | Liste d'actualités (sans titre/description) : nombre, ordre (récent/ancien), filtre catégorie optionnel | on-hold |
 | 51 | `builder-module-portfolio-list` | Liste de réalisations (sans titre/description) : nombre, ordre, filtre tags optionnel | on-hold |
 
+## Restructuration : Page et i18n rejoignent le cœur (`cms/*`)
+
+Ajoutées sur demande explicite de l'utilisateur, hors backlog initial de `../INIT_ETAPES.md` — découpage basé sur `../REFORGE_PLUGINS_AND_I18N.md`.
+
+| ID | Slug | Étape | Statut |
+|----|------|-------|--------|
+| 52 | `page-i18n-to-core` | `plugin/page` et `plugin/i18n` cessent d'être des plugins et rejoignent `cms/*` (namespace `App\`, plus de manifeste, plus de remote Module Federation) | on-hold |
+
+## Refonte du multilinguisme (i18n)
+
+Ajoutées sur demande explicite de l'utilisateur, hors backlog initial de `../INIT_ETAPES.md` — découpage basé sur `../REFORGE_PLUGINS_AND_I18N.md`, section "i18n" (une puce ≈ une étape, regroupée quand deux puces décrivent la même fonctionnalité vue de deux côtés). **Distinction importante à garder en tête pour tout le découpage ci-dessous** : la "langue de l'interface" (les libellés/boutons/menus de l'admin et du thème public, traduits une fois pour toutes en FR/EN — étapes 54/56/57) est un sujet complètement différent de la "langue du contenu" (le titre/texte d'une Page ou d'une Actualité, saisi en plusieurs langues par l'admin — étape 58) : WordPress distingue de la même façon la langue de son interface (réglage utilisateur) et le multilingue de contenu (plugin dédié, ex. WPML/Polylang).
+
+| ID | Slug | Étape | Statut |
+|----|------|-------|--------|
+| 53 | `i18n-po-symfony-standard` | Remplacer le format PO maison (`TranslationPoConverter`, étape 08) par le standard Symfony (répertoires/`translations/`, nommage `domaine.locale.format`, `TranslatorInterface`) | on-hold |
+| 54 | `i18n-admin-ui-translation` | Traduire l'interface admin elle-même (FR + EN), bouton de changement de langue dans l'administration | on-hold |
+| 55 | `i18n-site-config-languages` | Section "Langues" dans Configuration (admin) : langues disponibles + langues activées côté site public | on-hold |
+| 56 | `i18n-public-ui-translation` | Traduire l'interface du site public (FR + EN), menu public de changement de langue (masqué si une seule langue active) | on-hold |
+| 57 | `i18n-per-plugin-language-files` | Fichiers de langue (FR + EN) pour chacun des plugins restants (Réalisations, Actualités, Accueil, Newsletter, Page builder, Statistiques) | on-hold |
+| 58 | `i18n-content-language-picker` | Sélecteur de langue dans les formulaires d'ajout de contenu, **sans dépendance croisée** entre i18n et les plugins de contenu | on-hold |
+
+## Restructuration globale : point d'entrée et fichiers d'environnement
+
+Ajoutée sur demande explicite de l'utilisateur, hors backlog initial de `../INIT_ETAPES.md` — découpage basé sur `../REFORGE_PLUGINS_AND_I18N.md`, section "Global".
+
+| ID | Slug | Étape | Statut |
+|----|------|-------|--------|
+| 59 | `bootstrap-public-dir-restructure` | `index.php` déplacé dans `public/` (+ reconfiguration Apache), fichiers `.env*` déplacés à la racine du dépôt | on-hold |
+
 ## Notes ouvertes pour la mise en place réelle
 
 - **Aucun plugin ne doit être bloquant** : tout plugin de contenu (page, réalisations, actualités, accueil) doit fonctionner avec l'éditeur générique de secours (09) si le plugin builder (10-16) n'est pas installé/activé, et basculer automatiquement sur le builder s'il l'est. Cette détection passe par le gestionnaire de plugins (06)/`PluginRegistry`. Plus généralement, aucune fonctionnalité ne doit dépendre en dur d'un plugin optionnel.
@@ -142,10 +171,16 @@ Ajoutées sur demande explicite de l'utilisateur, hors backlog initial de `../IN
 - **Nettoyage et ré-optimisation des images (04/05)** : deux boutons/actions bien distincts. 04 (suppression des inutilisées) dépend fonctionnellement de la présence de la plupart des consommateurs de fichiers pour une détection fiable — son ID bas reflète le regroupement par fonctionnalité, pas l'ordre d'exécution réel recommandé. 05 (ré-optimisation) n'a pas cette contrainte et peut être livrée dès 01 terminée.
 - **Hooks de menus (32/33)** : le mécanisme exact de déclaration des hooks côté template (ex. fichier de manifeste du thème, fonction Twig dédiée, etc.) reste à concevoir au démarrage de l'étape 32.
 - **Statistiques en AJAX différé (34-36)** : aucune donnée de tracking n'est récupérée au chargement synchrone de la page publique ; le script de collecte est chargé en `defer` et communique uniquement via des appels AJAX asynchrones, pour ne pas impacter les performances de chargement.
-- **Multilangue transverse** : les étapes 07/08 posent l'infrastructure, mais chaque plugin/étape ultérieure (builder, réalisations, actualités, accueil, menus…) devra intégrer le multilangue dans son propre périmètre — à traiter au cas par cas plutôt que comme une étape unique rétroactive.
+- **Multilangue transverse** : les étapes 07/08 ont posé l'infrastructure de base (entité `Lang`, gestion des traductions au format PO maison) ; la refonte complète (interface admin/public traduite, fichiers de langue par plugin, sélecteur de langue de contenu découplé) est désormais découpée en étapes dédiées, 53 à 58 ci-dessus, plutôt que traitée au cas par cas comme envisagé initialement.
 - **Découpage admin / public** : suivi ici pour Réalisations, Actualités et Menus (rendu front public distinct) ; Accueil (21) regroupe admin et public dans la même étape. À réévaluer au démarrage de chaque fonctionnalité si un découpage différent s'avère plus pertinent (cf. section 4 de `INIT_ETAPES.md`).
 - **Ordre global proposé** ne tient pas compte de priorités métier (ex. utilisateurs/newsletter pourraient être priorisés différemment) — à confirmer avec l'utilisateur avant de démarrer.
 - **Rendu dynamique dans le builder (44, 45, 50, 51)** : le builder actuel (étape 10) produit du HTML figé une fois pour toutes à l'enregistrement (`Page.content`/`builderData`, voir `renderToHtml()` dans `CLAUDE.md`) — incompatible tel quel avec un block qui doit refléter les *dernières* réalisations/actualités à chaque affichage de la page publique, pas seulement au moment où l'admin a sauvegardé. Un mécanisme de rendu dynamique côté site public (ex. le HTML statique contient un marqueur/placeholder que le rendu public interprète et hydrate à l'affichage, plutôt que le contenu final) reste à concevoir **au démarrage de l'étape 44**, la première des quatre à en avoir besoin — 45/50/51 le réutilisent ensuite.
 - **Image à la une de Page (37)** : Page n'a aujourd'hui aucun champ de ce type, contrairement à Réalisations/Actualités qui ont déjà `coverImageUrl`/`coverImageAlt` (étapes 17/19) — n'ajouter le nouveau champ qu'à Page, réutiliser l'existant tel quel pour les deux autres plutôt que d'en dupliquer un second.
 - **Tag vs Catégorie (38/39)** : `../FORM_ADD_OPTION.md` emploie "à sélectionner" (pluriel) pour les tags Réalisations et "liste" (singulier) pour la catégorie Actualités — parti pris de lecture : Tag = relation many-to-many, Category = relation many-to-one. À confirmer avec l'utilisateur au démarrage de 38/39 si ce n'est pas ce qui était voulu.
 - **Carte de service partagée (42/48)** : "Grille des services" et "Service (carte seule)" utilisent la même forme de carte (icône + titre + description) — évaluer un sous-composant partagé entre les deux modules plutôt que dupliqué, à trancher au démarrage de 48 (après 42).
+- **Doutes explicitement signalés par l'utilisateur dans `../REFORGE_PLUGINS_AND_I18N.md`** ("Si tu as le moindre doute pose moi des questions") — points à clarifier au démarrage de l'étape concernée plutôt que tranchés unilatéralement ici :
+    - **52** : "déplacer dans CMS" est lu comme une fusion complète dans le namespace `App\` (plus de `Plugin\Page`/`Plugin\I18n` séparé) — à confirmer, une alternative serait de garder ces deux namespaces mais physiquement sous `cms/src/` sans manifeste ni remote.
+    - **55** : la page dédiée de gestion des langues (`LangManager.jsx`, étape 07) est-elle remplacée par la nouvelle section "Langues" de Configuration, ou les deux coexistent-elles (l'une pour ajouter/retirer une langue disponible, l'autre pour piloter son activation publique) ?
+    - **57** : "chaque plugin" ne peut plus concerner `page`/`i18n` une fois 52 fait (ils rejoignent le cœur, couverts par 54/56 à la place) — s'applique donc aux 6 plugins restants (Réalisations, Actualités, Accueil, Newsletter, Page builder, Statistiques).
+    - **58** : c'est le point le plus explicitement ouvert du document source — comment un formulaire de contenu (Page, Réalisations, Actualités, Accueil) peut proposer un sélecteur de langue sans que son plugin importe i18n, ni que i18n connaisse ces plugins. Piste à valider avec l'utilisateur au démarrage : un composant partagé exposé par l'admin host (même mécanisme que `MediaPicker`/`RichTextEditor`, étape 06) associé à un stockage générique côté i18n indexé par `(type d'entité, id, champ, locale)` plutôt que des tables spécifiques par plugin.
+    - **59** : le document parle de `.env`, `.env.dev`, `.env.test` — la convention Symfony réelle est `.env`/`.env.local`/`.env.test`/`.env.test.local` ; à confirmer si "`.env.dev`" désigne bien `.env.local`, ou un fichier `.env.dev` explicite en plus des conventions Symfony standard.

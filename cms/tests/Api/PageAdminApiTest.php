@@ -97,6 +97,45 @@ class PageAdminApiTest extends WebTestCase
         self::assertNull(json_decode($client->getResponse()->getContent(), true)['builderData']);
     }
 
+    public function testSeoSocialAndFeaturedImageFieldsRoundTrip(): void
+    {
+        $client = static::createClient();
+        $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
+        $client->loginUser($admin);
+
+        $client->jsonRequest('POST', '/api/admin/pages', [
+            'title' => 'SEO page',
+            'content' => 'Content',
+            'seoTitle' => 'SEO title',
+            'seoDescription' => 'SEO description',
+            'ogImageUrl' => '/upload/img/webp/og.webp',
+            'ogType' => 'article',
+            'canonicalUrl' => 'https://example.com/seo-page',
+            'featuredImageUrl' => '/upload/img/webp/featured.webp',
+            'featuredImageAlt' => 'Featured',
+        ]);
+        self::assertResponseIsSuccessful();
+        $created = json_decode($client->getResponse()->getContent(), true);
+        self::assertSame('SEO title', $created['seoTitle']);
+        self::assertSame('SEO description', $created['seoDescription']);
+        self::assertSame('/upload/img/webp/og.webp', $created['ogImageUrl']);
+        self::assertSame('article', $created['ogType']);
+        self::assertSame('https://example.com/seo-page', $created['canonicalUrl']);
+        self::assertSame('/upload/img/webp/featured.webp', $created['featuredImageUrl']);
+        self::assertSame('Featured', $created['featuredImageAlt']);
+    }
+
+    public function testOgTypeDefaultsToWebsite(): void
+    {
+        $client = static::createClient();
+        $admin = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@cms.dev']);
+        $client->loginUser($admin);
+
+        $client->jsonRequest('POST', '/api/admin/pages', ['title' => 'Default OG', 'content' => 'Content']);
+        self::assertResponseIsSuccessful();
+        self::assertSame('website', json_decode($client->getResponse()->getContent(), true)['ogType']);
+    }
+
     public function testAnonymousCannotWrite(): void
     {
         $client = static::createClient();
