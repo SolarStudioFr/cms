@@ -7,6 +7,7 @@ import useDomainTranslator from './useDomainTranslator';
 // resolving a remote container is inherently async.
 const RichTextEditor = lazy(() => import('adm_host/RichTextEditor'));
 const BuilderCanvas = lazy(() => import('page_builder/BuilderCanvas'));
+const ContentTranslationPanel = lazy(() => import('adm_host/ContentTranslationPanel'));
 
 /**
  * Admin edit form for the homepage content (step 21) - a singleton, so
@@ -19,6 +20,9 @@ export default function HomepageForm() {
     // Whichever editor is active, this holds its native value: builder JSON
     // when the builder is active, plain HTML otherwise.
     const [contentValue, setContentValue] = useState('');
+    // The singleton row's own id - needed by ContentTranslationPanel (step
+    // 58), which addresses content generically by (entityType, entityId).
+    const [contentId, setContentId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     // Transient success feedback: unlike the other content plugins' forms,
@@ -43,7 +47,10 @@ export default function HomepageForm() {
 
         client
             .get('/admin/homepage')
-            .then(({ data }) => setContentValue(builderActive && data.builderData ? data.builderData : data.content))
+            .then(({ data }) => {
+                setContentValue(builderActive && data.builderData ? data.builderData : data.content);
+                setContentId(data.id);
+            })
             .catch(() => setError(t('homepage.loadError')))
             .finally(() => setLoading(false));
     }, [builderActive, t]);
@@ -105,6 +112,14 @@ export default function HomepageForm() {
                     {t('common.save')}
                 </Button>
             </Form>
+
+            <Suspense fallback={null}>
+                <ContentTranslationPanel
+                    entityType="homepage"
+                    entityId={contentId}
+                    fields={[{ name: 'content', label: t('homepage.content'), type: 'html' }]}
+                />
+            </Suspense>
         </div>
     );
 }

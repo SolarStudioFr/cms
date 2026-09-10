@@ -4,17 +4,26 @@ namespace Plugin\News\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Service\ContentTranslator;
 use App\Service\PluginRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Plugin\News\Repository\NewsArticleRepository;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @implements ProviderInterface<\Plugin\News\Entity\NewsArticle>
  */
 class PublishedNewsArticleCollectionProvider implements ProviderInterface
 {
+    /** NewsArticle's own translatable fields (step 58) - same list duplicated in PublishedNewsArticleItemProvider. */
+    private const TRANSLATABLE_FIELDS = ['title', 'content', 'seoTitle', 'seoDescription'];
+
     public function __construct(
         private readonly NewsArticleRepository $newsArticleRepository,
         private readonly PluginRegistry $pluginRegistry,
+        private readonly ContentTranslator $contentTranslator,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -30,6 +39,11 @@ class PublishedNewsArticleCollectionProvider implements ProviderInterface
             return [];
         }
 
-        return $this->newsArticleRepository->findPublished();
+        $locale = $this->requestStack->getCurrentRequest()?->query->get('locale');
+
+        return array_map(
+            fn ($article) => $this->contentTranslator->translate($article, 'news_article', $article->getId(), $locale, self::TRANSLATABLE_FIELDS, $this->entityManager),
+            $this->newsArticleRepository->findPublished(),
+        );
     }
 }

@@ -7,7 +7,7 @@ import { useTranslator } from './i18n/TranslationContext';
 /** Public detail view of one published NewsArticle (step 20). */
 export default function NewsArticleDetail() {
     const { id } = useParams();
-    const { t } = useTranslator();
+    const { t, locale } = useTranslator();
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
@@ -16,11 +16,11 @@ export default function NewsArticleDetail() {
         setLoading(true);
         setNotFound(false);
         client
-            .get(`/news/${id}`)
+            .get(`/news/${id}`, { params: { locale } })
             .then(({ data }) => setArticle(data))
             .catch(() => setNotFound(true))
             .finally(() => setLoading(false));
-    }, [id]);
+    }, [id, locale]);
 
     if (loading) {
         return <p>{t('common.loading')}</p>;

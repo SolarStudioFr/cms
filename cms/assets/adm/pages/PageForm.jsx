@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import client from '../api/client';
 import RichTextEditor from '../components/RichTextEditor';
 import MediaPicker from '../components/MediaPicker';
+import ContentTranslationPanel from '../components/ContentTranslationPanel';
 import { useTranslator } from '../i18n/TranslationContext';
 
 // The page builder plugin (step 10-16) is the one dependency still consumed
@@ -295,6 +296,17 @@ export default function PageForm() {
                                 )}
                             </Card.Body>
                         </Card>
+
+                        <ContentTranslationPanel
+                            entityType="page"
+                            entityId={isEditing ? Number(id) : null}
+                            fields={[
+                                { name: 'title', label: t('pageForm.titleField') },
+                                { name: 'content', label: t('pageForm.content'), type: 'html' },
+                                { name: 'seoTitle', label: t('pageForm.seoTitle') },
+                                { name: 'seoDescription', label: t('pageForm.metaDescription'), type: 'textarea' },
+                            ]}
+                        />
                     </Col>
                 </Row>
 

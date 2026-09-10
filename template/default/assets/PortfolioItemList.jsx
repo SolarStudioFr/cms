@@ -5,16 +5,16 @@ import { useTranslator } from './i18n/TranslationContext';
 
 /** Public grid of every published PortfolioItem (step 18), same data-fetch shape as PageList. */
 export default function PortfolioItemList() {
-    const { t } = useTranslator();
+    const { t, locale } = useTranslator();
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         client
-            .get('/portfolio')
+            .get('/portfolio', { params: { locale } })
             .then(({ data }) => setItems(data))
             .finally(() => setLoading(false));
-    }, []);
+    }, [locale]);
 
     if (loading) {
         return <p>{t('common.loading')}</p>;

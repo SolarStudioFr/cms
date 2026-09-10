@@ -4,10 +4,12 @@ namespace Plugin\Homepage\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Service\ContentTranslator;
 use App\Service\PluginRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Plugin\Homepage\Entity\HomeContent;
 use Plugin\Homepage\Repository\HomeContentRepository;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Backs every HomeContent operation (admin get/patch, public get) - there is
@@ -20,10 +22,15 @@ use Plugin\Homepage\Repository\HomeContentRepository;
  */
 class HomeContentProvider implements ProviderInterface
 {
+    /** HomeContent's own translatable field (step 58) - no title/SEO fields, unlike Page/Portfolio/News. */
+    private const TRANSLATABLE_FIELDS = ['content'];
+
     public function __construct(
         private readonly HomeContentRepository $homeContentRepository,
         private readonly EntityManagerInterface $entityManager,
         private readonly PluginRegistry $pluginRegistry,
+        private readonly ContentTranslator $contentTranslator,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -49,6 +56,11 @@ class HomeContentProvider implements ProviderInterface
             $homeContent = new HomeContent();
             $this->entityManager->persist($homeContent);
             $this->entityManager->flush();
+        }
+
+        if ('/homepage' === $operation->getUriTemplate()) {
+            $locale = $this->requestStack->getCurrentRequest()?->query->get('locale');
+            $homeContent = $this->contentTranslator->translate($homeContent, 'homepage', (int) $homeContent->getId(), $locale, self::TRANSLATABLE_FIELDS, $this->entityManager);
         }
 
         return $homeContent;

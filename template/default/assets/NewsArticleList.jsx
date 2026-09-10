@@ -5,16 +5,16 @@ import { useTranslator } from './i18n/TranslationContext';
 
 /** Public list of every published NewsArticle (step 20), same data-fetch shape as PortfolioItemList. */
 export default function NewsArticleList() {
-    const { t } = useTranslator();
+    const { t, locale } = useTranslator();
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         client
-            .get('/news')
+            .get('/news', { params: { locale } })
             .then(({ data }) => setArticles(data))
             .finally(() => setLoading(false));
-    }, []);
+    }, [locale]);
 
     if (loading) {
         return <p>{t('common.loading')}</p>;

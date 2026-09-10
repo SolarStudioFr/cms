@@ -11,16 +11,16 @@ import { useTranslator } from './i18n/TranslationContext';
  * homepage just renders as empty rather than erroring.
  */
 export default function Home() {
-    const { t } = useTranslator();
+    const { t, locale } = useTranslator();
     const [content, setContent] = useState('');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         client
-            .get('/homepage')
+            .get('/homepage', { params: { locale } })
             .then(({ data }) => setContent(data.content))
             .finally(() => setLoading(false));
-    }, []);
+    }, [locale]);
 
     if (loading) {
         return <p>{t('common.loading')}</p>;

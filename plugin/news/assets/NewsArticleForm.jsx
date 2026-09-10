@@ -9,6 +9,7 @@ import useDomainTranslator from './useDomainTranslator';
 const RichTextEditor = lazy(() => import('adm_host/RichTextEditor'));
 const BuilderCanvas = lazy(() => import('page_builder/BuilderCanvas'));
 const MediaPicker = lazy(() => import('adm_host/MediaPicker'));
+const ContentTranslationPanel = lazy(() => import('adm_host/ContentTranslationPanel'));
 
 /** Client-side preview only - the real slug is always recomputed server-side by NewsArticle::refreshSlug() on save. */
 function slugPreview(title) {
@@ -358,6 +359,19 @@ export default function NewsArticleForm() {
                                 </Form.Group>
                             </Card.Body>
                         </Card>
+
+                        <Suspense fallback={null}>
+                            <ContentTranslationPanel
+                                entityType="news_article"
+                                entityId={isEditing ? Number(id) : null}
+                                fields={[
+                                    { name: 'title', label: t('news.titleColumn') },
+                                    { name: 'content', label: t('news.content'), type: 'html' },
+                                    { name: 'seoTitle', label: t('news.seoTitle') },
+                                    { name: 'seoDescription', label: t('news.metaDescription'), type: 'textarea' },
+                                ]}
+                            />
+                        </Suspense>
                     </Col>
                 </Row>
 

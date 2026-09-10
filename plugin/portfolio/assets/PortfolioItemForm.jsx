@@ -9,6 +9,7 @@ import useDomainTranslator from './useDomainTranslator';
 const RichTextEditor = lazy(() => import('adm_host/RichTextEditor'));
 const BuilderCanvas = lazy(() => import('page_builder/BuilderCanvas'));
 const MediaPicker = lazy(() => import('adm_host/MediaPicker'));
+const ContentTranslationPanel = lazy(() => import('adm_host/ContentTranslationPanel'));
 
 /** Client-side preview only - the real slug is always recomputed server-side by PortfolioItem::refreshSlug() on save. */
 function slugPreview(title) {
@@ -371,6 +372,19 @@ export default function PortfolioItemForm() {
                                 </Form.Group>
                             </Card.Body>
                         </Card>
+
+                        <Suspense fallback={null}>
+                            <ContentTranslationPanel
+                                entityType="portfolio_item"
+                                entityId={isEditing ? Number(id) : null}
+                                fields={[
+                                    { name: 'title', label: t('portfolio.titleColumn') },
+                                    { name: 'content', label: t('portfolio.content'), type: 'html' },
+                                    { name: 'seoTitle', label: t('portfolio.seoTitle') },
+                                    { name: 'seoDescription', label: t('portfolio.metaDescription'), type: 'textarea' },
+                                ]}
+                            />
+                        </Suspense>
                     </Col>
                 </Row>
 

@@ -467,6 +467,21 @@ msgstr "Choose"
 msgid "richTextEditor.insertImage"
 msgstr "Insert an image"
 
+msgid "contentTranslation.title"
+msgstr "Translated content"
+
+msgid "contentTranslation.saveFirst"
+msgstr "Save this content first before you can translate it."
+
+msgid "contentTranslation.noOtherLanguage"
+msgstr "No language other than the default one is active - nothing to translate (see Configuration)."
+
+msgid "contentTranslation.save"
+msgstr "Save translation"
+
+msgid "contentTranslation.saved"
+msgstr "Translation saved."
+
 msgid "languages.title"
 msgstr "Languages"
 

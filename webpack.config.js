@@ -122,6 +122,7 @@ Encore
         exposes: {
             './MediaPicker': './cms/assets/adm/components/MediaPicker.jsx',
             './RichTextEditor': './cms/assets/adm/components/RichTextEditor.jsx',
+            './ContentTranslationPanel': './cms/assets/adm/components/ContentTranslationPanel.jsx',
         },
         shared: {
             react: { singleton: true, requiredVersion: '^19.2.8' },

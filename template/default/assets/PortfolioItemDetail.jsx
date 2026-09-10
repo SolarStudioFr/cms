@@ -7,7 +7,7 @@ import { useTranslator } from './i18n/TranslationContext';
 /** Public detail view of one published PortfolioItem (step 18). */
 export default function PortfolioItemDetail() {
     const { id } = useParams();
-    const { t } = useTranslator();
+    const { t, locale } = useTranslator();
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
@@ -16,11 +16,11 @@ export default function PortfolioItemDetail() {
         setLoading(true);
         setNotFound(false);
         client
-            .get(`/portfolio/${id}`)
+            .get(`/portfolio/${id}`, { params: { locale } })
             .then(({ data }) => setItem(data))
             .catch(() => setNotFound(true))
             .finally(() => setLoading(false));
-    }, [id]);
+    }, [id, locale]);
 
     if (loading) {
         return <p>{t('common.loading')}</p>;

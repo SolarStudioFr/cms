@@ -4,16 +4,19 @@ import BuilderContent from './BuilderContent';
 import { useTranslator } from './i18n/TranslationContext';
 
 export default function PageList() {
-    const { t } = useTranslator();
+    const { t, locale } = useTranslator();
     const [pages, setPages] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // `locale` (step 58): the public interface language switch also
+        // drives which content translation is shown, when one exists for it
+        // (falls back to the base/default-language field values otherwise).
         client
-            .get('/pages')
+            .get('/pages', { params: { locale } })
             .then(({ data }) => setPages(data))
             .finally(() => setLoading(false));
-    }, []);
+    }, [locale]);
 
     if (loading) {
         return <p>{t('common.loading')}</p>;

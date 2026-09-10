@@ -1,7 +1,6 @@
 # Étape 58 — Sélecteur de langue dans les formulaires de contenu
 
-> Statut : **on-hold**. Fait partie du découpage documenté dans `../MAIN.md`. Ajoutée sur demande explicite de l'utilisateur, hors backlog initial de `../../INIT_ETAPES.md` — spécification complète dans `../../REFORGE_PLUGINS_AND_I18N.md` (section "i18n", puce "Ajouter dans les formulaires du site, le multi language"). **Point explicitement signalé par l'utilisateur comme sujet à question** ("Il est important que i18n n'est pas de dépendance avec un plugin ou qu'un plugin est une dépendance avec i18n. Si tu as le moindre doute pose moi des questions.").
-> Ne pas démarrer sans demande explicite de l'utilisateur.
+> Statut : **done**. Fait partie du découpage documenté dans `../MAIN.md`. Ajoutée sur demande explicite de l'utilisateur, hors backlog initial de `../../INIT_ETAPES.md` — spécification complète dans `../../REFORGE_PLUGINS_AND_I18N.md` (section "i18n", puce "Ajouter dans les formulaires du site, le multi language"). **Point explicitement signalé par l'utilisateur comme sujet à question** ("Il est important que i18n n'est pas de dépendance avec un plugin ou qu'un plugin est une dépendance avec i18n. Si tu as le moindre doute pose moi des questions.") — design confirmé avec l'utilisateur (stockage overlay générique + sélecteur public lié à l'interface) avant de démarrer, voir `docs/RELEASE.md` 0.39.0.
 
 **Fonctionnalité** : Refonte du multilinguisme (i18n)
 **Slug** : `i18n-content-language-picker`
@@ -19,15 +18,15 @@ Dépend de 52 (i18n dans `cms/*`, entité `Lang`). **Mécanisme exact non tranch
 Protocole générique documenté dans `../action/`. Cases à cocher pour cette étape une
 fois le travail démarré :
 
-- [ ] 1. Lire `docs/RELEASE.md`
-- [ ] 2. Réaliser le travail
-- [ ] 3. Commenter le code en anglais
-- [ ] 4. Tester avec PHPUnit (aucune dépréciation)
-- [ ] 5. Monter la version (`cms/composer.json` + `cms/.env`)
-- [ ] 6. Journaliser dans `docs/RELEASE.md`
-- [ ] 7. Commit puis push
-- [ ] 8. Rapport à l'utilisateur + validation avant l'étape suivante
+- [x] 1. Lire `docs/RELEASE.md`
+- [x] 2. Réaliser le travail
+- [x] 3. Commenter le code en anglais
+- [x] 4. Tester avec PHPUnit (aucune dépréciation)
+- [x] 5. Monter la version (`cms/composer.json` + `cms/.env`)
+- [x] 6. Journaliser dans `docs/RELEASE.md`
+- [x] 7. Commit puis push
+- [x] 8. Rapport à l'utilisateur + validation avant l'étape suivante
 
 ## Journal de l'étape
 
-_(vide — à compléter pendant le déroulement de l'étape)_
+Voir `docs/RELEASE.md` 0.39.0. Résumé : `App\Entity\ContentTranslation` (overlay générique) + `App\Service\ContentTranslator` (appelé par chaque provider public avec sa propre liste de champs) + `ContentTranslationPanel.jsx` (composant partagé via Module Federation, intégré dans les 4 formulaires de contenu) + sélecteur public déjà existant (étape 56) qui pilote désormais aussi la langue du contenu affiché.
