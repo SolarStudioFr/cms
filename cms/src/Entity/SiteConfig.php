@@ -48,6 +48,17 @@ class SiteConfig
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $smtpEncryption = null;
 
+    /**
+     * Default interface locale (step 55 correction): the admin/public
+     * TranslationContext (steps 54/56) fall back to this instead of a
+     * hardcoded "fr" when a visitor/admin has no locale of their own yet
+     * (localStorage empty) - one Lang `code` among those managed by
+     * LangManager (step 07), not itself validated by a DB relation so an
+     * admin can freely pick any code without a migration.
+     */
+    #[ORM\Column(length: 10, nullable: true)]
+    private ?string $defaultLocale = null;
+
     #[ORM\Column(type: 'datetime_immutable')]
     private \DateTimeImmutable $updatedAt;
 
@@ -153,6 +164,18 @@ class SiteConfig
     public function setSmtpEncryption(?string $smtpEncryption): static
     {
         $this->smtpEncryption = $smtpEncryption;
+
+        return $this;
+    }
+
+    public function getDefaultLocale(): ?string
+    {
+        return $this->defaultLocale;
+    }
+
+    public function setDefaultLocale(?string $defaultLocale): static
+    {
+        $this->defaultLocale = $defaultLocale;
 
         return $this;
     }

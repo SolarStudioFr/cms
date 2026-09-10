@@ -29,4 +29,6 @@ fois le travail démarré :
 
 ## Journal de l'étape
 
-Voir `docs/RELEASE.md` 0.36.0. Résumé : `LangManager.jsx` remplacé (choix confirmé par l'utilisateur) par `LanguagesSection.jsx`, montée dans `SiteConfig.jsx`, même backend `/admin/langs` inchangé.
+Voir `docs/RELEASE.md` 0.36.0. Résumé initial (v0.36.0) : `LangManager.jsx` remplacé par `LanguagesSection.jsx`, montée dans `SiteConfig.jsx`, même backend `/admin/langs` inchangé.
+
+**Correction le même jour** (voir `docs/RELEASE.md`, section "Correction (même jour) — Étape 55 revue") : l'utilisateur a précisé que l'interprétation initiale était incorrecte. `LangManager.jsx` restauré tel quel comme page dédiée ; Configuration ne gagne qu'un simple sélecteur "Langue par défaut" (nouveau champ `SiteConfig::$defaultLocale`), désormais consommé par les `TranslationContext` admin/public (étapes 54/56) comme repli avant "fr".

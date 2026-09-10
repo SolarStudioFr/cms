@@ -42,14 +42,29 @@ export function TranslationProvider({ children }) {
     const [catalog, setCatalog] = useState({});
 
     useEffect(() => {
-        client.get('/langs').then(({ data }) => {
-            setActiveLangs(data);
-            const codes = data.map((lang) => lang.code);
+        const hadStoredLocale = Boolean(readStoredLocale());
+
+        Promise.all([client.get('/langs'), client.get('/site-config')]).then(([langsResponse, siteConfigResponse]) => {
+            const langs = langsResponse.data;
+            setActiveLangs(langs);
+            const codes = langs.map((lang) => lang.code);
             if (0 === codes.length) {
                 return;
             }
-            setLocaleState((current) => (codes.includes(current) ? current : codes.includes(FALLBACK_LOCALE) ? FALLBACK_LOCALE : codes[0]));
+
+            // A stored per-visitor preference always wins; otherwise prefer
+            // Configuration's default language (step 55) over the hardcoded
+            // "fr" fallback, as long as it's actually one of the active langs.
+            const defaultLocale = siteConfigResponse.data.defaultLocale;
+            const preferred = hadStoredLocale
+                ? locale
+                : codes.includes(defaultLocale)
+                    ? defaultLocale
+                    : FALLBACK_LOCALE;
+
+            setLocaleState((current) => (codes.includes(current) ? current : codes.includes(preferred) ? preferred : codes[0]));
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {

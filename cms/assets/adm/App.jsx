@@ -7,6 +7,7 @@ import FileManager from './pages/FileManager';
 import PluginManager from './pages/PluginManager';
 import UserManager from './pages/UserManager';
 import SiteConfig from './pages/SiteConfig';
+import LangManager from './pages/LangManager';
 import MenuManager from './pages/MenuManager';
 import MenuForm from './pages/MenuForm';
 import AdminMenuSettings from './pages/AdminMenuSettings';
@@ -58,6 +59,7 @@ function AdminRoutes() {
                 <Route path="/menus/new" element={<MenuForm />} />
                 <Route path="/menus/:id/edit" element={<MenuForm />} />
                 <Route path="/users" element={<UserManager />} />
+                <Route path="/langs" element={<LangManager />} />
                 <Route path="/settings" element={<SiteConfig />} />
                 <Route path="/admin-menu" element={<AdminMenuSettings pluginItems={pluginItems} />} />
                 {pluginRoutes.map(({ path, element: Element }) => (

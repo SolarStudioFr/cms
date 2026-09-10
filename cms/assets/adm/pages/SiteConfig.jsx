@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Image } from 'react-bootstrap';
 import client from '../api/client';
 import MediaPicker from '../components/MediaPicker';
-import LanguagesSection from '../components/LanguagesSection';
 import { useTranslator } from '../i18n/TranslationContext';
 
 /**
@@ -21,12 +20,21 @@ export default function SiteConfig() {
     const [testResult, setTestResult] = useState(null);
     const [clearingCache, setClearingCache] = useState(false);
     const [cacheResult, setCacheResult] = useState(null);
+    // Only feeds the "default language" <select> below - the full language
+    // list (add/remove/public activation) is managed on its own page,
+    // LangManager.jsx (step 07, kept as-is per explicit user correction of
+    // step 55: this page only ever gets a single default-language picker).
+    const [langs, setLangs] = useState([]);
 
     useEffect(() => {
         client
             .get('/admin/site-config')
             .then(({ data }) => setConfig(data))
             .finally(() => setLoading(false));
+    }, []);
+
+    useEffect(() => {
+        client.get('/admin/langs').then(({ data }) => setLangs(data));
     }, []);
 
     const setField = (field, value) => setConfig((prev) => ({ ...prev, [field]: value }));
@@ -94,6 +102,21 @@ export default function SiteConfig() {
                             {config.faviconUrl ? t('siteConfig.changeFavicon') : t('siteConfig.chooseFavicon')}
                         </Button>
                     </div>
+                </Form.Group>
+                <Form.Group className="mb-4" controlId="siteConfigDefaultLocale">
+                    <Form.Label>{t('siteConfig.defaultLocale')}</Form.Label>
+                    <Form.Select
+                        value={config.defaultLocale ?? ''}
+                        onChange={(e) => setField('defaultLocale', e.target.value || null)}
+                        style={{ maxWidth: '240px' }}
+                    >
+                        <option value="">{t('siteConfig.defaultLocaleUnset')}</option>
+                        {langs.map((lang) => (
+                            <option key={lang.code} value={lang.code}>
+                                {lang.label} ({lang.code})
+                            </option>
+                        ))}
+                    </Form.Select>
                 </Form.Group>
 
                 <h2 className="h5">{t('siteConfig.smtp')}</h2>
@@ -177,10 +200,6 @@ export default function SiteConfig() {
                     {cacheResult.success ? t('siteConfig.cacheCleared') : t('siteConfig.cacheFailure', { error: cacheResult.error })}
                 </div>
             )}
-
-            <div className="mt-4">
-                <LanguagesSection />
-            </div>
 
             <MediaPicker
                 show={Boolean(pickerField)}

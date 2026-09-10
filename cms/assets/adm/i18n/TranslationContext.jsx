@@ -18,20 +18,42 @@ export const AVAILABLE_LOCALES = [
 
 const STORAGE_KEY = 'admLocale';
 const DEFAULT_LOCALE = 'fr';
+// Same-window custom event, fired on every locale change - a same-tab
+// localStorage write never triggers the native "storage" event, so plugin
+// remotes (step 57) that read `admLocale` themselves (decoupled from this
+// context, since a hook can't be Module-Federation-lazy-loaded like a
+// component) need this to react live instead of only on next page load.
+const LOCALE_EVENT = 'adm-locale-change';
 
 function readStoredLocale() {
     try {
         const stored = window.localStorage.getItem(STORAGE_KEY);
 
-        return AVAILABLE_LOCALES.some((l) => l.code === stored) ? stored : DEFAULT_LOCALE;
+        return AVAILABLE_LOCALES.some((l) => l.code === stored) ? stored : null;
     } catch {
-        return DEFAULT_LOCALE;
+        return null;
     }
 }
 
 export function TranslationProvider({ children }) {
-    const [locale, setLocaleState] = useState(readStoredLocale);
+    const [locale, setLocaleState] = useState(() => readStoredLocale() ?? DEFAULT_LOCALE);
     const [catalog, setCatalog] = useState({});
+
+    // No stored per-browser preference yet: adopt Configuration's default
+    // language (step 55) instead of always assuming "fr" - a stored
+    // preference (including one just set by the admin themselves this
+    // session) always wins, this only runs once on mount.
+    useEffect(() => {
+        if (readStoredLocale()) {
+            return;
+        }
+        client.get('/site-config').then(({ data }) => {
+            if (data.defaultLocale && AVAILABLE_LOCALES.some((l) => l.code === data.defaultLocale)) {
+                setLocaleState(data.defaultLocale);
+            }
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         let cancelled = false;
@@ -53,6 +75,7 @@ export function TranslationProvider({ children }) {
         } catch {
             // Private browsing / storage disabled: locale just won't persist across reloads.
         }
+        window.dispatchEvent(new CustomEvent(LOCALE_EVENT, { detail: next }));
     }, []);
 
     /** Looks up a key in the current catalog, interpolating {{placeholder}} values, falling back to the raw key. */

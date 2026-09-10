@@ -7,9 +7,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
- * Public, read-only subset of SiteConfig (steps 29-31) - name/logo/favicon
- * only, never the SMTP fields. The public frontend fetches this once to set
- * the page title/favicon/brand at runtime (see template/default/assets/App.jsx).
+ * Public, read-only subset of SiteConfig (steps 29-31, +defaultLocale at
+ * step 55) - name/logo/favicon/defaultLocale only, never the SMTP fields.
+ * The public frontend fetches this once to set the page
+ * title/favicon/brand at runtime (see template/default/assets/App.jsx);
+ * `defaultLocale` also seeds the public/admin TranslationContext's
+ * fallback locale (steps 54/56) before any per-visitor choice exists.
  */
 class SiteConfigPublicController
 {
@@ -27,6 +30,7 @@ class SiteConfigPublicController
             'siteName' => $config->getSiteName(),
             'logoUrl' => $config->getLogoUrl(),
             'faviconUrl' => $config->getFaviconUrl(),
+            'defaultLocale' => $config->getDefaultLocale(),
         ]);
     }
 }

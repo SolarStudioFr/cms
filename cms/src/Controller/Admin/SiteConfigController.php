@@ -47,7 +47,7 @@ class SiteConfigController
 
         $strings = ['siteName' => 'setSiteName', 'logoUrl' => 'setLogoUrl', 'faviconUrl' => 'setFaviconUrl',
             'smtpHost' => 'setSmtpHost', 'smtpUser' => 'setSmtpUser', 'smtpPassword' => 'setSmtpPassword',
-            'smtpEncryption' => 'setSmtpEncryption'];
+            'smtpEncryption' => 'setSmtpEncryption', 'defaultLocale' => 'setDefaultLocale'];
         foreach ($strings as $field => $setter) {
             if (\array_key_exists($field, $payload)) {
                 $config->{$setter}(null === $payload[$field] ? null : (string) $payload[$field]);
@@ -112,6 +112,7 @@ class SiteConfigController
             'smtpUser' => $config->getSmtpUser(),
             'smtpPassword' => $config->getSmtpPassword(),
             'smtpEncryption' => $config->getSmtpEncryption(),
+            'defaultLocale' => $config->getDefaultLocale(),
             'updatedAt' => $config->getUpdatedAt()->format(\DATE_ATOM),
         ];
     }

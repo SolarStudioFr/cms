@@ -44,6 +44,9 @@ msgstr "Menus"
 msgid "nav.users"
 msgstr "Utilisateurs"
 
+msgid "nav.langs"
+msgstr "Langues"
+
 msgid "nav.settings"
 msgstr "Configuration"
 
@@ -184,6 +187,12 @@ msgstr "Changer le favicon"
 
 msgid "siteConfig.chooseFavicon"
 msgstr "Choisir un favicon"
+
+msgid "siteConfig.defaultLocale"
+msgstr "Langue par défaut"
+
+msgid "siteConfig.defaultLocaleUnset"
+msgstr "Non définie"
 
 msgid "siteConfig.smtp"
 msgstr "SMTP"
