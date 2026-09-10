@@ -13,7 +13,6 @@ import AdminMenuSettings from './pages/AdminMenuSettings';
 import PageList from './pages/PageList';
 import PageForm from './pages/PageForm';
 import LangManager from './pages/LangManager';
-import TranslationManager from './pages/TranslationManager';
 import Shell from './layout/Shell';
 import usePlugins from './plugins/usePlugins';
 
@@ -59,7 +58,6 @@ function AdminRoutes() {
                 <Route path="/menus/:id/edit" element={<MenuForm />} />
                 <Route path="/users" element={<UserManager />} />
                 <Route path="/langs" element={<LangManager />} />
-                <Route path="/translations" element={<TranslationManager />} />
                 <Route path="/settings" element={<SiteConfig />} />
                 <Route path="/admin-menu" element={<AdminMenuSettings pluginItems={pluginItems} />} />
                 {pluginRoutes.map(({ path, element: Element }) => (

@@ -3,3 +3,13 @@ framework:
     translator:
         default_path: '%kernel.project_dir%/translations'
         providers:
+
+when@test:
+    framework:
+        translator:
+            # Extra scan path, test fixtures only (step 53) - lets
+            # I18nCatalogApiTest exercise the real TranslatorInterface
+            # wiring against a PO file without touching the real
+            # cms/translations/ content authored in steps 54/56/57.
+            paths:
+                - '%kernel.project_dir%/tests/fixtures/translations'
