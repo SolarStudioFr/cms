@@ -52,6 +52,13 @@ export default {
             // page_builder integration, see Campaign entity's docblock.
             remotes: {
                 adm_host: 'adm_host@/build/admHostRemoteEntry.js',
+                // Never actually used (Campaign content has no page-builder
+                // integration, see CampaignForm.jsx) but useContentLocale.js
+                // (step 58 follow-up, identical copy across every content
+                // plugin) statically references page_builder/renderToHtml
+                // for the builder-aware plugins - webpack needs this remote
+                // declared to resolve that specifier at build time even here.
+                page_builder: 'page_builder@/build/plugins/page_builder/remoteEntry.js',
             },
             shared: {
                 react: { singleton: true, requiredVersion: '^19.2.8' },

@@ -1,8 +1,9 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Nav } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import client from './api/client';
 import useDomainTranslator from './useDomainTranslator';
+import useContentLocale from './useContentLocale';
 
 // Shared with the rest of the admin via Module Federation (step 09) - no
 // page-builder integration for campaign content, see Campaign entity's docblock.
@@ -18,6 +19,10 @@ export default function CampaignForm() {
     const [content, setContent] = useState('');
     const [loading, setLoading] = useState(isEditing);
     const [error, setError] = useState(null);
+
+    // Content-language switcher (step 58 follow-up).
+    const { activeLangs, editingLocale, setEditingLocale, isDefaultLocale, fieldValue, setField, saveAllTranslations } =
+        useContentLocale('newsletter_campaign', isEditing ? Number(id) : null);
 
     useEffect(() => {
         if (!isEditing) {
@@ -38,15 +43,17 @@ export default function CampaignForm() {
         setError(null);
 
         try {
+            const savedId = isEditing
+                ? Number(id)
+                : (await client.post('/admin/newsletter/campaigns', { subject, content })).data.id;
             if (isEditing) {
                 await client.patch(
                     `/admin/newsletter/campaigns/${id}`,
                     { subject, content },
                     { headers: { 'Content-Type': 'application/merge-patch+json' } },
                 );
-            } else {
-                await client.post('/admin/newsletter/campaigns', { subject, content });
             }
+            await saveAllTranslations(savedId, { subject, content });
             navigate('/newsletter');
         } catch {
             setError(t('newsletter.saveError'));
@@ -61,6 +68,18 @@ export default function CampaignForm() {
         <div>
             <h1>{isEditing ? t('newsletter.editCampaign') : t('newsletter.newCampaign')}</h1>
 
+            {activeLangs.length > 1 && (
+                <Nav variant="pills" className="mb-3">
+                    {activeLangs.map((lang) => (
+                        <Nav.Item key={lang.code}>
+                            <Nav.Link active={lang.code === editingLocale} onClick={() => setEditingLocale(lang.code)}>
+                                {lang.label}
+                            </Nav.Link>
+                        </Nav.Item>
+                    ))}
+                </Nav>
+            )}
+
             {error && <div className="alert alert-danger">{error}</div>}
 
             <Form onSubmit={handleSubmit} style={{ maxWidth: '640px' }}>
@@ -68,16 +87,22 @@ export default function CampaignForm() {
                     <Form.Label>{t('newsletter.subject')}</Form.Label>
                     <Form.Control
                         type="text"
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
-                        required
+                        value={fieldValue(subject, 'subject')}
+                        onChange={(e) => setField('subject', setSubject)(e.target.value)}
+                        required={isDefaultLocale}
                     />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="campaignContent">
                     <Form.Label>{t('newsletter.content')}</Form.Label>
+                    {/* key={editingLocale}: forces a remount on language switch, see PageForm.jsx's comment. */}
                     <Suspense fallback={<p>{t('newsletter.loadingEditor')}</p>}>
-                        <RichTextEditor value={content} onChange={setContent} placeholder={t('newsletter.contentPlaceholder')} />
+                        <RichTextEditor
+                            key={editingLocale}
+                            value={fieldValue(content, 'content')}
+                            onChange={setField('content', setContent)}
+                            placeholder={t('newsletter.contentPlaceholder')}
+                        />
                     </Suspense>
                 </Form.Group>
 

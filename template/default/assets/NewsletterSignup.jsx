@@ -8,10 +8,15 @@ import { useTranslator } from './i18n/TranslationContext';
  * every page. POSTs to the plugin's public endpoint (step 23's Subscriber
  * resource) - re-submitting an already-subscribed email is treated as a
  * success (see SubscriberSignupProcessor), so the UI never needs to
- * distinguish "new" from "already subscribed".
+ * distinguish "new" from "already subscribed". `name` is a lightweight
+ * optional field; `locale` (step 58 follow-up) is never user-entered - it's
+ * the visitor's current interface language (same state the public language
+ * switcher drives, step 56), captured silently to prepare a future
+ * per-subscriber-language send.
  */
 export default function NewsletterSignup() {
-    const { t } = useTranslator();
+    const { t, locale } = useTranslator();
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [status, setStatus] = useState('idle'); // idle | sending | done | error
 
@@ -20,9 +25,10 @@ export default function NewsletterSignup() {
         setStatus('sending');
 
         try {
-            await client.post('/newsletter/subscribers', { email });
+            await client.post('/newsletter/subscribers', { email, name: name || null, locale });
             setStatus('done');
             setEmail('');
+            setName('');
         } catch {
             setStatus('error');
         }
@@ -30,6 +36,13 @@ export default function NewsletterSignup() {
 
     return (
         <Form onSubmit={handleSubmit} className="d-flex align-items-center flex-wrap gap-2">
+            <Form.Control
+                type="text"
+                placeholder={t('newsletter.namePlaceholder')}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                style={{ maxWidth: '200px' }}
+            />
             <Form.Control
                 type="email"
                 placeholder={t('newsletter.placeholder')}

@@ -95,6 +95,12 @@ msgstr "Delete this subscriber?"
 msgid "newsletter.subscribersTitle"
 msgstr "Newsletter subscribers"
 
+msgid "newsletter.name"
+msgstr "Name"
+
+msgid "newsletter.locale"
+msgstr "Language"
+
 msgid "newsletter.email"
 msgstr "Email"
 

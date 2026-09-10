@@ -44,4 +44,31 @@ class NewsletterSubscriberPublicApiTest extends WebTestCase
         $client->jsonRequest('POST', '/api/newsletter/subscribers', ['email' => 'not-an-email']);
         self::assertResponseStatusCodeSame(422);
     }
+
+    /** Step 58 follow-up: name/locale captured at signup, both optional. */
+    public function testNameAndLocaleAreCapturedWhenProvided(): void
+    {
+        $client = static::createClient();
+
+        $client->jsonRequest('POST', '/api/newsletter/subscribers', [
+            'email' => 'visitor@example.com',
+            'name' => 'Jane Visitor',
+            'locale' => 'en',
+        ]);
+        self::assertResponseIsSuccessful();
+        $subscriber = json_decode($client->getResponse()->getContent(), true);
+        self::assertSame('Jane Visitor', $subscriber['name']);
+        self::assertSame('en', $subscriber['locale']);
+    }
+
+    public function testNameAndLocaleAreOptional(): void
+    {
+        $client = static::createClient();
+
+        $client->jsonRequest('POST', '/api/newsletter/subscribers', ['email' => 'visitor@example.com']);
+        self::assertResponseIsSuccessful();
+        $subscriber = json_decode($client->getResponse()->getContent(), true);
+        self::assertNull($subscriber['name']);
+        self::assertNull($subscriber['locale']);
+    }
 }

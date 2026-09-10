@@ -71,6 +71,9 @@ msgstr "News article not found."
 msgid "news.back"
 msgstr "Back to news"
 
+msgid "newsletter.namePlaceholder"
+msgstr "Your name"
+
 msgid "newsletter.placeholder"
 msgstr "Your email"
 

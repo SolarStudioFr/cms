@@ -1,13 +1,13 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Nav } from 'react-bootstrap';
 import client from './api/client';
 import useDomainTranslator from './useDomainTranslator';
+import useContentLocale from './useContentLocale';
 
 // Both consumed from other plugins' Module Federation remotes - lazy since
 // resolving a remote container is inherently async.
 const RichTextEditor = lazy(() => import('adm_host/RichTextEditor'));
 const BuilderCanvas = lazy(() => import('page_builder/BuilderCanvas'));
-const ContentTranslationPanel = lazy(() => import('adm_host/ContentTranslationPanel'));
 
 /**
  * Admin edit form for the homepage content (step 21) - a singleton, so
@@ -20,8 +20,9 @@ export default function HomepageForm() {
     // Whichever editor is active, this holds its native value: builder JSON
     // when the builder is active, plain HTML otherwise.
     const [contentValue, setContentValue] = useState('');
-    // The singleton row's own id - needed by ContentTranslationPanel (step
-    // 58), which addresses content generically by (entityType, entityId).
+    // The singleton row's own id - the homepage always exists once loaded
+    // (auto-created server-side on first read), so this is only ever null
+    // while still loading.
     const [contentId, setContentId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -32,6 +33,10 @@ export default function HomepageForm() {
     // null while still checking, so the form doesn't flash one editor then
     // swap to the other once the plugin list has loaded.
     const [builderActive, setBuilderActive] = useState(null);
+
+    // Content-language switcher (step 58 follow-up).
+    const { activeLangs, editingLocale, setEditingLocale, fieldValue, setField, saveAllTranslations } =
+        useContentLocale('homepage', contentId);
 
     useEffect(() => {
         client
@@ -77,6 +82,7 @@ export default function HomepageForm() {
                 { content, builderData },
                 { headers: { 'Content-Type': 'application/merge-patch+json' } },
             );
+            await saveAllTranslations(contentId, { [builderActive ? 'builderData' : 'content']: contentValue }, builderActive ? 'builderData' : null);
             setSaved(true);
         } catch {
             setError(t('homepage.saveError'));
@@ -91,6 +97,18 @@ export default function HomepageForm() {
         <div>
             <h1>{t('homepage.title')}</h1>
 
+            {activeLangs.length > 1 && (
+                <Nav variant="pills" className="mb-3">
+                    {activeLangs.map((lang) => (
+                        <Nav.Item key={lang.code}>
+                            <Nav.Link active={lang.code === editingLocale} onClick={() => setEditingLocale(lang.code)}>
+                                {lang.label}
+                            </Nav.Link>
+                        </Nav.Item>
+                    ))}
+                </Nav>
+            )}
+
             {error && <div className="alert alert-danger">{error}</div>}
             {saved && <div className="alert alert-success">{t('homepage.saved')}</div>}
 
@@ -99,11 +117,21 @@ export default function HomepageForm() {
                     <Form.Label>{t('homepage.content')}</Form.Label>
                     {/* Editor only mounts once `loading`/`builderActive` are settled
                         above, so its initial value is already the real content. */}
+                    {/* key={editingLocale}: forces a remount on language switch, see PageForm.jsx's comment. */}
                     <Suspense fallback={<p>{t('homepage.loadingEditor')}</p>}>
                         {builderActive ? (
-                            <BuilderCanvas value={contentValue} onChange={setContentValue} />
+                            <BuilderCanvas
+                                key={editingLocale}
+                                value={fieldValue(contentValue, 'builderData')}
+                                onChange={setField('builderData', setContentValue)}
+                            />
                         ) : (
-                            <RichTextEditor value={contentValue} onChange={setContentValue} placeholder={t('homepage.contentPlaceholder')} />
+                            <RichTextEditor
+                                key={editingLocale}
+                                value={fieldValue(contentValue, 'content')}
+                                onChange={setField('content', setContentValue)}
+                                placeholder={t('homepage.contentPlaceholder')}
+                            />
                         )}
                     </Suspense>
                 </Form.Group>
@@ -112,14 +140,6 @@ export default function HomepageForm() {
                     {t('common.save')}
                 </Button>
             </Form>
-
-            <Suspense fallback={null}>
-                <ContentTranslationPanel
-                    entityType="homepage"
-                    entityId={contentId}
-                    fields={[{ name: 'content', label: t('homepage.content'), type: 'html' }]}
-                />
-            </Suspense>
         </div>
     );
 }

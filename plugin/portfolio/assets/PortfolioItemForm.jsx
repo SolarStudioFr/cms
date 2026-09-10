@@ -1,15 +1,15 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { Badge, Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { Badge, Button, Card, Col, Form, Nav, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import client from './api/client';
 import useDomainTranslator from './useDomainTranslator';
+import useContentLocale from './useContentLocale';
 
 // Both consumed from other plugins' Module Federation remotes - lazy since
 // resolving a remote container is inherently async.
 const RichTextEditor = lazy(() => import('adm_host/RichTextEditor'));
 const BuilderCanvas = lazy(() => import('page_builder/BuilderCanvas'));
 const MediaPicker = lazy(() => import('adm_host/MediaPicker'));
-const ContentTranslationPanel = lazy(() => import('adm_host/ContentTranslationPanel'));
 
 /** Client-side preview only - the real slug is always recomputed server-side by PortfolioItem::refreshSlug() on save. */
 function slugPreview(title) {
@@ -66,6 +66,10 @@ export default function PortfolioItemForm() {
     // null while still checking, so the form doesn't flash one editor then
     // swap to the other once the plugin list has loaded.
     const [builderActive, setBuilderActive] = useState(null);
+
+    // Content-language switcher (step 58 follow-up).
+    const { activeLangs, editingLocale, setEditingLocale, isDefaultLocale, fieldValue, setField, saveAllTranslations } =
+        useContentLocale('portfolio_item', isEditing ? Number(id) : null);
 
     useEffect(() => {
         client
@@ -159,15 +163,19 @@ export default function PortfolioItemForm() {
         };
 
         try {
+            const savedId = isEditing ? Number(id) : (await client.post('/admin/portfolio', payload)).data.id;
             if (isEditing) {
                 await client.patch(
                     `/admin/portfolio/${id}`,
                     { ...payload, status },
                     { headers: { 'Content-Type': 'application/merge-patch+json' } },
                 );
-            } else {
-                await client.post('/admin/portfolio', payload);
             }
+            await saveAllTranslations(
+                savedId,
+                { title, [builderActive ? 'builderData' : 'content']: contentValue, seoTitle, seoDescription },
+                builderActive ? 'builderData' : null,
+            );
             navigate('/portfolio');
         } catch {
             setError(t('common.saveError'));
@@ -182,6 +190,18 @@ export default function PortfolioItemForm() {
         <div>
             <h1>{isEditing ? t('portfolio.editTitle') : t('portfolio.newTitle')}</h1>
 
+            {activeLangs.length > 1 && (
+                <Nav variant="pills" className="mb-3">
+                    {activeLangs.map((lang) => (
+                        <Nav.Item key={lang.code}>
+                            <Nav.Link active={lang.code === editingLocale} onClick={() => setEditingLocale(lang.code)}>
+                                {lang.label}
+                            </Nav.Link>
+                        </Nav.Item>
+                    ))}
+                </Nav>
+            )}
+
             {error && <div className="alert alert-danger">{error}</div>}
 
             <Form onSubmit={handleSubmit}>
@@ -194,16 +214,18 @@ export default function PortfolioItemForm() {
                                     <Form.Label>{t('portfolio.titleColumn')}</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                        required
+                                        value={fieldValue(title, 'title')}
+                                        onChange={(e) => setField('title', setTitle)(e.target.value)}
+                                        required={isDefaultLocale}
                                     />
                                 </Form.Group>
-                                <Form.Group controlId="portfolioItemSlug">
-                                    <Form.Label>{t('portfolio.slug')}</Form.Label>
-                                    <Form.Control type="text" value={slugPreview(title)} disabled readOnly />
-                                    <Form.Text className="text-muted">{t('portfolio.slugHint')}</Form.Text>
-                                </Form.Group>
+                                {isDefaultLocale && (
+                                    <Form.Group controlId="portfolioItemSlug">
+                                        <Form.Label>{t('portfolio.slug')}</Form.Label>
+                                        <Form.Control type="text" value={slugPreview(title)} disabled readOnly />
+                                        <Form.Text className="text-muted">{t('portfolio.slugHint')}</Form.Text>
+                                    </Form.Group>
+                                )}
                             </Card.Body>
                         </Card>
 
@@ -212,11 +234,21 @@ export default function PortfolioItemForm() {
                             <Card.Body>
                                 {/* Editor only mounts once `loading`/`builderActive` are settled
                                     above, so its initial value is already the real content. */}
+                                {/* key={editingLocale}: forces a remount on language switch, see PageForm.jsx's comment. */}
                                 <Suspense fallback={<p>{t('portfolio.loadingEditor')}</p>}>
                                     {builderActive ? (
-                                        <BuilderCanvas value={contentValue} onChange={setContentValue} />
+                                        <BuilderCanvas
+                                            key={editingLocale}
+                                            value={fieldValue(contentValue, 'builderData')}
+                                            onChange={setField('builderData', setContentValue)}
+                                        />
                                     ) : (
-                                        <RichTextEditor value={contentValue} onChange={setContentValue} placeholder={t('portfolio.contentPlaceholder')} />
+                                        <RichTextEditor
+                                            key={editingLocale}
+                                            value={fieldValue(contentValue, 'content')}
+                                            onChange={setField('content', setContentValue)}
+                                            placeholder={t('portfolio.contentPlaceholder')}
+                                        />
                                     )}
                                 </Suspense>
                             </Card.Body>
@@ -227,69 +259,77 @@ export default function PortfolioItemForm() {
                             <Card.Body>
                                 <Form.Group className="mb-3" controlId="portfolioItemSeoTitle">
                                     <Form.Label>{t('portfolio.seoTitle')}</Form.Label>
-                                    <Form.Control type="text" value={seoTitle} onChange={(e) => setSeoTitle(e.target.value)} />
+                                    <Form.Control
+                                        type="text"
+                                        value={fieldValue(seoTitle, 'seoTitle')}
+                                        onChange={(e) => setField('seoTitle', setSeoTitle)(e.target.value)}
+                                    />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="portfolioItemSeoDescription">
                                     <Form.Label>{t('portfolio.metaDescription')}</Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={3}
-                                        value={seoDescription}
-                                        onChange={(e) => setSeoDescription(e.target.value)}
+                                        value={fieldValue(seoDescription, 'seoDescription')}
+                                        onChange={(e) => setField('seoDescription', setSeoDescription)(e.target.value)}
                                     />
                                 </Form.Group>
-                                <Form.Group className="mb-3" controlId="portfolioItemOgImage">
-                                    <Form.Label>{t('portfolio.ogImage')}</Form.Label>
-                                    <div>
-                                        {ogImageUrl ? (
-                                            <img
-                                                src={ogImageUrl}
-                                                alt=""
-                                                style={{ maxWidth: '240px', maxHeight: '160px', display: 'block', marginBottom: '8px' }}
+                                {isDefaultLocale && (
+                                    <>
+                                        <Form.Group className="mb-3" controlId="portfolioItemOgImage">
+                                            <Form.Label>{t('portfolio.ogImage')}</Form.Label>
+                                            <div>
+                                                {ogImageUrl ? (
+                                                    <img
+                                                        src={ogImageUrl}
+                                                        alt=""
+                                                        style={{ maxWidth: '240px', maxHeight: '160px', display: 'block', marginBottom: '8px' }}
+                                                    />
+                                                ) : (
+                                                    <p className="text-muted small">{t('portfolio.noImageSelected')}</p>
+                                                )}
+                                                <Button size="sm" variant="outline-secondary" onClick={() => setOgPickerOpen(true)}>
+                                                    {ogImageUrl ? t('portfolio.changeImage') : t('portfolio.chooseImage')}
+                                                </Button>
+                                                {ogPickerOpen && (
+                                                    <Suspense fallback={null}>
+                                                        <MediaPicker
+                                                            show={ogPickerOpen}
+                                                            onHide={() => setOgPickerOpen(false)}
+                                                            onSelect={(file) => setOgImageUrl(file.url)}
+                                                            types={['img']}
+                                                            title={t('portfolio.chooseOgImageTitle')}
+                                                        />
+                                                    </Suspense>
+                                                )}
+                                            </div>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="portfolioItemOgType">
+                                            <Form.Label>{t('portfolio.ogType')}</Form.Label>
+                                            <Form.Select value={ogType} onChange={(e) => setOgType(e.target.value)}>
+                                                <option value="website">Website</option>
+                                                <option value="article">Article</option>
+                                                <option value="product">Product</option>
+                                                <option value="profile">Profile</option>
+                                            </Form.Select>
+                                        </Form.Group>
+                                        <Form.Group controlId="portfolioItemCanonicalUrl">
+                                            <Form.Label>{t('portfolio.canonicalUrl')}</Form.Label>
+                                            <Form.Control
+                                                type="url"
+                                                value={canonicalUrl}
+                                                onChange={(e) => setCanonicalUrl(e.target.value)}
+                                                placeholder="https://..."
                                             />
-                                        ) : (
-                                            <p className="text-muted small">{t('portfolio.noImageSelected')}</p>
-                                        )}
-                                        <Button size="sm" variant="outline-secondary" onClick={() => setOgPickerOpen(true)}>
-                                            {ogImageUrl ? t('portfolio.changeImage') : t('portfolio.chooseImage')}
-                                        </Button>
-                                        {ogPickerOpen && (
-                                            <Suspense fallback={null}>
-                                                <MediaPicker
-                                                    show={ogPickerOpen}
-                                                    onHide={() => setOgPickerOpen(false)}
-                                                    onSelect={(file) => setOgImageUrl(file.url)}
-                                                    types={['img']}
-                                                    title={t('portfolio.chooseOgImageTitle')}
-                                                />
-                                            </Suspense>
-                                        )}
-                                    </div>
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="portfolioItemOgType">
-                                    <Form.Label>{t('portfolio.ogType')}</Form.Label>
-                                    <Form.Select value={ogType} onChange={(e) => setOgType(e.target.value)}>
-                                        <option value="website">Website</option>
-                                        <option value="article">Article</option>
-                                        <option value="product">Product</option>
-                                        <option value="profile">Profile</option>
-                                    </Form.Select>
-                                </Form.Group>
-                                <Form.Group controlId="portfolioItemCanonicalUrl">
-                                    <Form.Label>{t('portfolio.canonicalUrl')}</Form.Label>
-                                    <Form.Control
-                                        type="url"
-                                        value={canonicalUrl}
-                                        onChange={(e) => setCanonicalUrl(e.target.value)}
-                                        placeholder="https://..."
-                                    />
-                                </Form.Group>
+                                        </Form.Group>
+                                    </>
+                                )}
                             </Card.Body>
                         </Card>
                     </Col>
 
                     <Col lg={4}>
-                        {isEditing && (
+                        {isEditing && isDefaultLocale && (
                             <Card className="mb-3">
                                 <Card.Header>{t('portfolio.publication')}</Card.Header>
                                 <Card.Body>
@@ -305,86 +345,77 @@ export default function PortfolioItemForm() {
                             </Card>
                         )}
 
-                        <Card className="mb-3">
-                            <Card.Header>{t('portfolio.coverImage')}</Card.Header>
-                            <Card.Body>
-                                {coverImageUrl ? (
-                                    <img
-                                        src={coverImageUrl}
-                                        alt={coverImageAlt}
-                                        style={{ maxWidth: '100%', display: 'block', marginBottom: '8px' }}
-                                    />
-                                ) : (
-                                    <p className="text-muted small">{t('portfolio.noImageSelected')}</p>
-                                )}
-                                <Button size="sm" variant="outline-secondary" className="mb-2" onClick={() => setPickerOpen(true)}>
-                                    {coverImageUrl ? t('portfolio.changeImage') : t('portfolio.chooseImage')}
-                                </Button>
-                                {pickerOpen && (
-                                    <Suspense fallback={null}>
-                                        <MediaPicker
-                                            show={pickerOpen}
-                                            onHide={() => setPickerOpen(false)}
-                                            onSelect={(file) => {
-                                                setCoverImageUrl(file.url);
-                                                setCoverImageAlt(coverImageAlt || file.name);
-                                            }}
-                                            types={['img']}
-                                            title={t('portfolio.chooseCoverImageTitle')}
-                                        />
-                                    </Suspense>
-                                )}
-                            </Card.Body>
-                        </Card>
+                        {isDefaultLocale && (
+                            <>
+                                <Card className="mb-3">
+                                    <Card.Header>{t('portfolio.coverImage')}</Card.Header>
+                                    <Card.Body>
+                                        {coverImageUrl ? (
+                                            <img
+                                                src={coverImageUrl}
+                                                alt={coverImageAlt}
+                                                style={{ maxWidth: '100%', display: 'block', marginBottom: '8px' }}
+                                            />
+                                        ) : (
+                                            <p className="text-muted small">{t('portfolio.noImageSelected')}</p>
+                                        )}
+                                        <Button size="sm" variant="outline-secondary" className="mb-2" onClick={() => setPickerOpen(true)}>
+                                            {coverImageUrl ? t('portfolio.changeImage') : t('portfolio.chooseImage')}
+                                        </Button>
+                                        {pickerOpen && (
+                                            <Suspense fallback={null}>
+                                                <MediaPicker
+                                                    show={pickerOpen}
+                                                    onHide={() => setPickerOpen(false)}
+                                                    onSelect={(file) => {
+                                                        setCoverImageUrl(file.url);
+                                                        setCoverImageAlt(coverImageAlt || file.name);
+                                                    }}
+                                                    types={['img']}
+                                                    title={t('portfolio.chooseCoverImageTitle')}
+                                                />
+                                            </Suspense>
+                                        )}
+                                    </Card.Body>
+                                </Card>
 
-                        <Card className="mb-3">
-                            <Card.Header>{t('portfolio.tags')}</Card.Header>
-                            <Card.Body>
-                                {tagError && <div className="alert alert-danger py-1 px-2 small">{tagError}</div>}
-                                <div className="mb-2">
-                                    {0 === allTags.length && <p className="text-muted small">{t('portfolio.noTags')}</p>}
-                                    {allTags.map((tag) => {
-                                        const active = selectedTagIds.includes(tag.id);
-                                        return (
-                                            <Badge
-                                                key={tag.id}
-                                                bg={active ? 'primary' : 'secondary'}
-                                                role="button"
-                                                className="me-1 mb-1"
-                                                onClick={() => toggleTag(tag.id)}
-                                            >
-                                                {tag.name}
-                                            </Badge>
-                                        );
-                                    })}
-                                </div>
-                                <Form.Group className="d-flex gap-2" controlId="portfolioItemNewTag">
-                                    <Form.Control
-                                        type="text"
-                                        size="sm"
-                                        placeholder={t('portfolio.newTag')}
-                                        value={newTagName}
-                                        onChange={(e) => setNewTagName(e.target.value)}
-                                    />
-                                    <Button size="sm" variant="outline-secondary" type="button" onClick={handleCreateTag}>
-                                        {t('common.add')}
-                                    </Button>
-                                </Form.Group>
-                            </Card.Body>
-                        </Card>
-
-                        <Suspense fallback={null}>
-                            <ContentTranslationPanel
-                                entityType="portfolio_item"
-                                entityId={isEditing ? Number(id) : null}
-                                fields={[
-                                    { name: 'title', label: t('portfolio.titleColumn') },
-                                    { name: 'content', label: t('portfolio.content'), type: 'html' },
-                                    { name: 'seoTitle', label: t('portfolio.seoTitle') },
-                                    { name: 'seoDescription', label: t('portfolio.metaDescription'), type: 'textarea' },
-                                ]}
-                            />
-                        </Suspense>
+                                <Card className="mb-3">
+                                    <Card.Header>{t('portfolio.tags')}</Card.Header>
+                                    <Card.Body>
+                                        {tagError && <div className="alert alert-danger py-1 px-2 small">{tagError}</div>}
+                                        <div className="mb-2">
+                                            {0 === allTags.length && <p className="text-muted small">{t('portfolio.noTags')}</p>}
+                                            {allTags.map((tag) => {
+                                                const active = selectedTagIds.includes(tag.id);
+                                                return (
+                                                    <Badge
+                                                        key={tag.id}
+                                                        bg={active ? 'primary' : 'secondary'}
+                                                        role="button"
+                                                        className="me-1 mb-1"
+                                                        onClick={() => toggleTag(tag.id)}
+                                                    >
+                                                        {tag.name}
+                                                    </Badge>
+                                                );
+                                            })}
+                                        </div>
+                                        <Form.Group className="d-flex gap-2" controlId="portfolioItemNewTag">
+                                            <Form.Control
+                                                type="text"
+                                                size="sm"
+                                                placeholder={t('portfolio.newTag')}
+                                                value={newTagName}
+                                                onChange={(e) => setNewTagName(e.target.value)}
+                                            />
+                                            <Button size="sm" variant="outline-secondary" type="button" onClick={handleCreateTag}>
+                                                {t('common.add')}
+                                            </Button>
+                                        </Form.Group>
+                                    </Card.Body>
+                                </Card>
+                            </>
+                        )}
                     </Col>
                 </Row>
 

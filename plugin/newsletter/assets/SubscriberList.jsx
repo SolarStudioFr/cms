@@ -50,7 +50,9 @@ export default function SubscriberList() {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
+                            <th>{t('newsletter.name')}</th>
                             <th>{t('newsletter.email')}</th>
+                            <th>{t('newsletter.locale')}</th>
                             <th>{t('newsletter.subscribedAt')}</th>
                             <th></th>
                         </tr>
@@ -58,7 +60,9 @@ export default function SubscriberList() {
                     <tbody>
                         {subscribers.map((subscriber) => (
                             <tr key={subscriber.id}>
+                                <td>{subscriber.name || '—'}</td>
                                 <td>{subscriber.email}</td>
+                                <td>{subscriber.locale || '—'}</td>
                                 <td>{new Date(subscriber.subscribedAt).toLocaleDateString()}</td>
                                 <td>
                                     <Button size="sm" variant="outline-danger" onClick={() => remove(subscriber.id)}>

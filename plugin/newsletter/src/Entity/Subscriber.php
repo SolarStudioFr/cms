@@ -14,8 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * A newsletter subscriber (step 23's admin list, step 25's public signup).
- * Deliberately minimal - just an email address and when it was captured, no
- * double opt-in/confirmation flow (not asked for by the roadmap).
+ * Just an email address and when it was captured, no double opt-in/
+ * confirmation flow (not asked for by the roadmap). `name` and `locale`
+ * (step 58 follow-up) are captured at signup to prepare a future
+ * per-subscriber-language send - not built yet, this only records the data.
  */
 #[ORM\Entity(repositoryClass: SubscriberRepository::class)]
 #[ORM\Table(name: 'newsletter_subscriber')]
@@ -57,6 +59,15 @@ class Subscriber
     #[Assert\Email]
     private string $email = '';
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['subscriber:read', 'subscriber:write'])]
+    private ?string $name = null;
+
+    /** ISO locale code the subscriber's browser was set to at signup (e.g. "fr"), not user-entered - see NewsletterSignup.jsx. */
+    #[ORM\Column(length: 10, nullable: true)]
+    #[Groups(['subscriber:read', 'subscriber:write'])]
+    private ?string $locale = null;
+
     #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(['subscriber:read'])]
     private \DateTimeImmutable $subscribedAt;
@@ -79,6 +90,30 @@ class Subscriber
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(?string $locale): static
+    {
+        $this->locale = $locale;
 
         return $this;
     }

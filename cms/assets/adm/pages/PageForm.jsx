@@ -1,10 +1,10 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
-import { Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { Button, Card, Col, Form, Nav, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import client from '../api/client';
 import RichTextEditor from '../components/RichTextEditor';
 import MediaPicker from '../components/MediaPicker';
-import ContentTranslationPanel from '../components/ContentTranslationPanel';
+import useContentLocale from '../hooks/useContentLocale';
 import { useTranslator } from '../i18n/TranslationContext';
 
 // The page builder plugin (step 10-16) is the one dependency still consumed
@@ -62,6 +62,12 @@ export default function PageForm() {
     // null while still checking, so the form doesn't flash one editor then
     // swap to the other once the plugin list has loaded.
     const [builderActive, setBuilderActive] = useState(null);
+
+    // Content-language switcher (step 58 follow-up): title/content/SEO
+    // fields below are bound through fieldValue()/setField() so the same
+    // form swaps between the base language and a translation.
+    const { activeLangs, editingLocale, setEditingLocale, isDefaultLocale, fieldValue, setField, saveAllTranslations } =
+        useContentLocale('page', isEditing ? Number(id) : null);
 
     useEffect(() => {
         client
@@ -123,15 +129,21 @@ export default function PageForm() {
         };
 
         try {
+            const savedId = isEditing
+                ? Number(id)
+                : (await client.post('/admin/pages', payload)).data.id;
             if (isEditing) {
                 await client.patch(
                     `/admin/pages/${id}`,
                     { ...payload, status },
                     { headers: { 'Content-Type': 'application/merge-patch+json' } },
                 );
-            } else {
-                await client.post('/admin/pages', payload);
             }
+            await saveAllTranslations(
+                savedId,
+                { title, [builderActive ? 'builderData' : 'content']: contentValue, seoTitle, seoDescription },
+                builderActive ? 'builderData' : null,
+            );
             navigate('/pages');
         } catch {
             setError(t('common.saveError'));
@@ -146,6 +158,18 @@ export default function PageForm() {
         <div>
             <h1>{isEditing ? t('pageForm.editTitle') : t('pageForm.newTitle')}</h1>
 
+            {activeLangs.length > 1 && (
+                <Nav variant="pills" className="mb-3">
+                    {activeLangs.map((lang) => (
+                        <Nav.Item key={lang.code}>
+                            <Nav.Link active={lang.code === editingLocale} onClick={() => setEditingLocale(lang.code)}>
+                                {lang.label}
+                            </Nav.Link>
+                        </Nav.Item>
+                    ))}
+                </Nav>
+            )}
+
             {error && <div className="alert alert-danger">{error}</div>}
 
             <Form onSubmit={handleSubmit}>
@@ -158,16 +182,18 @@ export default function PageForm() {
                                     <Form.Label>{t('pageForm.titleField')}</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                        required
+                                        value={fieldValue(title, 'title')}
+                                        onChange={(e) => setField('title', setTitle)(e.target.value)}
+                                        required={isDefaultLocale}
                                     />
                                 </Form.Group>
-                                <Form.Group controlId="pageSlug">
-                                    <Form.Label>{t('pageForm.slug')}</Form.Label>
-                                    <Form.Control type="text" value={slugPreview(title)} disabled readOnly />
-                                    <Form.Text className="text-muted">{t('pageForm.slugHint')}</Form.Text>
-                                </Form.Group>
+                                {isDefaultLocale && (
+                                    <Form.Group controlId="pageSlug">
+                                        <Form.Label>{t('pageForm.slug')}</Form.Label>
+                                        <Form.Control type="text" value={slugPreview(title)} disabled readOnly />
+                                        <Form.Text className="text-muted">{t('pageForm.slugHint')}</Form.Text>
+                                    </Form.Group>
+                                )}
                             </Card.Body>
                         </Card>
 
@@ -176,11 +202,27 @@ export default function PageForm() {
                             <Card.Body>
                                 {/* Editor only mounts once `loading`/`builderActive` are settled
                                     above, so its initial value is already the real content. */}
+                                {/* key={editingLocale}: BuilderCanvas/RichTextEditor only seed
+                                    their internal state once on mount (by design, so re-syncing
+                                    on every keystroke doesn't fight the cursor) - without a key
+                                    that changes with the active tab, switching languages would
+                                    keep editing the same in-memory content regardless of which
+                                    tab is shown. The key forces a full remount, reseeding from
+                                    the new tab's own value. */}
                                 <Suspense fallback={<p>{t('pageForm.loadingEditor')}</p>}>
                                     {builderActive ? (
-                                        <BuilderCanvas value={contentValue} onChange={setContentValue} />
+                                        <BuilderCanvas
+                                            key={editingLocale}
+                                            value={fieldValue(contentValue, 'builderData')}
+                                            onChange={setField('builderData', setContentValue)}
+                                        />
                                     ) : (
-                                        <RichTextEditor value={contentValue} onChange={setContentValue} placeholder={t('pageForm.contentPlaceholder')} />
+                                        <RichTextEditor
+                                            key={editingLocale}
+                                            value={fieldValue(contentValue, 'content')}
+                                            onChange={setField('content', setContentValue)}
+                                            placeholder={t('pageForm.contentPlaceholder')}
+                                        />
                                     )}
                                 </Suspense>
                             </Card.Body>
@@ -191,67 +233,75 @@ export default function PageForm() {
                             <Card.Body>
                                 <Form.Group className="mb-3" controlId="pageSeoTitle">
                                     <Form.Label>{t('pageForm.seoTitle')}</Form.Label>
-                                    <Form.Control type="text" value={seoTitle} onChange={(e) => setSeoTitle(e.target.value)} />
+                                    <Form.Control
+                                        type="text"
+                                        value={fieldValue(seoTitle, 'seoTitle')}
+                                        onChange={(e) => setField('seoTitle', setSeoTitle)(e.target.value)}
+                                    />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="pageSeoDescription">
                                     <Form.Label>{t('pageForm.metaDescription')}</Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={3}
-                                        value={seoDescription}
-                                        onChange={(e) => setSeoDescription(e.target.value)}
+                                        value={fieldValue(seoDescription, 'seoDescription')}
+                                        onChange={(e) => setField('seoDescription', setSeoDescription)(e.target.value)}
                                     />
                                 </Form.Group>
-                                <Form.Group className="mb-3" controlId="pageOgImage">
-                                    <Form.Label>{t('pageForm.ogImage')}</Form.Label>
-                                    <div>
-                                        {ogImageUrl ? (
-                                            <img
-                                                src={ogImageUrl}
-                                                alt=""
-                                                style={{ maxWidth: '240px', maxHeight: '160px', display: 'block', marginBottom: '8px' }}
+                                {isDefaultLocale && (
+                                    <>
+                                        <Form.Group className="mb-3" controlId="pageOgImage">
+                                            <Form.Label>{t('pageForm.ogImage')}</Form.Label>
+                                            <div>
+                                                {ogImageUrl ? (
+                                                    <img
+                                                        src={ogImageUrl}
+                                                        alt=""
+                                                        style={{ maxWidth: '240px', maxHeight: '160px', display: 'block', marginBottom: '8px' }}
+                                                    />
+                                                ) : (
+                                                    <p className="text-muted small">{t('pageForm.noImageSelected')}</p>
+                                                )}
+                                                <Button size="sm" variant="outline-secondary" onClick={() => setOgPickerOpen(true)}>
+                                                    {ogImageUrl ? t('pageForm.changeImage') : t('pageForm.chooseImage')}
+                                                </Button>
+                                                {ogPickerOpen && (
+                                                    <MediaPicker
+                                                        show={ogPickerOpen}
+                                                        onHide={() => setOgPickerOpen(false)}
+                                                        onSelect={(file) => setOgImageUrl(file.url)}
+                                                        types={['img']}
+                                                        title={t('pageForm.chooseOgImageTitle')}
+                                                    />
+                                                )}
+                                            </div>
+                                        </Form.Group>
+                                        <Form.Group className="mb-3" controlId="pageOgType">
+                                            <Form.Label>{t('pageForm.ogType')}</Form.Label>
+                                            <Form.Select value={ogType} onChange={(e) => setOgType(e.target.value)}>
+                                                <option value="website">Website</option>
+                                                <option value="article">Article</option>
+                                                <option value="product">Product</option>
+                                                <option value="profile">Profile</option>
+                                            </Form.Select>
+                                        </Form.Group>
+                                        <Form.Group controlId="pageCanonicalUrl">
+                                            <Form.Label>{t('pageForm.canonicalUrl')}</Form.Label>
+                                            <Form.Control
+                                                type="url"
+                                                value={canonicalUrl}
+                                                onChange={(e) => setCanonicalUrl(e.target.value)}
+                                                placeholder="https://..."
                                             />
-                                        ) : (
-                                            <p className="text-muted small">{t('pageForm.noImageSelected')}</p>
-                                        )}
-                                        <Button size="sm" variant="outline-secondary" onClick={() => setOgPickerOpen(true)}>
-                                            {ogImageUrl ? t('pageForm.changeImage') : t('pageForm.chooseImage')}
-                                        </Button>
-                                        {ogPickerOpen && (
-                                            <MediaPicker
-                                                show={ogPickerOpen}
-                                                onHide={() => setOgPickerOpen(false)}
-                                                onSelect={(file) => setOgImageUrl(file.url)}
-                                                types={['img']}
-                                                title={t('pageForm.chooseOgImageTitle')}
-                                            />
-                                        )}
-                                    </div>
-                                </Form.Group>
-                                <Form.Group className="mb-3" controlId="pageOgType">
-                                    <Form.Label>{t('pageForm.ogType')}</Form.Label>
-                                    <Form.Select value={ogType} onChange={(e) => setOgType(e.target.value)}>
-                                        <option value="website">Website</option>
-                                        <option value="article">Article</option>
-                                        <option value="product">Product</option>
-                                        <option value="profile">Profile</option>
-                                    </Form.Select>
-                                </Form.Group>
-                                <Form.Group controlId="pageCanonicalUrl">
-                                    <Form.Label>{t('pageForm.canonicalUrl')}</Form.Label>
-                                    <Form.Control
-                                        type="url"
-                                        value={canonicalUrl}
-                                        onChange={(e) => setCanonicalUrl(e.target.value)}
-                                        placeholder="https://..."
-                                    />
-                                </Form.Group>
+                                        </Form.Group>
+                                    </>
+                                )}
                             </Card.Body>
                         </Card>
                     </Col>
 
                     <Col lg={4}>
-                        {isEditing && (
+                        {isEditing && isDefaultLocale && (
                             <Card className="mb-3">
                                 <Card.Header>{t('pageForm.publication')}</Card.Header>
                                 <Card.Body>
@@ -267,46 +317,37 @@ export default function PageForm() {
                             </Card>
                         )}
 
-                        <Card className="mb-3">
-                            <Card.Header>{t('pageForm.featuredImage')}</Card.Header>
-                            <Card.Body>
-                                {featuredImageUrl ? (
-                                    <img
-                                        src={featuredImageUrl}
-                                        alt={featuredImageAlt}
-                                        style={{ maxWidth: '100%', display: 'block', marginBottom: '8px' }}
-                                    />
-                                ) : (
-                                    <p className="text-muted small">{t('pageForm.noImageSelected')}</p>
-                                )}
-                                <Button size="sm" variant="outline-secondary" className="mb-2" onClick={() => setFeaturedPickerOpen(true)}>
-                                    {featuredImageUrl ? t('pageForm.changeImage') : t('pageForm.chooseImage')}
-                                </Button>
-                                {featuredPickerOpen && (
-                                    <MediaPicker
-                                        show={featuredPickerOpen}
-                                        onHide={() => setFeaturedPickerOpen(false)}
-                                        onSelect={(file) => {
-                                            setFeaturedImageUrl(file.url);
-                                            setFeaturedImageAlt(featuredImageAlt || file.name);
-                                        }}
-                                        types={['img']}
-                                        title={t('pageForm.chooseFeaturedImageTitle')}
-                                    />
-                                )}
-                            </Card.Body>
-                        </Card>
-
-                        <ContentTranslationPanel
-                            entityType="page"
-                            entityId={isEditing ? Number(id) : null}
-                            fields={[
-                                { name: 'title', label: t('pageForm.titleField') },
-                                { name: 'content', label: t('pageForm.content'), type: 'html' },
-                                { name: 'seoTitle', label: t('pageForm.seoTitle') },
-                                { name: 'seoDescription', label: t('pageForm.metaDescription'), type: 'textarea' },
-                            ]}
-                        />
+                        {isDefaultLocale && (
+                            <Card className="mb-3">
+                                <Card.Header>{t('pageForm.featuredImage')}</Card.Header>
+                                <Card.Body>
+                                    {featuredImageUrl ? (
+                                        <img
+                                            src={featuredImageUrl}
+                                            alt={featuredImageAlt}
+                                            style={{ maxWidth: '100%', display: 'block', marginBottom: '8px' }}
+                                        />
+                                    ) : (
+                                        <p className="text-muted small">{t('pageForm.noImageSelected')}</p>
+                                    )}
+                                    <Button size="sm" variant="outline-secondary" className="mb-2" onClick={() => setFeaturedPickerOpen(true)}>
+                                        {featuredImageUrl ? t('pageForm.changeImage') : t('pageForm.chooseImage')}
+                                    </Button>
+                                    {featuredPickerOpen && (
+                                        <MediaPicker
+                                            show={featuredPickerOpen}
+                                            onHide={() => setFeaturedPickerOpen(false)}
+                                            onSelect={(file) => {
+                                                setFeaturedImageUrl(file.url);
+                                                setFeaturedImageAlt(featuredImageAlt || file.name);
+                                            }}
+                                            types={['img']}
+                                            title={t('pageForm.chooseFeaturedImageTitle')}
+                                        />
+                                    )}
+                                </Card.Body>
+                            </Card>
+                        )}
                     </Col>
                 </Row>
 

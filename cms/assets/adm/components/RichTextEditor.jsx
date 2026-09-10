@@ -53,7 +53,18 @@ export default function RichTextEditor({ value, onChange, placeholder, full = fa
     const [pickerOpen, setPickerOpen] = useState(false);
 
     useEffect(() => {
-        const quill = new Quill(containerRef.current, {
+        const container = containerRef.current;
+
+        // Quill mutates whatever node it's given in place (adds classes,
+        // inserts a toolbar as a sibling) rather than cleanly appending under
+        // it, so passing `container` itself would leave stray DOM behind
+        // that a `quillRef.current = null` cleanup can't undo - under
+        // React.StrictMode's dev-only double-invoke of effects, that left
+        // two toolbars stacked on the same container. Mounting on a fresh
+        // child element instead means cleanup can just wipe the container.
+        const editorRoot = container.appendChild(document.createElement('div'));
+
+        const quill = new Quill(editorRoot, {
             theme: 'snow',
             placeholder,
             modules: {
@@ -79,9 +90,20 @@ export default function RichTextEditor({ value, onChange, placeholder, full = fa
 
         return () => {
             quillRef.current = null;
+            container.innerHTML = '';
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // `placeholder` is only known once the caller's translation catalog has
+    // loaded (a plugin's useDomainTranslator fetches it async, and may still
+    // resolve after this editor mounts), so it can arrive after the effect
+    // above already constructed Quill with the untranslated key as text.
+    // Updating the DOM attribute Quill itself reads for the placeholder
+    // keeps this in sync without re-seeding `value` and fighting the cursor.
+    useEffect(() => {
+        quillRef.current?.root.setAttribute('data-placeholder', placeholder ?? '');
+    }, [placeholder]);
 
     const insertImage = (file) => {
         const quill = quillRef.current;

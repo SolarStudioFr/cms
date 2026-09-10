@@ -467,20 +467,6 @@ msgstr "Choisir"
 msgid "richTextEditor.insertImage"
 msgstr "Insérer une image"
 
-msgid "contentTranslation.title"
-msgstr "Contenu traduit"
-
-msgid "contentTranslation.saveFirst"
-msgstr "Enregistrez d'abord ce contenu pour pouvoir le traduire."
-
-msgid "contentTranslation.noOtherLanguage"
-msgstr "Aucune autre langue que la langue par défaut n'est active - rien à traduire (voir Configuration)."
-
-msgid "contentTranslation.save"
-msgstr "Enregistrer la traduction"
-
-msgid "contentTranslation.saved"
-msgstr "Traduction enregistrée."
 
 msgid "languages.title"
 msgstr "Langues"

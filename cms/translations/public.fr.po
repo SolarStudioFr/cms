@@ -71,6 +71,9 @@ msgstr "Actualité introuvable."
 msgid "news.back"
 msgstr "Retour aux actualités"
 
+msgid "newsletter.namePlaceholder"
+msgstr "Votre nom"
+
 msgid "newsletter.placeholder"
 msgstr "Votre email"
 
