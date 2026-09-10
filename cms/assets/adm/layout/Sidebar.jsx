@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 import staticNavItems from './staticNavItems';
 import resolveNavOrder from './resolveNavOrder';
 import useAdminMenuOrder from './useAdminMenuOrder';
+import { useTranslator } from '../i18n/TranslationContext';
+import LocaleSwitcher from '../i18n/LocaleSwitcher';
 
 /**
  * Vertical admin nav. Static items are declared in staticNavItems.js;
@@ -16,6 +18,7 @@ import useAdminMenuOrder from './useAdminMenuOrder';
  */
 export default function Sidebar({ pluginItems = [] }) {
     const { items: savedOrder } = useAdminMenuOrder(true);
+    const { t } = useTranslator();
     const knownItems = [...staticNavItems, ...pluginItems];
     const resolved = resolveNavOrder(knownItems, savedOrder);
 
@@ -37,10 +40,11 @@ export default function Sidebar({ pluginItems = [] }) {
                         end={'/' === entry.path}
                         className="text-white"
                     >
-                        {entry.label}
+                        {t(entry.label)}
                     </Nav.Link>
                 ),
             )}
+            <LocaleSwitcher className="mt-auto" />
         </Nav>
     );
 }

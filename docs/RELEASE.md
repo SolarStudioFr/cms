@@ -738,3 +738,26 @@ Lot autorisé explicitement par l'utilisateur ("Fait les étapes 53 à 58"). Rem
 - Aucun fichier `.po` réel n'est ajouté sous `cms/translations/` à cette étape : les vrais domaines (`admin`, `public`, un par plugin restant) sont le contenu propre des étapes 54/56/57, cette étape ne livre que l'infrastructure (répertoire scanné, chargeur, endpoint catalogue, convention de nommage).
 - Domaine `messages` (utilisé par défaut par Symfony et par l'ancien système conflaté interface/contenu) volontairement laissé libre pour un usage futur générique ; les étapes suivantes utiliseront des domaines explicites (`admin`, `public`, `<plugin>`) plutôt que `messages`, pour que chaque app ne charge que son propre catalogue.
 - `Lang`/`LangRepository`/`ActiveLangCollectionProvider` (étape 07) conservés tels quels — toujours la source de vérité de la liste des langues du site, sujet indépendant du format des chaînes d'interface.
+
+## 0.35.0 — Étape 54 : `i18n-admin-ui-translation`
+
+Lot autorisé explicitement par l'utilisateur ("Fait les étapes 53 à 58"). Traduit l'interface admin elle-même (FR + EN) au-dessus de l'infrastructure de l'étape 53, avec un bouton de changement de langue dans l'administration.
+
+**Réalisé**
+- `cms/assets/adm/i18n/TranslationContext.jsx` : `TranslationProvider`/`useTranslator()`, récupère le catalogue complet du domaine `admin` (`GET /api/i18n/admin/{locale}`) à chaque changement de langue et expose `t(key, params?)` avec interpolation `{{placeholder}}` et repli sur la clé brute si absente du catalogue. Langue choisie persistée en `localStorage` (`admLocale`), indépendante de l'utilisateur connecté, disponible dès l'écran de connexion.
+- `cms/assets/adm/i18n/LocaleSwitcher.jsx` : bascule FR/EN, montée à la fois sur `Login.jsx` (coin haut-droit) et dans `Sidebar.jsx` (bas de la nav, `mt-auto`).
+- `App.jsx` enveloppé dans `TranslationProvider` (avant `AuthProvider`, pour rester actif y compris sur l'écran de connexion).
+- Traduction effective de toutes les pages statiques du cœur : `Login`, `Dashboard`, `FileManager`, `PluginManager`, `UserManager`, `SiteConfig`, `MenuManager`, `MenuForm`, `AdminMenuSettings`, `PageList`, `PageForm`, ainsi que les composants partagés `MenuItemsEditor`, `FileGrid`, `FileUploadForm`, `MediaPicker`, `RichTextEditor` (labels, boutons, en-têtes de table, placeholders, messages `window.confirm`/erreur/succès). `LangManager.jsx` volontairement **non traduit** à cette étape : remplacé en totalité à l'étape 55 (section "Langues" de Configuration).
+- `staticNavItems.js` : chaque `label` devient une clé de traduction (`nav.dashboard`, etc.) plutôt qu'un texte brut, rendue via `t(entry.label)` dans `Sidebar.jsx`/`AdminMenuSettings.jsx`. Les entrées fournies par un plugin gardent un `label` français brut (`plugin.pluginName`/`navItem.label`, voir `usePlugins.js`) — passer ce même texte dans `t()` ne le casse pas : `t()` retombe sur la clé elle-même quand elle n'a pas d'entrée dans le catalogue, donc un libellé de plugin non traduit s'affiche simplement inchangé. Mécanisme volontairement réutilisé tel quel, pas de branchement "est-ce un plugin ?" nécessaire.
+- `cms/translations/admin.fr.po` / `admin.en.po` (nouveaux, ~140 clés) : tout le texte des pages ci-dessus, domaine `admin`.
+- Clé partagée `common.saveError` introduite (au lieu de dupliquer le message "Échec de l'enregistrement." sous une clé par page) - `MenuForm`/`PageForm` la réutilisent toutes les deux.
+
+**Tests**
+- Aucun changement PHP à cette étape - suite PHPUnit complète revérifiée verte (130 tests, 461 assertions) par prudence.
+- **Vérification en navigateur réel** (Claude in Chrome) : bascule FR→EN persistée après rechargement (localStorage), `Dashboard`/`Pages`/`Nouvelle page` intégralement traduits (`Identity`, `Content`, `S.E.O. & social networks`, `Featured image`, `Save`/`Cancel`, etc.), le bouton "Ajouter un module" du plugin `page_builder` et son placeholder restent en français comme attendu (étape 57, pas celle-ci), aucune erreur console après le rebuild.
+- **Incident rencontré et corrigé en cours de route** : un `npm run watch` laissé actif par une session précédente (PID trouvé au démarrage de cette étape) était au milieu d'une compilation avortée, ayant vidé `cms/public/build/{runtime,default}.js` sans les régénérer - page blanche sur le site public ET l'admin, signalée par l'utilisateur. Corrigé en tuant le processus et relançant `npm run build` (le seul mode de build "sûr" documenté dans la mémoire du projet - `encore dev`/`npm run watch` restent fragiles ici). Aucun rapport avec le code de cette étape.
+
+**Décisions**
+- Domaine unique `admin` pour tout le cœur statique (pas un domaine par page) : une seule requête réseau par changement de langue plutôt qu'une par page visitée.
+- Interpolation de paramètres réimplémentée en `{{placeholder}}` (pas de dépendance i18n JS supplémentaire) - suffisant pour les seuls cas réels ici (compteurs, noms d'entités dans un message de confirmation).
+- `LangManager.jsx` intentionnellement laissé intact (toujours en français, toujours monté sur `/langs`) : l'étape 55 le remplace entièrement plutôt que de le traduire pour le jeter ensuite.

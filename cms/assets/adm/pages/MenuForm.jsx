@@ -3,6 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import client from '../api/client';
 import MenuItemsEditor from '../components/MenuItemsEditor';
+import { useTranslator } from '../i18n/TranslationContext';
 
 /**
  * Create/edit form for a Menu (step 32): name, attachment to one of the
@@ -13,6 +14,7 @@ import MenuItemsEditor from '../components/MenuItemsEditor';
 export default function MenuForm() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { t } = useTranslator();
     const isEditing = Boolean(id);
 
     const [name, setName] = useState('');
@@ -37,9 +39,9 @@ export default function MenuForm() {
                 setHookName(data.hookName ?? '');
                 setItems(data.items);
             })
-            .catch(() => setError('Impossible de charger le menu.'))
+            .catch(() => setError(t('menuForm.loadError')))
             .finally(() => setLoading(false));
-    }, [id, isEditing]);
+    }, [id, isEditing, t]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -57,30 +59,30 @@ export default function MenuForm() {
             }
             navigate('/menus');
         } catch {
-            setError("Échec de l'enregistrement.");
+            setError(t('common.saveError'));
         }
     };
 
     if (loading) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     return (
         <div>
-            <h1>{isEditing ? 'Modifier le menu' : 'Nouveau menu'}</h1>
+            <h1>{isEditing ? t('menuForm.editTitle') : t('menuForm.newTitle')}</h1>
 
             {error && <div className="alert alert-danger">{error}</div>}
 
             <Form onSubmit={handleSubmit} style={{ maxWidth: '720px' }}>
                 <Form.Group className="mb-3" controlId="menuName">
-                    <Form.Label>Nom</Form.Label>
+                    <Form.Label>{t('menuForm.name')}</Form.Label>
                     <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} required />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="menuHook">
-                    <Form.Label>Attaché au hook</Form.Label>
+                    <Form.Label>{t('menuForm.hook')}</Form.Label>
                     <Form.Select value={hookName} onChange={(e) => setHookName(e.target.value)}>
-                        <option value="">Non attaché</option>
+                        <option value="">{t('menus.notAttached')}</option>
                         {hooks.map((hook) => (
                             <option key={hook.name} value={hook.name}>
                                 {hook.label} ({hook.name})
@@ -88,22 +90,20 @@ export default function MenuForm() {
                         ))}
                     </Form.Select>
                     {0 === hooks.length && (
-                        <Form.Text className="text-muted">
-                            Le thème actif ne déclare aucun hook (template/default/theme.json).
-                        </Form.Text>
+                        <Form.Text className="text-muted">{t('menuForm.noHooks')}</Form.Text>
                     )}
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="menuItems">
-                    <Form.Label>Éléments</Form.Label>
+                    <Form.Label>{t('menuForm.items')}</Form.Label>
                     <MenuItemsEditor items={items} onChange={setItems} />
                 </Form.Group>
 
                 <Button type="submit" variant="primary">
-                    Enregistrer
+                    {t('common.save')}
                 </Button>
                 <Button type="button" variant="link" onClick={() => navigate('/menus')}>
-                    Annuler
+                    {t('common.cancel')}
                 </Button>
             </Form>
         </div>

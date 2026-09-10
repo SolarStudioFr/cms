@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import client from '../api/client';
 import RichTextEditor from '../components/RichTextEditor';
 import MediaPicker from '../components/MediaPicker';
+import { useTranslator } from '../i18n/TranslationContext';
 
 // The page builder plugin (step 10-16) is the one dependency still consumed
 // as a real Module Federation remote (see the `page_builder` static remote
@@ -33,6 +34,7 @@ function slugPreview(title) {
 export default function PageForm() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { t } = useTranslator();
     const isEditing = Boolean(id);
 
     const [title, setTitle] = useState('');
@@ -86,9 +88,9 @@ export default function PageForm() {
                 setFeaturedImageUrl(data.featuredImageUrl || '');
                 setFeaturedImageAlt(data.featuredImageAlt || '');
             })
-            .catch(() => setError('Impossible de charger la page.'))
+            .catch(() => setError(t('pageForm.loadError')))
             .finally(() => setLoading(false));
-    }, [id, isEditing, builderActive]);
+    }, [id, isEditing, builderActive, t]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -131,17 +133,17 @@ export default function PageForm() {
             }
             navigate('/pages');
         } catch {
-            setError("Échec de l'enregistrement.");
+            setError(t('common.saveError'));
         }
     };
 
     if (loading || null === builderActive) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     return (
         <div>
-            <h1>{isEditing ? 'Modifier la page' : 'Nouvelle page'}</h1>
+            <h1>{isEditing ? t('pageForm.editTitle') : t('pageForm.newTitle')}</h1>
 
             {error && <div className="alert alert-danger">{error}</div>}
 
@@ -149,10 +151,10 @@ export default function PageForm() {
                 <Row>
                     <Col lg={8}>
                         <Card className="mb-3">
-                            <Card.Header>Identité</Card.Header>
+                            <Card.Header>{t('pageForm.identity')}</Card.Header>
                             <Card.Body>
                                 <Form.Group className="mb-3" controlId="pageTitle">
-                                    <Form.Label>Titre</Form.Label>
+                                    <Form.Label>{t('pageForm.titleField')}</Form.Label>
                                     <Form.Control
                                         type="text"
                                         value={title}
@@ -161,37 +163,37 @@ export default function PageForm() {
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="pageSlug">
-                                    <Form.Label>Slug</Form.Label>
+                                    <Form.Label>{t('pageForm.slug')}</Form.Label>
                                     <Form.Control type="text" value={slugPreview(title)} disabled readOnly />
-                                    <Form.Text className="text-muted">Généré automatiquement à partir du titre.</Form.Text>
+                                    <Form.Text className="text-muted">{t('pageForm.slugHint')}</Form.Text>
                                 </Form.Group>
                             </Card.Body>
                         </Card>
 
                         <Card className="mb-3">
-                            <Card.Header>Contenu</Card.Header>
+                            <Card.Header>{t('pageForm.content')}</Card.Header>
                             <Card.Body>
                                 {/* Editor only mounts once `loading`/`builderActive` are settled
                                     above, so its initial value is already the real content. */}
-                                <Suspense fallback={<p>Chargement de l'éditeur...</p>}>
+                                <Suspense fallback={<p>{t('pageForm.loadingEditor')}</p>}>
                                     {builderActive ? (
                                         <BuilderCanvas value={contentValue} onChange={setContentValue} />
                                     ) : (
-                                        <RichTextEditor value={contentValue} onChange={setContentValue} placeholder="Contenu de la page..." />
+                                        <RichTextEditor value={contentValue} onChange={setContentValue} placeholder={t('pageForm.contentPlaceholder')} />
                                     )}
                                 </Suspense>
                             </Card.Body>
                         </Card>
 
                         <Card className="mb-3">
-                            <Card.Header>S.E.O. &amp; réseaux sociaux</Card.Header>
+                            <Card.Header>{t('pageForm.seo')}</Card.Header>
                             <Card.Body>
                                 <Form.Group className="mb-3" controlId="pageSeoTitle">
-                                    <Form.Label>Titre S.E.O.</Form.Label>
+                                    <Form.Label>{t('pageForm.seoTitle')}</Form.Label>
                                     <Form.Control type="text" value={seoTitle} onChange={(e) => setSeoTitle(e.target.value)} />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="pageSeoDescription">
-                                    <Form.Label>Meta description</Form.Label>
+                                    <Form.Label>{t('pageForm.metaDescription')}</Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={3}
@@ -200,7 +202,7 @@ export default function PageForm() {
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="pageOgImage">
-                                    <Form.Label>Image OG</Form.Label>
+                                    <Form.Label>{t('pageForm.ogImage')}</Form.Label>
                                     <div>
                                         {ogImageUrl ? (
                                             <img
@@ -209,10 +211,10 @@ export default function PageForm() {
                                                 style={{ maxWidth: '240px', maxHeight: '160px', display: 'block', marginBottom: '8px' }}
                                             />
                                         ) : (
-                                            <p className="text-muted small">Aucune image sélectionnée.</p>
+                                            <p className="text-muted small">{t('pageForm.noImageSelected')}</p>
                                         )}
                                         <Button size="sm" variant="outline-secondary" onClick={() => setOgPickerOpen(true)}>
-                                            {ogImageUrl ? "Changer l'image" : 'Choisir une image'}
+                                            {ogImageUrl ? t('pageForm.changeImage') : t('pageForm.chooseImage')}
                                         </Button>
                                         {ogPickerOpen && (
                                             <MediaPicker
@@ -220,13 +222,13 @@ export default function PageForm() {
                                                 onHide={() => setOgPickerOpen(false)}
                                                 onSelect={(file) => setOgImageUrl(file.url)}
                                                 types={['img']}
-                                                title="Choisir une image OG"
+                                                title={t('pageForm.chooseOgImageTitle')}
                                             />
                                         )}
                                     </div>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="pageOgType">
-                                    <Form.Label>Type OG</Form.Label>
+                                    <Form.Label>{t('pageForm.ogType')}</Form.Label>
                                     <Form.Select value={ogType} onChange={(e) => setOgType(e.target.value)}>
                                         <option value="website">Website</option>
                                         <option value="article">Article</option>
@@ -235,7 +237,7 @@ export default function PageForm() {
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group controlId="pageCanonicalUrl">
-                                    <Form.Label>URL canonique</Form.Label>
+                                    <Form.Label>{t('pageForm.canonicalUrl')}</Form.Label>
                                     <Form.Control
                                         type="url"
                                         value={canonicalUrl}
@@ -250,14 +252,14 @@ export default function PageForm() {
                     <Col lg={4}>
                         {isEditing && (
                             <Card className="mb-3">
-                                <Card.Header>Publication</Card.Header>
+                                <Card.Header>{t('pageForm.publication')}</Card.Header>
                                 <Card.Body>
                                     <Form.Group controlId="pageStatus">
-                                        <Form.Label>Statut</Form.Label>
+                                        <Form.Label>{t('pageForm.status')}</Form.Label>
                                         <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                                            <option value="draft">Brouillon</option>
-                                            <option value="published">Publiée</option>
-                                            <option value="archived">Archivée</option>
+                                            <option value="draft">{t('pageForm.statusDraft')}</option>
+                                            <option value="published">{t('pageForm.statusPublished')}</option>
+                                            <option value="archived">{t('pageForm.statusArchived')}</option>
                                         </Form.Select>
                                     </Form.Group>
                                 </Card.Body>
@@ -265,7 +267,7 @@ export default function PageForm() {
                         )}
 
                         <Card className="mb-3">
-                            <Card.Header>Image à la une</Card.Header>
+                            <Card.Header>{t('pageForm.featuredImage')}</Card.Header>
                             <Card.Body>
                                 {featuredImageUrl ? (
                                     <img
@@ -274,10 +276,10 @@ export default function PageForm() {
                                         style={{ maxWidth: '100%', display: 'block', marginBottom: '8px' }}
                                     />
                                 ) : (
-                                    <p className="text-muted small">Aucune image sélectionnée.</p>
+                                    <p className="text-muted small">{t('pageForm.noImageSelected')}</p>
                                 )}
                                 <Button size="sm" variant="outline-secondary" className="mb-2" onClick={() => setFeaturedPickerOpen(true)}>
-                                    {featuredImageUrl ? "Changer l'image" : 'Choisir une image'}
+                                    {featuredImageUrl ? t('pageForm.changeImage') : t('pageForm.chooseImage')}
                                 </Button>
                                 {featuredPickerOpen && (
                                     <MediaPicker
@@ -288,7 +290,7 @@ export default function PageForm() {
                                             setFeaturedImageAlt(featuredImageAlt || file.name);
                                         }}
                                         types={['img']}
-                                        title="Choisir une image à la une"
+                                        title={t('pageForm.chooseFeaturedImageTitle')}
                                     />
                                 )}
                             </Card.Body>
@@ -297,10 +299,10 @@ export default function PageForm() {
                 </Row>
 
                 <Button type="submit" variant="primary">
-                    Enregistrer
+                    {t('common.save')}
                 </Button>
                 <Button type="button" variant="link" onClick={() => navigate('/pages')}>
-                    Annuler
+                    {t('common.cancel')}
                 </Button>
             </Form>
         </div>

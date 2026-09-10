@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { useTranslator } from '../i18n/TranslationContext';
 
 /**
  * Ordered editor for a Menu's `items` array (step 32): add a link or a
@@ -13,6 +14,7 @@ import { Button, Form } from 'react-bootstrap';
  * @param {(items: Array) => void} onChange
  */
 export default function MenuItemsEditor({ items, onChange }) {
+    const { t } = useTranslator();
     const dragIndexRef = useRef(null);
 
     const addLink = () => {
@@ -42,15 +44,15 @@ export default function MenuItemsEditor({ items, onChange }) {
         <div>
             <div className="d-flex gap-2 mb-2">
                 <Button variant="outline-primary" size="sm" onClick={addLink}>
-                    Ajouter un lien
+                    {t('menuItemsEditor.addLink')}
                 </Button>
                 <Button variant="outline-secondary" size="sm" onClick={addSeparator}>
-                    Ajouter un séparateur
+                    {t('menuItemsEditor.addSeparator')}
                 </Button>
             </div>
 
             {0 === items.length && (
-                <p className="text-muted border rounded p-3 text-center">Aucun élément dans ce menu.</p>
+                <p className="text-muted border rounded p-3 text-center">{t('menuItemsEditor.empty')}</p>
             )}
 
             {items.map((item, index) => (
@@ -74,19 +76,19 @@ export default function MenuItemsEditor({ items, onChange }) {
                     </strong>
 
                     {'separator' === item.type ? (
-                        <div className="flex-grow-1 text-muted small fst-italic py-1">— Séparateur —</div>
+                        <div className="flex-grow-1 text-muted small fst-italic py-1">{t('menuItemsEditor.separator')}</div>
                     ) : (
                         <div className="flex-grow-1 d-flex gap-2 flex-wrap">
                             <Form.Control
                                 size="sm"
-                                placeholder="Libellé"
+                                placeholder={t('menuItemsEditor.labelPlaceholder')}
                                 value={item.label ?? ''}
                                 onChange={(e) => updateItem(item.id, { label: e.target.value })}
                                 style={{ maxWidth: '180px' }}
                             />
                             <Form.Control
                                 size="sm"
-                                placeholder="URL (ex: /pages, https://...)"
+                                placeholder={t('menuItemsEditor.urlPlaceholder')}
                                 value={item.url ?? ''}
                                 onChange={(e) => updateItem(item.id, { url: e.target.value })}
                                 style={{ maxWidth: '260px' }}
@@ -97,14 +99,14 @@ export default function MenuItemsEditor({ items, onChange }) {
                                 onChange={(e) => updateItem(item.id, { target: e.target.value })}
                                 style={{ maxWidth: '160px' }}
                             >
-                                <option value="_self">Même onglet</option>
-                                <option value="_blank">Nouvel onglet</option>
+                                <option value="_self">{t('menuItemsEditor.sameTab')}</option>
+                                <option value="_blank">{t('menuItemsEditor.newTab')}</option>
                             </Form.Select>
                         </div>
                     )}
 
                     <Button size="sm" variant="outline-danger" onClick={() => removeItem(item.id)}>
-                        Supprimer
+                        {t('common.delete')}
                     </Button>
                 </div>
             ))}

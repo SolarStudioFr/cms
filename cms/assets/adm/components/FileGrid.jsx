@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
+import { useTranslator } from '../i18n/TranslationContext';
 
 /**
  * Thumbnail grid shared by the full-page file manager (step 02) and the
@@ -7,8 +8,10 @@ import { Card, Col, Row } from 'react-bootstrap';
  * attach to each card, provided via `renderAction`.
  */
 export default function FileGrid({ files, renderAction }) {
+    const { t } = useTranslator();
+
     if (0 === files.length) {
-        return <p>Aucun fichier.</p>;
+        return <p>{t('fileGrid.empty')}</p>;
     }
 
     return (

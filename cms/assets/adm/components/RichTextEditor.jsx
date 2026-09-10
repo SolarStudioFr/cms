@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 import MediaPicker from './MediaPicker';
+import { useTranslator } from '../i18n/TranslationContext';
 
 const SIMPLE_TOOLBAR = [
     [{ header: [2, 3, false] }],
@@ -44,6 +45,7 @@ const FULL_TOOLBAR = [
  * @param {boolean} [full] use the fuller toolbar (font, color, alignment, code block) instead of the simple one
  */
 export default function RichTextEditor({ value, onChange, placeholder, full = false }) {
+    const { t } = useTranslator();
     const containerRef = useRef(null);
     const quillRef = useRef(null);
     const onChangeRef = useRef(onChange);
@@ -99,7 +101,7 @@ export default function RichTextEditor({ value, onChange, placeholder, full = fa
                 onHide={() => setPickerOpen(false)}
                 onSelect={insertImage}
                 types={['img']}
-                title="Insérer une image"
+                title={t('richTextEditor.insertImage')}
             />
         </>
     );

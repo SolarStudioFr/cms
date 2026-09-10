@@ -1,0 +1,459 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.loading"
+msgstr "Loading..."
+
+msgid "common.save"
+msgstr "Save"
+
+msgid "common.cancel"
+msgstr "Cancel"
+
+msgid "common.delete"
+msgstr "Delete"
+
+msgid "common.edit"
+msgstr "Edit"
+
+msgid "common.create"
+msgstr "Create"
+
+msgid "common.saveError"
+msgstr "Failed to save."
+
+msgid "nav.dashboard"
+msgstr "Dashboard"
+
+msgid "nav.pages"
+msgstr "Pages"
+
+msgid "nav.files"
+msgstr "Files"
+
+msgid "nav.plugins"
+msgstr "Plugins"
+
+msgid "nav.menus"
+msgstr "Menus"
+
+msgid "nav.users"
+msgstr "Users"
+
+msgid "nav.langs"
+msgstr "Languages"
+
+msgid "nav.settings"
+msgstr "Settings"
+
+msgid "nav.adminMenu"
+msgstr "Admin menu"
+
+msgid "login.title"
+msgstr "Solar CMS - Administration"
+
+msgid "login.email"
+msgstr "Email"
+
+msgid "login.password"
+msgstr "Password"
+
+msgid "login.rememberMe"
+msgstr "Stay signed in"
+
+msgid "login.submit"
+msgstr "Sign in"
+
+msgid "login.submitting"
+msgstr "Signing in..."
+
+msgid "login.error"
+msgstr "Invalid credentials."
+
+msgid "dashboard.title"
+msgstr "Dashboard"
+
+msgid "dashboard.logout"
+msgstr "Log out"
+
+msgid "dashboard.welcome"
+msgstr "Welcome to the administration."
+
+msgid "files.title"
+msgstr "Files"
+
+msgid "files.reoptimizeAll"
+msgstr "Re-optimize all images"
+
+msgid "files.cleanupUnused"
+msgstr "Delete unused files"
+
+msgid "files.loadError"
+msgstr "Failed to load files."
+
+msgid "files.confirmDelete"
+msgstr "Delete this file?"
+
+msgid "files.confirmCleanup"
+msgstr "Delete every unused file?"
+
+msgid "files.cleanupNotice"
+msgstr "{{count}} file(s) deleted."
+
+msgid "files.reoptimizeNotice"
+msgstr "{{reoptimized}} image(s) re-optimized, {{skipped}} skipped (missing source)."
+
+msgid "plugins.title"
+msgstr "Plugins"
+
+msgid "plugins.none"
+msgstr "No plugin detected."
+
+msgid "plugins.name"
+msgstr "Name"
+
+msgid "plugins.status"
+msgstr "Status"
+
+msgid "plugins.active"
+msgstr "Active"
+
+msgid "plugins.disabled"
+msgstr "Disabled"
+
+msgid "plugins.disable"
+msgstr "Disable"
+
+msgid "plugins.enable"
+msgstr "Enable"
+
+msgid "plugins.confirmDelete"
+msgstr "Permanently delete the plugin \"{{label}}\"? This removes its folder and cannot be undone."
+
+msgid "users.title"
+msgstr "Users"
+
+msgid "users.email"
+msgstr "Email"
+
+msgid "users.password"
+msgstr "Password"
+
+msgid "users.createError"
+msgstr "Failed to create."
+
+msgid "users.registeredAt"
+msgstr "Registered on"
+
+msgid "users.verified"
+msgstr "Verified"
+
+msgid "users.notVerified"
+msgstr "Not verified"
+
+msgid "users.superAdmin"
+msgstr "Super admin"
+
+msgid "users.confirmDelete"
+msgstr "Delete user \"{{email}}\"?"
+
+msgid "siteConfig.title"
+msgstr "Site settings"
+
+msgid "siteConfig.general"
+msgstr "General"
+
+msgid "siteConfig.siteName"
+msgstr "Site name"
+
+msgid "siteConfig.logo"
+msgstr "Logo"
+
+msgid "siteConfig.changeLogo"
+msgstr "Change logo"
+
+msgid "siteConfig.chooseLogo"
+msgstr "Choose a logo"
+
+msgid "siteConfig.favicon"
+msgstr "Favicon"
+
+msgid "siteConfig.changeFavicon"
+msgstr "Change favicon"
+
+msgid "siteConfig.chooseFavicon"
+msgstr "Choose a favicon"
+
+msgid "siteConfig.smtp"
+msgstr "SMTP"
+
+msgid "siteConfig.smtpHost"
+msgstr "SMTP host"
+
+msgid "siteConfig.smtpHostPlaceholder"
+msgstr "leave empty to use the server's default configuration"
+
+msgid "siteConfig.smtpPort"
+msgstr "Port"
+
+msgid "siteConfig.smtpUser"
+msgstr "Username"
+
+msgid "siteConfig.smtpPassword"
+msgstr "Password"
+
+msgid "siteConfig.smtpEncryption"
+msgstr "Encryption"
+
+msgid "siteConfig.encryptionUnspecified"
+msgstr "Not specified"
+
+msgid "siteConfig.encryptionNone"
+msgstr "None"
+
+msgid "siteConfig.saved"
+msgstr "Settings saved."
+
+msgid "siteConfig.testMail"
+msgstr "Test email sending"
+
+msgid "siteConfig.testMailPlaceholder"
+msgstr "recipient@example.com"
+
+msgid "siteConfig.sendTest"
+msgstr "Send a test"
+
+msgid "siteConfig.testMailSuccess"
+msgstr "Test email sent."
+
+msgid "siteConfig.testMailFailure"
+msgstr "Failed: {{error}}"
+
+msgid "siteConfig.cache"
+msgstr "Cache"
+
+msgid "siteConfig.clearingCache"
+msgstr "Clearing..."
+
+msgid "siteConfig.clearCache"
+msgstr "Clear cache"
+
+msgid "siteConfig.cacheCleared"
+msgstr "Cache cleared."
+
+msgid "siteConfig.cacheFailure"
+msgstr "Failed: {{error}}"
+
+msgid "menus.title"
+msgstr "Menus"
+
+msgid "menus.create"
+msgstr "Create a menu"
+
+msgid "menus.none"
+msgstr "No menu created yet."
+
+msgid "menus.name"
+msgstr "Name"
+
+msgid "menus.hook"
+msgstr "Hook"
+
+msgid "menus.items"
+msgstr "Items"
+
+msgid "menus.notAttached"
+msgstr "Not attached"
+
+msgid "menus.confirmDelete"
+msgstr "Delete menu \"{{name}}\"?"
+
+msgid "menuForm.editTitle"
+msgstr "Edit menu"
+
+msgid "menuForm.newTitle"
+msgstr "New menu"
+
+msgid "menuForm.loadError"
+msgstr "Failed to load the menu."
+
+msgid "menuForm.name"
+msgstr "Name"
+
+msgid "menuForm.hook"
+msgstr "Attached to hook"
+
+msgid "menuForm.noHooks"
+msgstr "The active theme declares no hook (template/default/theme.json)."
+
+msgid "menuForm.items"
+msgstr "Items"
+
+msgid "menuItemsEditor.addLink"
+msgstr "Add a link"
+
+msgid "menuItemsEditor.addSeparator"
+msgstr "Add a separator"
+
+msgid "menuItemsEditor.empty"
+msgstr "No items in this menu yet."
+
+msgid "menuItemsEditor.separator"
+msgstr "— Separator —"
+
+msgid "menuItemsEditor.labelPlaceholder"
+msgstr "Label"
+
+msgid "menuItemsEditor.urlPlaceholder"
+msgstr "URL (e.g. /pages, https://...)"
+
+msgid "menuItemsEditor.sameTab"
+msgstr "Same tab"
+
+msgid "menuItemsEditor.newTab"
+msgstr "New tab"
+
+msgid "adminMenuSettings.title"
+msgstr "Admin menu"
+
+msgid "adminMenuSettings.description"
+msgstr "Choose the display order of the admin navigation entries and insert separators. Entries not placed below stay shown, in their default position, at the end of the menu."
+
+msgid "adminMenuSettings.saved"
+msgstr "Order saved."
+
+msgid "adminMenuSettings.addItem"
+msgstr "Add an item"
+
+msgid "adminMenuSettings.addSeparator"
+msgstr "Add a separator"
+
+msgid "adminMenuSettings.empty"
+msgstr "No order configured yet - the admin menu uses the default order."
+
+msgid "adminMenuSettings.separator"
+msgstr "— Separator —"
+
+msgid "adminMenuSettings.remove"
+msgstr "Remove"
+
+msgid "pages.title"
+msgstr "Pages"
+
+msgid "pages.create"
+msgstr "Create a page"
+
+msgid "pages.titleColumn"
+msgstr "Title"
+
+msgid "pages.createdAt"
+msgstr "Created on"
+
+msgid "pages.status"
+msgstr "Status"
+
+msgid "pages.archive"
+msgstr "Archive"
+
+msgid "pages.confirmDelete"
+msgstr "Delete this page?"
+
+msgid "pageForm.editTitle"
+msgstr "Edit page"
+
+msgid "pageForm.newTitle"
+msgstr "New page"
+
+msgid "pageForm.loadError"
+msgstr "Failed to load the page."
+
+msgid "pageForm.loadingEditor"
+msgstr "Loading the editor..."
+
+msgid "pageForm.identity"
+msgstr "Identity"
+
+msgid "pageForm.titleField"
+msgstr "Title"
+
+msgid "pageForm.slug"
+msgstr "Slug"
+
+msgid "pageForm.slugHint"
+msgstr "Automatically generated from the title."
+
+msgid "pageForm.content"
+msgstr "Content"
+
+msgid "pageForm.contentPlaceholder"
+msgstr "Page content..."
+
+msgid "pageForm.seo"
+msgstr "S.E.O. & social networks"
+
+msgid "pageForm.seoTitle"
+msgstr "S.E.O. title"
+
+msgid "pageForm.metaDescription"
+msgstr "Meta description"
+
+msgid "pageForm.ogImage"
+msgstr "OG image"
+
+msgid "pageForm.noImageSelected"
+msgstr "No image selected."
+
+msgid "pageForm.changeImage"
+msgstr "Change image"
+
+msgid "pageForm.chooseImage"
+msgstr "Choose an image"
+
+msgid "pageForm.chooseOgImageTitle"
+msgstr "Choose an OG image"
+
+msgid "pageForm.ogType"
+msgstr "OG type"
+
+msgid "pageForm.canonicalUrl"
+msgstr "Canonical URL"
+
+msgid "pageForm.publication"
+msgstr "Publishing"
+
+msgid "pageForm.status"
+msgstr "Status"
+
+msgid "pageForm.statusDraft"
+msgstr "Draft"
+
+msgid "pageForm.statusPublished"
+msgstr "Published"
+
+msgid "pageForm.statusArchived"
+msgstr "Archived"
+
+msgid "pageForm.featuredImage"
+msgstr "Featured image"
+
+msgid "pageForm.chooseFeaturedImageTitle"
+msgstr "Choose a featured image"
+
+msgid "fileGrid.empty"
+msgstr "No files."
+
+msgid "fileUpload.error"
+msgstr "Failed to upload the file."
+
+msgid "fileUpload.submit"
+msgstr "Upload"
+
+msgid "mediaPicker.chooseFile"
+msgstr "Choose a file"
+
+msgid "mediaPicker.choose"
+msgstr "Choose"
+
+msgid "richTextEditor.insertImage"
+msgstr "Insert an image"

@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import client from '../api/client';
 import FileGrid from '../components/FileGrid';
 import FileUploadForm from '../components/FileUploadForm';
+import { useTranslator } from '../i18n/TranslationContext';
 
 /**
  * Admin file manager (step 02): browse every uploaded file, upload a new
@@ -12,6 +13,7 @@ import FileUploadForm from '../components/FileUploadForm';
  * Its grid/upload form are shared with the media picker modal (step 03).
  */
 export default function FileManager() {
+    const { t } = useTranslator();
     const [files, setFiles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -24,16 +26,16 @@ export default function FileManager() {
         client
             .get('/admin/files')
             .then(({ data }) => setFiles(data))
-            .catch(() => setError('Impossible de charger les fichiers.'))
+            .catch(() => setError(t('files.loadError')))
             .finally(() => setLoading(false));
-    }, []);
+    }, [t]);
 
     useEffect(() => {
         load();
     }, [load]);
 
     const remove = async (id) => {
-        if (!window.confirm('Supprimer ce fichier ?')) {
+        if (!window.confirm(t('files.confirmDelete'))) {
             return;
         }
         await client.delete(`/admin/files/${id}`);
@@ -41,14 +43,14 @@ export default function FileManager() {
     };
 
     const cleanupUnused = async () => {
-        if (!window.confirm('Supprimer tous les fichiers non utilisés ?')) {
+        if (!window.confirm(t('files.confirmCleanup'))) {
             return;
         }
         setCleaning(true);
         setNotice(null);
         try {
             const { data } = await client.post('/admin/files/cleanup-unused');
-            setNotice(`${data.deleted} fichier(s) supprimé(s).`);
+            setNotice(t('files.cleanupNotice', { count: data.deleted }));
             load();
         } finally {
             setCleaning(false);
@@ -60,7 +62,7 @@ export default function FileManager() {
         setNotice(null);
         try {
             const { data } = await client.post('/admin/files/reoptimize-images');
-            setNotice(`${data.reoptimized} image(s) ré-optimisée(s), ${data.skipped} ignorée(s) (source manquante).`);
+            setNotice(t('files.reoptimizeNotice', { reoptimized: data.reoptimized, skipped: data.skipped }));
             load();
         } finally {
             setReoptimizing(false);
@@ -70,13 +72,13 @@ export default function FileManager() {
     return (
         <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1>Fichiers</h1>
+                <h1>{t('files.title')}</h1>
                 <div className="d-flex gap-2">
                     <Button variant="outline-secondary" size="sm" onClick={reoptimizeImages} disabled={reoptimizing}>
-                        Ré-optimiser toutes les images
+                        {t('files.reoptimizeAll')}
                     </Button>
                     <Button variant="outline-warning" size="sm" onClick={cleanupUnused} disabled={cleaning}>
-                        Supprimer les fichiers non utilisés
+                        {t('files.cleanupUnused')}
                     </Button>
                 </div>
             </div>
@@ -89,13 +91,13 @@ export default function FileManager() {
             {error && <div className="alert alert-danger">{error}</div>}
 
             {loading ? (
-                <p>Chargement...</p>
+                <p>{t('common.loading')}</p>
             ) : (
                 <FileGrid
                     files={files}
                     renderAction={(file) => (
                         <Button size="sm" variant="outline-danger" onClick={() => remove(file.id)}>
-                            Supprimer
+                            {t('common.delete')}
                         </Button>
                     )}
                 />

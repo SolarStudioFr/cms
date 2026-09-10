@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Alert, Button, Card, Form } from 'react-bootstrap';
 import { useAuth } from '../auth/AuthContext';
+import { useTranslator } from '../i18n/TranslationContext';
+import LocaleSwitcher from '../i18n/LocaleSwitcher';
 
 export default function Login() {
     const { login } = useAuth();
+    const { t } = useTranslator();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
@@ -18,7 +21,7 @@ export default function Login() {
         try {
             await login(email, password, rememberMe);
         } catch {
-            setError('Identifiants invalides.');
+            setError(t('login.error'));
         } finally {
             setSubmitting(false);
         }
@@ -26,15 +29,18 @@ export default function Login() {
 
     return (
         <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
+            <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
+                <LocaleSwitcher />
+            </div>
             <Card style={{ width: '24rem' }}>
                 <Card.Body>
-                    <Card.Title className="mb-4">Solar CMS - Administration</Card.Title>
+                    <Card.Title className="mb-4">{t('login.title')}</Card.Title>
 
                     {error && <Alert variant="danger">{error}</Alert>}
 
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3" controlId="loginEmail">
-                            <Form.Label>Email</Form.Label>
+                            <Form.Label>{t('login.email')}</Form.Label>
                             <Form.Control
                                 type="email"
                                 value={email}
@@ -45,7 +51,7 @@ export default function Login() {
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="loginPassword">
-                            <Form.Label>Mot de passe</Form.Label>
+                            <Form.Label>{t('login.password')}</Form.Label>
                             <Form.Control
                                 type="password"
                                 value={password}
@@ -57,14 +63,14 @@ export default function Login() {
                         <Form.Group className="mb-3" controlId="loginRememberMe">
                             <Form.Check
                                 type="checkbox"
-                                label="Rester connecté"
+                                label={t('login.rememberMe')}
                                 checked={rememberMe}
                                 onChange={(e) => setRememberMe(e.target.checked)}
                             />
                         </Form.Group>
 
                         <Button type="submit" variant="primary" className="w-100" disabled={submitting}>
-                            {submitting ? 'Connexion...' : 'Se connecter'}
+                            {submitting ? t('login.submitting') : t('login.submit')}
                         </Button>
                     </Form>
                 </Card.Body>

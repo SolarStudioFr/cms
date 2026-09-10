@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Form, Table } from 'react-bootstrap';
 import client from '../api/client';
 import { useAuth } from '../auth/AuthContext';
+import { useTranslator } from '../i18n/TranslationContext';
 
 const SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
 
@@ -13,6 +14,7 @@ const SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
  */
 export default function UserManager() {
     const { user: currentUser } = useAuth();
+    const { t } = useTranslator();
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [email, setEmail] = useState('');
@@ -40,7 +42,7 @@ export default function UserManager() {
             setPassword('');
             load();
         } catch (err) {
-            setError(err.response?.data?.error ?? "Échec de la création.");
+            setError(err.response?.data?.error ?? t('users.createError'));
         }
     };
 
@@ -58,7 +60,7 @@ export default function UserManager() {
     };
 
     const remove = async (targetUser) => {
-        if (!window.confirm(`Supprimer l'utilisateur "${targetUser.email}" ?`)) {
+        if (!window.confirm(t('users.confirmDelete', { email: targetUser.email }))) {
             return;
         }
         await client.delete(`/admin/users/${targetUser.id}`);
@@ -67,15 +69,15 @@ export default function UserManager() {
 
     return (
         <div>
-            <h1 className="mb-4">Utilisateurs</h1>
+            <h1 className="mb-4">{t('users.title')}</h1>
 
             <Form onSubmit={createUser} className="d-flex align-items-end gap-2 mb-4">
                 <Form.Group controlId="newUserEmail">
-                    <Form.Label>Email</Form.Label>
+                    <Form.Label>{t('users.email')}</Form.Label>
                     <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </Form.Group>
                 <Form.Group controlId="newUserPassword">
-                    <Form.Label>Mot de passe</Form.Label>
+                    <Form.Label>{t('users.password')}</Form.Label>
                     <Form.Control
                         type="password"
                         value={password}
@@ -85,21 +87,21 @@ export default function UserManager() {
                     />
                 </Form.Group>
                 <Button type="submit" variant="primary">
-                    Créer
+                    {t('common.create')}
                 </Button>
             </Form>
             {error && <div className="alert alert-danger">{error}</div>}
 
             {loading ? (
-                <p>Chargement...</p>
+                <p>{t('common.loading')}</p>
             ) : (
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Email</th>
-                            <th>Inscrit le</th>
-                            <th>Vérifié</th>
-                            <th>Super admin</th>
+                            <th>{t('users.email')}</th>
+                            <th>{t('users.registeredAt')}</th>
+                            <th>{t('users.verified')}</th>
+                            <th>{t('users.superAdmin')}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -114,7 +116,7 @@ export default function UserManager() {
                                         role="button"
                                         onClick={() => toggleVerified(targetUser)}
                                     >
-                                        {targetUser.verified ? 'Vérifié' : 'Non vérifié'}
+                                        {targetUser.verified ? t('users.verified') : t('users.notVerified')}
                                     </Badge>
                                 </td>
                                 <td>
@@ -131,7 +133,7 @@ export default function UserManager() {
                                         disabled={targetUser.email === currentUser?.email}
                                         onClick={() => remove(targetUser)}
                                     >
-                                        Supprimer
+                                        {t('common.delete')}
                                     </Button>
                                 </td>
                             </tr>

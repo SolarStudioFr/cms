@@ -1,0 +1,459 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.loading"
+msgstr "Chargement..."
+
+msgid "common.save"
+msgstr "Enregistrer"
+
+msgid "common.cancel"
+msgstr "Annuler"
+
+msgid "common.delete"
+msgstr "Supprimer"
+
+msgid "common.edit"
+msgstr "Éditer"
+
+msgid "common.create"
+msgstr "Créer"
+
+msgid "common.saveError"
+msgstr "Échec de l'enregistrement."
+
+msgid "nav.dashboard"
+msgstr "Dashboard"
+
+msgid "nav.pages"
+msgstr "Pages"
+
+msgid "nav.files"
+msgstr "Fichiers"
+
+msgid "nav.plugins"
+msgstr "Plugins"
+
+msgid "nav.menus"
+msgstr "Menus"
+
+msgid "nav.users"
+msgstr "Utilisateurs"
+
+msgid "nav.langs"
+msgstr "Langues"
+
+msgid "nav.settings"
+msgstr "Configuration"
+
+msgid "nav.adminMenu"
+msgstr "Menu admin"
+
+msgid "login.title"
+msgstr "Solar CMS - Administration"
+
+msgid "login.email"
+msgstr "Email"
+
+msgid "login.password"
+msgstr "Mot de passe"
+
+msgid "login.rememberMe"
+msgstr "Rester connecté"
+
+msgid "login.submit"
+msgstr "Se connecter"
+
+msgid "login.submitting"
+msgstr "Connexion..."
+
+msgid "login.error"
+msgstr "Identifiants invalides."
+
+msgid "dashboard.title"
+msgstr "Dashboard"
+
+msgid "dashboard.logout"
+msgstr "Se déconnecter"
+
+msgid "dashboard.welcome"
+msgstr "Bienvenue dans l'administration."
+
+msgid "files.title"
+msgstr "Fichiers"
+
+msgid "files.reoptimizeAll"
+msgstr "Ré-optimiser toutes les images"
+
+msgid "files.cleanupUnused"
+msgstr "Supprimer les fichiers non utilisés"
+
+msgid "files.loadError"
+msgstr "Impossible de charger les fichiers."
+
+msgid "files.confirmDelete"
+msgstr "Supprimer ce fichier ?"
+
+msgid "files.confirmCleanup"
+msgstr "Supprimer tous les fichiers non utilisés ?"
+
+msgid "files.cleanupNotice"
+msgstr "{{count}} fichier(s) supprimé(s)."
+
+msgid "files.reoptimizeNotice"
+msgstr "{{reoptimized}} image(s) ré-optimisée(s), {{skipped}} ignorée(s) (source manquante)."
+
+msgid "plugins.title"
+msgstr "Plugins"
+
+msgid "plugins.none"
+msgstr "Aucun plugin détecté."
+
+msgid "plugins.name"
+msgstr "Nom"
+
+msgid "plugins.status"
+msgstr "Statut"
+
+msgid "plugins.active"
+msgstr "Actif"
+
+msgid "plugins.disabled"
+msgstr "Désactivé"
+
+msgid "plugins.disable"
+msgstr "Désactiver"
+
+msgid "plugins.enable"
+msgstr "Activer"
+
+msgid "plugins.confirmDelete"
+msgstr "Supprimer définitivement le plugin \"{{label}}\" ? Cette action supprime son dossier et ne peut pas être annulée."
+
+msgid "users.title"
+msgstr "Utilisateurs"
+
+msgid "users.email"
+msgstr "Email"
+
+msgid "users.password"
+msgstr "Mot de passe"
+
+msgid "users.createError"
+msgstr "Échec de la création."
+
+msgid "users.registeredAt"
+msgstr "Inscrit le"
+
+msgid "users.verified"
+msgstr "Vérifié"
+
+msgid "users.notVerified"
+msgstr "Non vérifié"
+
+msgid "users.superAdmin"
+msgstr "Super admin"
+
+msgid "users.confirmDelete"
+msgstr "Supprimer l'utilisateur \"{{email}}\" ?"
+
+msgid "siteConfig.title"
+msgstr "Configuration du site"
+
+msgid "siteConfig.general"
+msgstr "Général"
+
+msgid "siteConfig.siteName"
+msgstr "Nom du site"
+
+msgid "siteConfig.logo"
+msgstr "Logo"
+
+msgid "siteConfig.changeLogo"
+msgstr "Changer le logo"
+
+msgid "siteConfig.chooseLogo"
+msgstr "Choisir un logo"
+
+msgid "siteConfig.favicon"
+msgstr "Favicon"
+
+msgid "siteConfig.changeFavicon"
+msgstr "Changer le favicon"
+
+msgid "siteConfig.chooseFavicon"
+msgstr "Choisir un favicon"
+
+msgid "siteConfig.smtp"
+msgstr "SMTP"
+
+msgid "siteConfig.smtpHost"
+msgstr "Hôte SMTP"
+
+msgid "siteConfig.smtpHostPlaceholder"
+msgstr "laisser vide pour utiliser la configuration par défaut du serveur"
+
+msgid "siteConfig.smtpPort"
+msgstr "Port"
+
+msgid "siteConfig.smtpUser"
+msgstr "Utilisateur"
+
+msgid "siteConfig.smtpPassword"
+msgstr "Mot de passe"
+
+msgid "siteConfig.smtpEncryption"
+msgstr "Chiffrement"
+
+msgid "siteConfig.encryptionUnspecified"
+msgstr "Non précisé"
+
+msgid "siteConfig.encryptionNone"
+msgstr "Aucun"
+
+msgid "siteConfig.saved"
+msgstr "Configuration enregistrée."
+
+msgid "siteConfig.testMail"
+msgstr "Tester l'envoi d'email"
+
+msgid "siteConfig.testMailPlaceholder"
+msgstr "destinataire@example.com"
+
+msgid "siteConfig.sendTest"
+msgstr "Envoyer un test"
+
+msgid "siteConfig.testMailSuccess"
+msgstr "Email de test envoyé."
+
+msgid "siteConfig.testMailFailure"
+msgstr "Échec : {{error}}"
+
+msgid "siteConfig.cache"
+msgstr "Cache"
+
+msgid "siteConfig.clearingCache"
+msgstr "Vidage en cours..."
+
+msgid "siteConfig.clearCache"
+msgstr "Vider le cache"
+
+msgid "siteConfig.cacheCleared"
+msgstr "Cache vidé."
+
+msgid "siteConfig.cacheFailure"
+msgstr "Échec : {{error}}"
+
+msgid "menus.title"
+msgstr "Menus"
+
+msgid "menus.create"
+msgstr "Créer un menu"
+
+msgid "menus.none"
+msgstr "Aucun menu créé."
+
+msgid "menus.name"
+msgstr "Nom"
+
+msgid "menus.hook"
+msgstr "Hook"
+
+msgid "menus.items"
+msgstr "Éléments"
+
+msgid "menus.notAttached"
+msgstr "Non attaché"
+
+msgid "menus.confirmDelete"
+msgstr "Supprimer le menu \"{{name}}\" ?"
+
+msgid "menuForm.editTitle"
+msgstr "Modifier le menu"
+
+msgid "menuForm.newTitle"
+msgstr "Nouveau menu"
+
+msgid "menuForm.loadError"
+msgstr "Impossible de charger le menu."
+
+msgid "menuForm.name"
+msgstr "Nom"
+
+msgid "menuForm.hook"
+msgstr "Attaché au hook"
+
+msgid "menuForm.noHooks"
+msgstr "Le thème actif ne déclare aucun hook (template/default/theme.json)."
+
+msgid "menuForm.items"
+msgstr "Éléments"
+
+msgid "menuItemsEditor.addLink"
+msgstr "Ajouter un lien"
+
+msgid "menuItemsEditor.addSeparator"
+msgstr "Ajouter un séparateur"
+
+msgid "menuItemsEditor.empty"
+msgstr "Aucun élément dans ce menu."
+
+msgid "menuItemsEditor.separator"
+msgstr "— Séparateur —"
+
+msgid "menuItemsEditor.labelPlaceholder"
+msgstr "Libellé"
+
+msgid "menuItemsEditor.urlPlaceholder"
+msgstr "URL (ex: /pages, https://...)"
+
+msgid "menuItemsEditor.sameTab"
+msgstr "Même onglet"
+
+msgid "menuItemsEditor.newTab"
+msgstr "Nouvel onglet"
+
+msgid "adminMenuSettings.title"
+msgstr "Menu admin"
+
+msgid "adminMenuSettings.description"
+msgstr "Choisissez l'ordre d'affichage des entrées de la navigation admin et insérez des séparateurs. Les entrées non placées ci-dessous restent affichées, à leur position par défaut, en fin de menu."
+
+msgid "adminMenuSettings.saved"
+msgstr "Ordre enregistré."
+
+msgid "adminMenuSettings.addItem"
+msgstr "Ajouter un élément"
+
+msgid "adminMenuSettings.addSeparator"
+msgstr "Ajouter un séparateur"
+
+msgid "adminMenuSettings.empty"
+msgstr "Aucun ordre configuré - le menu admin utilise l'ordre par défaut."
+
+msgid "adminMenuSettings.separator"
+msgstr "— Séparateur —"
+
+msgid "adminMenuSettings.remove"
+msgstr "Retirer"
+
+msgid "pages.title"
+msgstr "Pages"
+
+msgid "pages.create"
+msgstr "Créer une page"
+
+msgid "pages.titleColumn"
+msgstr "Titre"
+
+msgid "pages.createdAt"
+msgstr "Créée le"
+
+msgid "pages.status"
+msgstr "Statut"
+
+msgid "pages.archive"
+msgstr "Archiver"
+
+msgid "pages.confirmDelete"
+msgstr "Supprimer cette page ?"
+
+msgid "pageForm.editTitle"
+msgstr "Modifier la page"
+
+msgid "pageForm.newTitle"
+msgstr "Nouvelle page"
+
+msgid "pageForm.loadError"
+msgstr "Impossible de charger la page."
+
+msgid "pageForm.loadingEditor"
+msgstr "Chargement de l'éditeur..."
+
+msgid "pageForm.identity"
+msgstr "Identité"
+
+msgid "pageForm.titleField"
+msgstr "Titre"
+
+msgid "pageForm.slug"
+msgstr "Slug"
+
+msgid "pageForm.slugHint"
+msgstr "Généré automatiquement à partir du titre."
+
+msgid "pageForm.content"
+msgstr "Contenu"
+
+msgid "pageForm.contentPlaceholder"
+msgstr "Contenu de la page..."
+
+msgid "pageForm.seo"
+msgstr "S.E.O. & réseaux sociaux"
+
+msgid "pageForm.seoTitle"
+msgstr "Titre S.E.O."
+
+msgid "pageForm.metaDescription"
+msgstr "Meta description"
+
+msgid "pageForm.ogImage"
+msgstr "Image OG"
+
+msgid "pageForm.noImageSelected"
+msgstr "Aucune image sélectionnée."
+
+msgid "pageForm.changeImage"
+msgstr "Changer l'image"
+
+msgid "pageForm.chooseImage"
+msgstr "Choisir une image"
+
+msgid "pageForm.chooseOgImageTitle"
+msgstr "Choisir une image OG"
+
+msgid "pageForm.ogType"
+msgstr "Type OG"
+
+msgid "pageForm.canonicalUrl"
+msgstr "URL canonique"
+
+msgid "pageForm.publication"
+msgstr "Publication"
+
+msgid "pageForm.status"
+msgstr "Statut"
+
+msgid "pageForm.statusDraft"
+msgstr "Brouillon"
+
+msgid "pageForm.statusPublished"
+msgstr "Publiée"
+
+msgid "pageForm.statusArchived"
+msgstr "Archivée"
+
+msgid "pageForm.featuredImage"
+msgstr "Image à la une"
+
+msgid "pageForm.chooseFeaturedImageTitle"
+msgstr "Choisir une image à la une"
+
+msgid "fileGrid.empty"
+msgstr "Aucun fichier."
+
+msgid "fileUpload.error"
+msgstr "Échec de l'envoi du fichier."
+
+msgid "fileUpload.submit"
+msgstr "Envoyer"
+
+msgid "mediaPicker.chooseFile"
+msgstr "Choisir un fichier"
+
+msgid "mediaPicker.choose"
+msgstr "Choisir"
+
+msgid "richTextEditor.insertImage"
+msgstr "Insérer une image"

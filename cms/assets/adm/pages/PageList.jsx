@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import client from '../api/client';
+import { useTranslator } from '../i18n/TranslationContext';
 
 const STATUS_VARIANT = {
     draft: 'secondary',
@@ -9,7 +10,14 @@ const STATUS_VARIANT = {
     archived: 'dark',
 };
 
+const STATUS_KEY = {
+    draft: 'pageForm.statusDraft',
+    published: 'pageForm.statusPublished',
+    archived: 'pageForm.statusArchived',
+};
+
 export default function PageList() {
+    const { t } = useTranslator();
     const [pages, setPages] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -35,7 +43,7 @@ export default function PageList() {
     };
 
     const remove = async (id) => {
-        if (!window.confirm('Supprimer cette page ?')) {
+        if (!window.confirm(t('pages.confirmDelete'))) {
             return;
         }
         await client.delete(`/admin/pages/${id}`);
@@ -45,21 +53,21 @@ export default function PageList() {
     return (
         <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1>Pages</h1>
+                <h1>{t('pages.title')}</h1>
                 <Button as={Link} to="/pages/new" variant="primary">
-                    Créer une page
+                    {t('pages.create')}
                 </Button>
             </div>
 
             {loading ? (
-                <p>Chargement...</p>
+                <p>{t('common.loading')}</p>
             ) : (
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Titre</th>
-                            <th>Créée le</th>
-                            <th>Statut</th>
+                            <th>{t('pages.titleColumn')}</th>
+                            <th>{t('pages.createdAt')}</th>
+                            <th>{t('pages.status')}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -70,7 +78,7 @@ export default function PageList() {
                                 <td>{new Date(page.createdAt).toLocaleDateString()}</td>
                                 <td>
                                     <Badge bg={STATUS_VARIANT[page.status] ?? 'secondary'}>
-                                        {page.status}
+                                        {STATUS_KEY[page.status] ? t(STATUS_KEY[page.status]) : page.status}
                                     </Badge>
                                 </td>
                                 <td>
@@ -81,7 +89,7 @@ export default function PageList() {
                                         variant="outline-secondary"
                                         className="me-2"
                                     >
-                                        Éditer
+                                        {t('common.edit')}
                                     </Button>
                                     <Button
                                         size="sm"
@@ -89,10 +97,10 @@ export default function PageList() {
                                         className="me-2"
                                         onClick={() => archive(page.id)}
                                     >
-                                        Archiver
+                                        {t('pages.archive')}
                                     </Button>
                                     <Button size="sm" variant="outline-danger" onClick={() => remove(page.id)}>
-                                        Supprimer
+                                        {t('common.delete')}
                                     </Button>
                                 </td>
                             </tr>

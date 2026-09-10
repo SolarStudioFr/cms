@@ -149,7 +149,7 @@ Ajoutées sur demande explicite de l'utilisateur, hors backlog initial de `../IN
 | ID | Slug | Étape | Statut |
 |----|------|-------|--------|
 | 53 | `i18n-po-symfony-standard` | Remplacer le format PO maison (`TranslationPoConverter`, étape 08) par le standard Symfony (répertoires/`translations/`, nommage `domaine.locale.format`, `TranslatorInterface`) | done |
-| 54 | `i18n-admin-ui-translation` | Traduire l'interface admin elle-même (FR + EN), bouton de changement de langue dans l'administration | on-hold |
+| 54 | `i18n-admin-ui-translation` | Traduire l'interface admin elle-même (FR + EN), bouton de changement de langue dans l'administration | done |
 | 55 | `i18n-site-config-languages` | Section "Langues" dans Configuration (admin) : langues disponibles + langues activées côté site public | on-hold |
 | 56 | `i18n-public-ui-translation` | Traduire l'interface du site public (FR + EN), menu public de changement de langue (masqué si une seule langue active) | on-hold |
 | 57 | `i18n-per-plugin-language-files` | Fichiers de langue (FR + EN) pour chacun des plugins restants (Réalisations, Actualités, Accueil, Newsletter, Page builder, Statistiques) | on-hold |

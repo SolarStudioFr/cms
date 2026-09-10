@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Button, Form, Spinner } from 'react-bootstrap';
 import client from '../api/client';
+import { useTranslator } from '../i18n/TranslationContext';
 
 /** Native file input "accept" hint per File type - server-side still validates the real mime type. */
 const ACCEPT_BY_TYPE = {
@@ -15,6 +16,7 @@ const ACCEPT_BY_TYPE = {
  * the newly created File back via `onUploaded`.
  */
 export default function FileUploadForm({ types, onUploaded }) {
+    const { t } = useTranslator();
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
     const fileInputRef = useRef(null);
@@ -44,7 +46,7 @@ export default function FileUploadForm({ types, onUploaded }) {
             input.value = '';
             onUploaded(data);
         } catch {
-            setError("Échec de l'envoi du fichier.");
+            setError(t('fileUpload.error'));
         } finally {
             setUploading(false);
         }
@@ -55,7 +57,7 @@ export default function FileUploadForm({ types, onUploaded }) {
             <div className="d-flex align-items-center gap-2">
                 <Form.Control type="file" ref={fileInputRef} accept={accept} required style={{ maxWidth: '360px' }} />
                 <Button type="submit" variant="primary" disabled={uploading}>
-                    {uploading ? <Spinner animation="border" size="sm" /> : 'Envoyer'}
+                    {uploading ? <Spinner animation="border" size="sm" /> : t('fileUpload.submit')}
                 </Button>
             </div>
             {error && (

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import client from '../api/client';
+import { useTranslator } from '../i18n/TranslationContext';
 
 /**
  * Menu manager (step 32): lists every admin-defined menu, whether or not
@@ -9,6 +10,7 @@ import client from '../api/client';
  * plugin), same shape as PluginManager/FileManager.
  */
 export default function MenuManager() {
+    const { t } = useTranslator();
     const [menus, setMenus] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -25,7 +27,7 @@ export default function MenuManager() {
     }, [load]);
 
     const remove = async (menu) => {
-        if (!window.confirm(`Supprimer le menu "${menu.name}" ?`)) {
+        if (!window.confirm(t('menus.confirmDelete', { name: menu.name }))) {
             return;
         }
         await client.delete(`/admin/menus/${menu.id}`);
@@ -35,23 +37,23 @@ export default function MenuManager() {
     return (
         <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1>Menus</h1>
+                <h1>{t('menus.title')}</h1>
                 <Button as={Link} to="/menus/new" variant="primary">
-                    Créer un menu
+                    {t('menus.create')}
                 </Button>
             </div>
 
             {loading ? (
-                <p>Chargement...</p>
+                <p>{t('common.loading')}</p>
             ) : menus.length === 0 ? (
-                <p>Aucun menu créé.</p>
+                <p>{t('menus.none')}</p>
             ) : (
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Nom</th>
-                            <th>Hook</th>
-                            <th>Éléments</th>
+                            <th>{t('menus.name')}</th>
+                            <th>{t('menus.hook')}</th>
+                            <th>{t('menus.items')}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -63,7 +65,7 @@ export default function MenuManager() {
                                     {menu.hookName ? (
                                         <Badge bg="success">{menu.hookName}</Badge>
                                     ) : (
-                                        <Badge bg="secondary">Non attaché</Badge>
+                                        <Badge bg="secondary">{t('menus.notAttached')}</Badge>
                                     )}
                                 </td>
                                 <td>{menu.items.length}</td>
@@ -75,10 +77,10 @@ export default function MenuManager() {
                                         variant="outline-secondary"
                                         className="me-2"
                                     >
-                                        Éditer
+                                        {t('common.edit')}
                                     </Button>
                                     <Button size="sm" variant="outline-danger" onClick={() => remove(menu)}>
-                                        Supprimer
+                                        {t('common.delete')}
                                     </Button>
                                 </td>
                             </tr>

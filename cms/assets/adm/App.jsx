@@ -15,10 +15,12 @@ import PageForm from './pages/PageForm';
 import LangManager from './pages/LangManager';
 import Shell from './layout/Shell';
 import usePlugins from './plugins/usePlugins';
+import { TranslationProvider, useTranslator } from './i18n/TranslationContext';
 
 function AdminRoutes() {
     const { user, loading } = useAuth();
     const { plugins, loading: pluginsLoading } = usePlugins(Boolean(user));
+    const { t } = useTranslator();
 
     if (loading) {
         return null;
@@ -33,7 +35,7 @@ function AdminRoutes() {
     // any direct/deep link into a plugin-owned path (e.g. reloading /adm/newsletter)
     // - the route table only grows to include it once usePlugins resolves.
     if (pluginsLoading) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     // Each plugin item is keyed `plugin:<pluginName>` for AdminMenuConfig
@@ -70,10 +72,12 @@ function AdminRoutes() {
 
 export default function App() {
     return (
-        <AuthProvider>
-            <BrowserRouter basename="/adm">
-                <AdminRoutes />
-            </BrowserRouter>
-        </AuthProvider>
+        <TranslationProvider>
+            <AuthProvider>
+                <BrowserRouter basename="/adm">
+                    <AdminRoutes />
+                </BrowserRouter>
+            </AuthProvider>
+        </TranslationProvider>
     );
 }

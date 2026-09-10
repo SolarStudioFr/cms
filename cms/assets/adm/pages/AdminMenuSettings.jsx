@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import staticNavItems from '../layout/staticNavItems';
 import useAdminMenuOrder from '../layout/useAdminMenuOrder';
+import { useTranslator } from '../i18n/TranslationContext';
 
 /**
  * Admin sidebar order settings (step 32 add-on, not part of the original
@@ -15,12 +16,13 @@ import useAdminMenuOrder from '../layout/useAdminMenuOrder';
  */
 export default function AdminMenuSettings({ pluginItems = [] }) {
     const { items: savedOrder, loading, save } = useAdminMenuOrder(true);
+    const { t } = useTranslator();
     const [order, setOrder] = useState([]);
     const [saved, setSaved] = useState(false);
     const dragIndexRef = useRef(null);
 
     const knownItems = [...staticNavItems, ...pluginItems];
-    const labelFor = (key) => knownItems.find((item) => item.key === key)?.label ?? key;
+    const labelFor = (key) => t(knownItems.find((item) => item.key === key)?.label ?? key);
 
     useEffect(() => {
         if (!loading) {
@@ -51,41 +53,36 @@ export default function AdminMenuSettings({ pluginItems = [] }) {
     };
 
     if (loading) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     return (
         <div>
-            <h1 className="mb-4">Menu admin</h1>
-            <p className="text-muted">
-                Choisissez l'ordre d'affichage des entrées de la navigation admin et insérez des séparateurs. Les
-                entrées non placées ci-dessous restent affichées, à leur position par défaut, en fin de menu.
-            </p>
+            <h1 className="mb-4">{t('adminMenuSettings.title')}</h1>
+            <p className="text-muted">{t('adminMenuSettings.description')}</p>
 
-            {saved && <div className="alert alert-success">Ordre enregistré.</div>}
+            {saved && <div className="alert alert-success">{t('adminMenuSettings.saved')}</div>}
 
             <div className="d-flex gap-2 mb-2">
                 <Dropdown>
                     <Dropdown.Toggle variant="outline-primary" size="sm" disabled={0 === available.length}>
-                        Ajouter un élément
+                        {t('adminMenuSettings.addItem')}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         {available.map((item) => (
                             <Dropdown.Item key={item.key} onClick={() => addItem(item.key)}>
-                                {item.label}
+                                {t(item.label)}
                             </Dropdown.Item>
                         ))}
                     </Dropdown.Menu>
                 </Dropdown>
                 <Button variant="outline-secondary" size="sm" onClick={addSeparator}>
-                    Ajouter un séparateur
+                    {t('adminMenuSettings.addSeparator')}
                 </Button>
             </div>
 
             {0 === order.length && (
-                <p className="text-muted border rounded p-3 text-center">
-                    Aucun ordre configuré - le menu admin utilise l'ordre par défaut.
-                </p>
+                <p className="text-muted border rounded p-3 text-center">{t('adminMenuSettings.empty')}</p>
             )}
 
             {order.map((entry, index) => (
@@ -109,19 +106,19 @@ export default function AdminMenuSettings({ pluginItems = [] }) {
                     </strong>
                     <div className="flex-grow-1">
                         {'separator' === entry.type ? (
-                            <span className="text-muted fst-italic">— Séparateur —</span>
+                            <span className="text-muted fst-italic">{t('adminMenuSettings.separator')}</span>
                         ) : (
                             labelFor(entry.key)
                         )}
                     </div>
                     <Button size="sm" variant="outline-danger" onClick={() => removeAt(index)}>
-                        Retirer
+                        {t('adminMenuSettings.remove')}
                     </Button>
                 </div>
             ))}
 
             <Button variant="primary" onClick={handleSave} className="mt-2">
-                Enregistrer
+                {t('common.save')}
             </Button>
         </div>
     );

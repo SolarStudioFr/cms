@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Table } from 'react-bootstrap';
 import client from '../api/client';
+import { useTranslator } from '../i18n/TranslationContext';
 
 /**
  * Plugin manager (step 06): lists every discovered plugin
@@ -8,6 +9,7 @@ import client from '../api/client';
  * Static admin page (not a plugin itself), built on PluginController.
  */
 export default function PluginManager() {
+    const { t } = useTranslator();
     const [plugins, setPlugins] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -29,7 +31,7 @@ export default function PluginManager() {
     };
 
     const remove = async (plugin) => {
-        if (!window.confirm(`Supprimer définitivement le plugin "${plugin.label}" ? Cette action supprime son dossier et ne peut pas être annulée.`)) {
+        if (!window.confirm(t('plugins.confirmDelete', { label: plugin.label }))) {
             return;
         }
         await client.delete(`/admin/plugins/${plugin.name}`);
@@ -38,18 +40,18 @@ export default function PluginManager() {
 
     return (
         <div>
-            <h1 className="mb-4">Plugins</h1>
+            <h1 className="mb-4">{t('plugins.title')}</h1>
 
             {loading ? (
-                <p>Chargement...</p>
+                <p>{t('common.loading')}</p>
             ) : plugins.length === 0 ? (
-                <p>Aucun plugin détecté.</p>
+                <p>{t('plugins.none')}</p>
             ) : (
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Nom</th>
-                            <th>Statut</th>
+                            <th>{t('plugins.name')}</th>
+                            <th>{t('plugins.status')}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -59,7 +61,7 @@ export default function PluginManager() {
                                 <td>{plugin.label}</td>
                                 <td>
                                     <Badge bg={plugin.enabled ? 'success' : 'secondary'}>
-                                        {plugin.enabled ? 'Actif' : 'Désactivé'}
+                                        {plugin.enabled ? t('plugins.active') : t('plugins.disabled')}
                                     </Badge>
                                 </td>
                                 <td>
@@ -69,10 +71,10 @@ export default function PluginManager() {
                                         className="me-2"
                                         onClick={() => toggle(plugin)}
                                     >
-                                        {plugin.enabled ? 'Désactiver' : 'Activer'}
+                                        {plugin.enabled ? t('plugins.disable') : t('plugins.enable')}
                                     </Button>
                                     <Button size="sm" variant="outline-danger" onClick={() => remove(plugin)}>
-                                        Supprimer
+                                        {t('common.delete')}
                                     </Button>
                                 </td>
                             </tr>
