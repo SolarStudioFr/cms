@@ -1,10 +1,16 @@
+import ButtonModule from './ButtonModule';
 import CtaModule from './CtaModule';
 import DownloadModule from './DownloadModule';
+import HeadingModule from './HeadingModule';
 import HeroModule from './HeroModule';
 import ImageModule from './ImageModule';
 import NewsFeedModule from './NewsFeedModule';
+import NewsListModule from './NewsListModule';
 import PortfolioFeedModule from './PortfolioFeedModule';
+import PortfolioListModule from './PortfolioListModule';
+import PricingModule from './PricingModule';
 import ProcessStepsModule from './ProcessStepsModule';
+import ServiceCardModule from './ServiceCardModule';
 import ServicesGridModule from './ServicesGridModule';
 import SliderModule from './SliderModule';
 import TextModule from './TextModule';
@@ -13,8 +19,9 @@ import TrustedByModule from './TrustedByModule';
 /**
  * The builder's module registry (step 10): every block type the canvas can
  * add. Populated incrementally by steps 11-15 (image, slider, download,
- * cta, text) and 40-45 (hero, trusted-by, services grid, process steps,
- * portfolio/news feeds) - each adds one entry here, nothing else in the
+ * cta, text), 40-45 (hero, trusted-by, services grid, process steps,
+ * portfolio/news feeds) and 46-51 (heading, button, service card, pricing,
+ * news/portfolio lists) - each adds one entry here, nothing else in the
  * canvas/renderer needs to change to support a new module type.
  *
  * Each entry: {
@@ -37,6 +44,12 @@ const registry = [
     ProcessStepsModule,
     PortfolioFeedModule,
     NewsFeedModule,
+    HeadingModule,
+    ButtonModule,
+    ServiceCardModule,
+    PricingModule,
+    NewsListModule,
+    PortfolioListModule,
 ];
 
 export default registry;

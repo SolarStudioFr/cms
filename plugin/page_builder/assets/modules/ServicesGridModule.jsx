@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
 import IconPicker from './IconPicker';
-import renderIcon from './renderIcon';
+import renderServiceCard from './serviceCard';
 
 /** Admin editor for one service row: icon (searchable picker), title, description, remove button. */
 function ServiceRow({ service, onChange, onRemove }) {
@@ -77,7 +77,7 @@ function ServicesGridEdit({ props, onChange }) {
     );
 }
 
-/** Registry entry for the builder's Services grid module (step 42). */
+/** Registry entry for the builder's Services grid module (step 42). Card markup shared with the standalone Service card module (step 48) via ./serviceCard. */
 export default {
     type: 'services-grid',
     label: 'Grille des services',
@@ -98,16 +98,7 @@ export default {
         const lead = props.lead ? `<p class="builder-lead">${htmlEscape(props.lead)}</p>` : '';
         const header = eyebrow || title || lead ? `<div class="builder-section-header">${eyebrow}${title}${lead}</div>` : '';
 
-        const cards = services
-            .map(
-                (service) =>
-                    `<div class="builder-service-card">` +
-                    `<div class="builder-service-icon">${renderIcon(service.icon)}</div>` +
-                    `<h3>${htmlEscape(service.title)}</h3>` +
-                    `<p>${htmlEscape(service.description)}</p>` +
-                    `</div>`,
-            )
-            .join('');
+        const cards = services.map((service) => renderServiceCard(service)).join('');
         const grid = cards ? `<div class="builder-services-grid">${cards}</div>` : '';
 
         return `<section class="builder-services">${header}${grid}</section>`;

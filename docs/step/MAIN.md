@@ -127,12 +127,12 @@ Ajoutées sur demande explicite de l'utilisateur, hors backlog initial de `../IN
 | 43 | `builder-module-process-steps` | "Notre approche" : eyebrow, titre, 4 étapes fixes (numéro, titre, description) | done |
 | 44 | `builder-module-portfolio-feed` | Réalisations (dynamique) : eyebrow, titre de section, nombre à afficher, texte du lien "Tout voir", fond de section (blanc/gris doux) | done |
 | 45 | `builder-module-news-feed` | Actualités (dynamique) : mêmes champs que 44 pour les actualités | done |
-| 46 | `builder-module-heading` | Titre : sélection du niveau H1 à H6 + texte | on-hold |
-| 47 | `builder-module-button` | Bouton : texte, URL, couleur (liste Bootstrap), taille, cible (même onglet/nouvel onglet) | on-hold |
-| 48 | `builder-module-service-card` | Service (carte seule) : couleur, icône, titre, description — même forme qu'une carte de 42, isolée | on-hold |
-| 49 | `builder-module-pricing` | Tarifs : 3 cards (titre, tarif, icône, description, options incluses ajoutées/retirées dynamiquement) | on-hold |
-| 50 | `builder-module-news-list` | Liste d'actualités (sans titre/description) : nombre, ordre (récent/ancien), filtre catégorie optionnel | on-hold |
-| 51 | `builder-module-portfolio-list` | Liste de réalisations (sans titre/description) : nombre, ordre, filtre tags optionnel | on-hold |
+| 46 | `builder-module-heading` | Titre : sélection du niveau H1 à H6 + texte | done |
+| 47 | `builder-module-button` | Bouton : texte, URL, couleur (liste Bootstrap), taille, cible (même onglet/nouvel onglet) | done |
+| 48 | `builder-module-service-card` | Service (carte seule) : couleur, icône, titre, description — même forme qu'une carte de 42, isolée | done |
+| 49 | `builder-module-pricing` | Tarifs : 3 cards (titre, tarif, icône, description, options incluses ajoutées/retirées dynamiquement) | done |
+| 50 | `builder-module-news-list` | Liste d'actualités (sans titre/description) : nombre, ordre (récent/ancien), filtre catégorie optionnel | done |
+| 51 | `builder-module-portfolio-list` | Liste de réalisations (sans titre/description) : nombre, ordre, filtre tags optionnel | done |
 
 ## Restructuration : Page et i18n rejoignent le cœur (`cms/*`)
 

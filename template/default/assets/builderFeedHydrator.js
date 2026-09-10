@@ -33,12 +33,12 @@ function itemHtml(feed, item) {
 }
 
 /**
- * Hydrates every builder feed placeholder found under `root` (steps 44/45):
- * the builder produces static HTML once, at save time (see
- * page_builder/renderToHtml.js), but a "latest items" block must always
- * reflect what's published *now* - so its render() only emits a marker
- * (`[data-builder-feed]`) and this function, called after that HTML is
- * injected into the DOM, fetches the live data and fills it in.
+ * Hydrates every builder feed placeholder found under `root` (steps 44/45,
+ * extended by 50/51): the builder produces static HTML once, at save time
+ * (see page_builder/renderToHtml.js), but a "latest items" block must
+ * always reflect what's published *now* - so its render() only emits a
+ * marker (`[data-builder-feed]`) and this function, called after that HTML
+ * is injected into the DOM, fetches the live data and fills it in.
  *
  * Generic on purpose: this file has no dependency on the builder plugin
  * (Module Federation or otherwise) - it just knows how to interpret a
@@ -78,11 +78,29 @@ async function hydrateOne(root, index) {
     }
 
     const count = Math.max(0, parseInt(node.dataset.count, 10) || 0);
+    // Steps 50/51 (list modules) additions - both absent/default for a
+    // plain feed placeholder (steps 44/45), which keeps their behavior
+    // (newest-first, unfiltered) unchanged.
+    const order = 'asc' === node.dataset.order ? 'asc' : 'desc';
+    const categoryId = node.dataset.category || '';
+    const tagIds = node.dataset.tags ? node.dataset.tags.split(',').filter(Boolean) : [];
 
     let html;
     try {
         const { data } = await client.get(feed.endpoint);
-        const items = (data ?? []).slice(0, count);
+        let items = data ?? [];
+        if (categoryId) {
+            items = items.filter((item) => String(item.category?.id) === categoryId);
+        }
+        if (tagIds.length) {
+            items = items.filter((item) => (item.tags ?? []).some((tag) => tagIds.includes(String(tag.id))));
+        }
+        // The API already returns newest-first (see PublishedPortfolioItemCollectionProvider/
+        // PublishedNewsArticleCollectionProvider) - "oldest first" is just a client-side reversal.
+        if ('asc' === order) {
+            items = [...items].reverse();
+        }
+        items = items.slice(0, count);
         html = items.length
             ? items.map((item) => itemHtml(feed, item)).join('')
             : '<p class="builder-feed-empty">Rien à afficher pour le moment.</p>';
