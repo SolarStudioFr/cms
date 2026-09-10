@@ -761,3 +761,19 @@ Lot autorisé explicitement par l'utilisateur ("Fait les étapes 53 à 58"). Tra
 - Domaine unique `admin` pour tout le cœur statique (pas un domaine par page) : une seule requête réseau par changement de langue plutôt qu'une par page visitée.
 - Interpolation de paramètres réimplémentée en `{{placeholder}}` (pas de dépendance i18n JS supplémentaire) - suffisant pour les seuls cas réels ici (compteurs, noms d'entités dans un message de confirmation).
 - `LangManager.jsx` intentionnellement laissé intact (toujours en français, toujours monté sur `/langs`) : l'étape 55 le remplace entièrement plutôt que de le traduire pour le jeter ensuite.
+
+## 0.36.0 — Étape 55 : `i18n-site-config-languages`
+
+Lot autorisé explicitement par l'utilisateur ("Fait les étapes 53 à 58"). Décision préalablement confirmée avec l'utilisateur (voir doute signalé dans `docs/step/MAIN.md`) : la page dédiée `LangManager.jsx` (étape 07) est **remplacée**, pas doublée, par une nouvelle section "Langues" dans Configuration.
+
+**Réalisé**
+- `cms/assets/adm/components/LanguagesSection.jsx` (nouveau) : reprend la logique de l'ancien `LangManager.jsx` (liste, ajout, bascule active/inactive, suppression - mêmes endpoints `/admin/langs`) mais en composant monté dans `SiteConfig.jsx` (sous "Cache"), traduit (`t()`, domaine `admin`) et avec un libellé de colonne renommé "Statut public" pour clarifier ce que le flag `active` pilote réellement (déjà utilisé par `ActiveLangCollectionProvider`/`GET /api/langs`, inchangé - cette étape ne touche qu'à l'UI admin, pas au comportement déjà en place depuis l'étape 07).
+- `LangManager.jsx` supprimé, ainsi que sa route (`/langs`, `App.jsx`) et son entrée de nav statique (`staticNavItems.js`) - `AdminMenuSettings`/`resolveNavOrder` gèrent déjà silencieusement une clé de config obsolète (`langs`) si un ordre de menu personnalisé y faisait référence (voir la garantie déjà documentée dans `resolveNavOrder.js`, étape 32).
+- `cms/translations/admin.{fr,en}.po` : retrait de `nav.langs` (devenue orpheline), ajout de `common.add` et 13 clés `languages.*`.
+
+**Tests**
+- Aucun changement PHP (aucun nouvel endpoint, `Lang`/`LangRepository`/`ActiveLangCollectionProvider` inchangés) - suite PHPUnit revérifiée verte (130 tests, 461 assertions).
+- **Vérification en navigateur réel** : section "Langues" visible en bas de `/adm/settings`, `fr`/`en` listées avec statut "Active", plus d'entrée "Langues" dans la nav latérale, aucune erreur console après rebuild.
+
+**Décisions**
+- Aucune migration de données nécessaire : la table `lang` et son champ `active` existent depuis l'étape 07 et gardent exactement le même sens: seule l'UI qui les pilote a changé d'emplacement.

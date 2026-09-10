@@ -16,7 +16,6 @@ export default [
     { key: 'plugins', label: 'nav.plugins', path: '/plugins' },
     { key: 'menus', label: 'nav.menus', path: '/menus' },
     { key: 'users', label: 'nav.users', path: '/users' },
-    { key: 'langs', label: 'nav.langs', path: '/langs' },
     { key: 'settings', label: 'nav.settings', path: '/settings' },
     { key: 'admin-menu', label: 'nav.adminMenu', path: '/admin-menu' },
 ];

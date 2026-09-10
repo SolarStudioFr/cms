@@ -23,6 +23,9 @@ msgstr "Create"
 msgid "common.saveError"
 msgstr "Failed to save."
 
+msgid "common.add"
+msgstr "Add"
+
 msgid "nav.dashboard"
 msgstr "Dashboard"
 
@@ -40,9 +43,6 @@ msgstr "Menus"
 
 msgid "nav.users"
 msgstr "Users"
-
-msgid "nav.langs"
-msgstr "Languages"
 
 msgid "nav.settings"
 msgstr "Settings"
@@ -457,3 +457,42 @@ msgstr "Choose"
 
 msgid "richTextEditor.insertImage"
 msgstr "Insert an image"
+
+msgid "languages.title"
+msgstr "Languages"
+
+msgid "languages.description"
+msgstr "Languages available for the site and its administration. An \"active\" language is offered publicly (public site language switcher, step 56)."
+
+msgid "languages.code"
+msgstr "Code"
+
+msgid "languages.codePlaceholder"
+msgstr "e.g. de"
+
+msgid "languages.name"
+msgstr "Name"
+
+msgid "languages.namePlaceholder"
+msgstr "e.g. Deutsch"
+
+msgid "languages.publicStatus"
+msgstr "Public status"
+
+msgid "languages.active"
+msgstr "Active"
+
+msgid "languages.inactive"
+msgstr "Inactive"
+
+msgid "languages.activate"
+msgstr "Activate"
+
+msgid "languages.deactivate"
+msgstr "Deactivate"
+
+msgid "languages.addError"
+msgstr "Failed to add (code already in use?)."
+
+msgid "languages.confirmDelete"
+msgstr "Delete language \"{{label}}\"?"

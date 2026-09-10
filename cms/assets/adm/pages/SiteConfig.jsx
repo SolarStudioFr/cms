@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Image } from 'react-bootstrap';
 import client from '../api/client';
 import MediaPicker from '../components/MediaPicker';
+import LanguagesSection from '../components/LanguagesSection';
 import { useTranslator } from '../i18n/TranslationContext';
 
 /**
@@ -176,6 +177,10 @@ export default function SiteConfig() {
                     {cacheResult.success ? t('siteConfig.cacheCleared') : t('siteConfig.cacheFailure', { error: cacheResult.error })}
                 </div>
             )}
+
+            <div className="mt-4">
+                <LanguagesSection />
+            </div>
 
             <MediaPicker
                 show={Boolean(pickerField)}

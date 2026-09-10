@@ -1,14 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Form, Table } from 'react-bootstrap';
 import client from '../api/client';
+import { useTranslator } from '../i18n/TranslationContext';
 
 /**
- * Admin language manager (step 07): lists every Lang, lets the admin add
- * one, toggle it active/inactive, or delete it. Simple enough (2 editable
- * fields + a flag) that it doesn't need a separate create/edit route like
- * PageForm.
+ * Available/active site languages (step 55): folded into Configuration
+ * rather than kept as its own admin page (step 07's LangManager, now
+ * removed) - the user's explicit choice was one combined UI rather than
+ * two ("add/remove a language" and "toggle its public activation" used to
+ * be conceptually separate concerns but are shown together here). Still
+ * backed by the same Lang entity/`/admin/langs` endpoints from step 07;
+ * `active` already meant "listed by the public GET /api/langs" before this
+ * step (see ActiveLangCollectionProvider) - this section is the only UI
+ * left that can flip it.
  */
-export default function LangManager() {
+export default function LanguagesSection() {
+    const { t } = useTranslator();
     const [langs, setLangs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [code, setCode] = useState('');
@@ -36,7 +43,7 @@ export default function LangManager() {
             setLabel('');
             load();
         } catch {
-            setError("Échec de l'ajout (code déjà utilisé ?).");
+            setError(t('languages.addError'));
         }
     };
 
@@ -50,7 +57,7 @@ export default function LangManager() {
     };
 
     const remove = async (lang) => {
-        if (!window.confirm(`Supprimer la langue "${lang.label}" ?`)) {
+        if (!window.confirm(t('languages.confirmDelete', { label: lang.label }))) {
             return;
         }
         await client.delete(`/admin/langs/${lang.id}`);
@@ -59,46 +66,47 @@ export default function LangManager() {
 
     return (
         <div>
-            <h1 className="mb-4">Langues</h1>
+            <h2 className="h5">{t('languages.title')}</h2>
+            <p className="text-muted small">{t('languages.description')}</p>
 
-            <Form onSubmit={addLang} className="d-flex align-items-end gap-2 mb-4">
+            <Form onSubmit={addLang} className="d-flex align-items-end gap-2 mb-3">
                 <Form.Group controlId="langCode">
-                    <Form.Label>Code</Form.Label>
+                    <Form.Label>{t('languages.code')}</Form.Label>
                     <Form.Control
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
-                        placeholder="ex. de"
+                        placeholder={t('languages.codePlaceholder')}
                         maxLength={10}
                         required
                         style={{ width: '100px' }}
                     />
                 </Form.Group>
                 <Form.Group controlId="langLabel">
-                    <Form.Label>Nom</Form.Label>
+                    <Form.Label>{t('languages.name')}</Form.Label>
                     <Form.Control
                         value={label}
                         onChange={(e) => setLabel(e.target.value)}
-                        placeholder="ex. Deutsch"
+                        placeholder={t('languages.namePlaceholder')}
                         required
                         style={{ width: '200px' }}
                     />
                 </Form.Group>
-                <Button type="submit" variant="primary">
-                    Ajouter
+                <Button type="submit" variant="outline-primary">
+                    {t('common.add')}
                 </Button>
             </Form>
 
             {error && <div className="alert alert-danger">{error}</div>}
 
             {loading ? (
-                <p>Chargement...</p>
+                <p>{t('common.loading')}</p>
             ) : (
-                <Table striped bordered hover>
+                <Table striped bordered hover style={{ maxWidth: '640px' }}>
                     <thead>
                         <tr>
-                            <th>Code</th>
-                            <th>Nom</th>
-                            <th>Statut</th>
+                            <th>{t('languages.code')}</th>
+                            <th>{t('languages.name')}</th>
+                            <th>{t('languages.publicStatus')}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -109,7 +117,7 @@ export default function LangManager() {
                                 <td>{lang.label}</td>
                                 <td>
                                     <Badge bg={lang.active ? 'success' : 'secondary'}>
-                                        {lang.active ? 'Active' : 'Inactive'}
+                                        {lang.active ? t('languages.active') : t('languages.inactive')}
                                     </Badge>
                                 </td>
                                 <td>
@@ -119,10 +127,10 @@ export default function LangManager() {
                                         className="me-2"
                                         onClick={() => toggleActive(lang)}
                                     >
-                                        {lang.active ? 'Désactiver' : 'Activer'}
+                                        {lang.active ? t('languages.deactivate') : t('languages.activate')}
                                     </Button>
                                     <Button size="sm" variant="outline-danger" onClick={() => remove(lang)}>
-                                        Supprimer
+                                        {t('common.delete')}
                                     </Button>
                                 </td>
                             </tr>

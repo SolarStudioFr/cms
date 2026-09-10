@@ -1,7 +1,6 @@
 # Étape 55 — Langues dans la Configuration du site
 
-> Statut : **on-hold**. Fait partie du découpage documenté dans `../MAIN.md`. Ajoutée sur demande explicite de l'utilisateur, hors backlog initial de `../../INIT_ETAPES.md` — spécification complète dans `../../REFORGE_PLUGINS_AND_I18N.md` (section "i18n").
-> Ne pas démarrer sans demande explicite de l'utilisateur.
+> Statut : **done**. Fait partie du découpage documenté dans `../MAIN.md`. Ajoutée sur demande explicite de l'utilisateur, hors backlog initial de `../../INIT_ETAPES.md` — spécification complète dans `../../REFORGE_PLUGINS_AND_I18N.md` (section "i18n").
 
 **Fonctionnalité** : Refonte du multilinguisme (i18n)
 **Slug** : `i18n-site-config-languages`
@@ -19,15 +18,15 @@ Dépend de 52 (i18n dans `cms/*`, entité `Lang` existante). Voir "Notes ouverte
 Protocole générique documenté dans `../action/`. Cases à cocher pour cette étape une
 fois le travail démarré :
 
-- [ ] 1. Lire `docs/RELEASE.md`
-- [ ] 2. Réaliser le travail
-- [ ] 3. Commenter le code en anglais
-- [ ] 4. Tester avec PHPUnit (aucune dépréciation)
-- [ ] 5. Monter la version (`cms/composer.json` + `cms/.env`)
-- [ ] 6. Journaliser dans `docs/RELEASE.md`
-- [ ] 7. Commit puis push
-- [ ] 8. Rapport à l'utilisateur + validation avant l'étape suivante
+- [x] 1. Lire `docs/RELEASE.md`
+- [x] 2. Réaliser le travail
+- [x] 3. Commenter le code en anglais
+- [x] 4. Tester avec PHPUnit (aucune dépréciation)
+- [x] 5. Monter la version (`cms/composer.json` + `cms/.env`)
+- [x] 6. Journaliser dans `docs/RELEASE.md`
+- [x] 7. Commit puis push
+- [x] 8. Rapport à l'utilisateur + validation avant l'étape suivante
 
 ## Journal de l'étape
 
-_(vide — à compléter pendant le déroulement de l'étape)_
+Voir `docs/RELEASE.md` 0.36.0. Résumé : `LangManager.jsx` remplacé (choix confirmé par l'utilisateur) par `LanguagesSection.jsx`, montée dans `SiteConfig.jsx`, même backend `/admin/langs` inchangé.

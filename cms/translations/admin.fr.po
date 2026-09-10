@@ -23,6 +23,9 @@ msgstr "Créer"
 msgid "common.saveError"
 msgstr "Échec de l'enregistrement."
 
+msgid "common.add"
+msgstr "Ajouter"
+
 msgid "nav.dashboard"
 msgstr "Dashboard"
 
@@ -40,9 +43,6 @@ msgstr "Menus"
 
 msgid "nav.users"
 msgstr "Utilisateurs"
-
-msgid "nav.langs"
-msgstr "Langues"
 
 msgid "nav.settings"
 msgstr "Configuration"
@@ -457,3 +457,42 @@ msgstr "Choisir"
 
 msgid "richTextEditor.insertImage"
 msgstr "Insérer une image"
+
+msgid "languages.title"
+msgstr "Langues"
+
+msgid "languages.description"
+msgstr "Langues disponibles pour le site et son administration. Une langue \"active\" est proposée publiquement (sélecteur de langue du site public, étape 56)."
+
+msgid "languages.code"
+msgstr "Code"
+
+msgid "languages.codePlaceholder"
+msgstr "ex. de"
+
+msgid "languages.name"
+msgstr "Nom"
+
+msgid "languages.namePlaceholder"
+msgstr "ex. Deutsch"
+
+msgid "languages.publicStatus"
+msgstr "Statut public"
+
+msgid "languages.active"
+msgstr "Active"
+
+msgid "languages.inactive"
+msgstr "Inactive"
+
+msgid "languages.activate"
+msgstr "Activer"
+
+msgid "languages.deactivate"
+msgstr "Désactiver"
+
+msgid "languages.addError"
+msgstr "Échec de l'ajout (code déjà utilisé ?)."
+
+msgid "languages.confirmDelete"
+msgstr "Supprimer la langue \"{{label}}\" ?"
