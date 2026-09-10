@@ -10,6 +10,10 @@ import SiteConfig from './pages/SiteConfig';
 import MenuManager from './pages/MenuManager';
 import MenuForm from './pages/MenuForm';
 import AdminMenuSettings from './pages/AdminMenuSettings';
+import PageList from './pages/PageList';
+import PageForm from './pages/PageForm';
+import LangManager from './pages/LangManager';
+import TranslationManager from './pages/TranslationManager';
 import Shell from './layout/Shell';
 import usePlugins from './plugins/usePlugins';
 
@@ -27,7 +31,7 @@ function AdminRoutes() {
 
     // Rendering <Routes> before plugin routes are known would make react-router
     // log a spurious "No routes matched location" warning (and briefly 404) for
-    // any direct/deep link into a plugin-owned path (e.g. reloading /adm/pages)
+    // any direct/deep link into a plugin-owned path (e.g. reloading /adm/newsletter)
     // - the route table only grows to include it once usePlugins resolves.
     if (pluginsLoading) {
         return <p>Chargement...</p>;
@@ -45,12 +49,17 @@ function AdminRoutes() {
         <Routes>
             <Route element={<Shell pluginItems={pluginItems} />}>
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/pages" element={<PageList />} />
+                <Route path="/pages/new" element={<PageForm />} />
+                <Route path="/pages/:id/edit" element={<PageForm />} />
                 <Route path="/files" element={<FileManager />} />
                 <Route path="/plugins" element={<PluginManager />} />
                 <Route path="/menus" element={<MenuManager />} />
                 <Route path="/menus/new" element={<MenuForm />} />
                 <Route path="/menus/:id/edit" element={<MenuForm />} />
                 <Route path="/users" element={<UserManager />} />
+                <Route path="/langs" element={<LangManager />} />
+                <Route path="/translations" element={<TranslationManager />} />
                 <Route path="/settings" element={<SiteConfig />} />
                 <Route path="/admin-menu" element={<AdminMenuSettings pluginItems={pluginItems} />} />
                 {pluginRoutes.map(({ path, element: Element }) => (

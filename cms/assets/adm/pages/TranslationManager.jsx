@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Form, Table } from 'react-bootstrap';
-import client from './api/client';
+import client from '../api/client';
 
 /**
  * Admin translation editor (step 08): pick a language + domain, then

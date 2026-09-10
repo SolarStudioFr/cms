@@ -1,13 +1,13 @@
 <?php
 
-namespace Plugin\I18n\Controller\Admin;
+namespace App\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Plugin\I18n\Entity\Lang;
-use Plugin\I18n\Entity\Translation;
-use Plugin\I18n\Repository\LangRepository;
-use Plugin\I18n\Repository\TranslationRepository;
-use Plugin\I18n\Service\TranslationPoConverter;
+use App\Entity\Lang;
+use App\Entity\Translation;
+use App\Repository\LangRepository;
+use App\Repository\TranslationRepository;
+use App\Service\TranslationPoConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -140,7 +140,7 @@ Ajoutées sur demande explicite de l'utilisateur, hors backlog initial de `../IN
 
 | ID | Slug | Étape | Statut |
 |----|------|-------|--------|
-| 52 | `page-i18n-to-core` | `plugin/page` et `plugin/i18n` cessent d'être des plugins et rejoignent `cms/*` (namespace `App\`, plus de manifeste, plus de remote Module Federation) | on-hold |
+| 52 | `page-i18n-to-core` | `plugin/page` et `plugin/i18n` cessent d'être des plugins et rejoignent `cms/*` (namespace `App\`, plus de manifeste, plus de remote Module Federation) | done |
 
 ## Refonte du multilinguisme (i18n)
 

@@ -10,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  * Functional test of the plugin manager backend (step 06): listing
  * (enabled-only vs. every plugin), enable/disable, and delete, through the
  * real HTTP layer. Uses a throwaway plugin directory for the delete test so
- * the real "page" plugin is never actually removed from disk.
+ * the real "portfolio" plugin is never actually removed from disk.
  */
 class PluginAdminApiTest extends WebTestCase
 {
@@ -30,30 +30,30 @@ class PluginAdminApiTest extends WebTestCase
         $client->request('GET', '/api/admin/plugins');
         self::assertResponseIsSuccessful();
         $active = json_decode($client->getResponse()->getContent(), true);
-        self::assertContains('page', array_column($active, 'name'));
+        self::assertContains('portfolio', array_column($active, 'name'));
 
         $client->request('GET', '/api/admin/plugins/all');
         $all = json_decode($client->getResponse()->getContent(), true);
-        $page = current(array_filter($all, static fn (array $p) => 'page' === $p['name']));
+        $page = current(array_filter($all, static fn (array $p) => 'portfolio' === $p['name']));
         self::assertNotFalse($page);
         self::assertTrue($page['enabled']);
 
-        $client->jsonRequest('PATCH', '/api/admin/plugins/page', ['enabled' => false]);
+        $client->jsonRequest('PATCH', '/api/admin/plugins/portfolio', ['enabled' => false]);
         self::assertResponseIsSuccessful();
 
         $client->request('GET', '/api/admin/plugins');
         $active = json_decode($client->getResponse()->getContent(), true);
-        self::assertNotContains('page', array_column($active, 'name'));
+        self::assertNotContains('portfolio', array_column($active, 'name'));
 
         $client->request('GET', '/api/admin/plugins/all');
         $all = json_decode($client->getResponse()->getContent(), true);
-        $page = current(array_filter($all, static fn (array $p) => 'page' === $p['name']));
+        $page = current(array_filter($all, static fn (array $p) => 'portfolio' === $p['name']));
         self::assertFalse($page['enabled']);
 
-        $client->jsonRequest('PATCH', '/api/admin/plugins/page', ['enabled' => true]);
+        $client->jsonRequest('PATCH', '/api/admin/plugins/portfolio', ['enabled' => true]);
         self::assertResponseIsSuccessful();
         $client->request('GET', '/api/admin/plugins');
-        self::assertContains('page', array_column(json_decode($client->getResponse()->getContent(), true), 'name'));
+        self::assertContains('portfolio', array_column(json_decode($client->getResponse()->getContent(), true), 'name'));
     }
 
     public function testDeletingAPluginRemovesItsDirectory(): void

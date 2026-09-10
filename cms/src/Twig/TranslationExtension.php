@@ -1,8 +1,8 @@
 <?php
 
-namespace Plugin\I18n\Twig;
+namespace App\Twig;
 
-use Plugin\I18n\Repository\TranslationRepository;
+use App\Repository\TranslationRepository;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -10,7 +10,7 @@ use Twig\TwigFunction;
  * Public rendering integration for step 08: exposes an `i18n_trans()` Twig
  * function so any theme template can pull translated content out of the
  * translation store. Auto-registered by TwigBundle's extension detection
- * (services.yaml already autoconfigures every Plugin\I18n\ service).
+ * (services.yaml already autoconfigures every App\ service).
  */
 class TranslationExtension extends AbstractExtension
 {

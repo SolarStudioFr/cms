@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\Page\Entity;
+namespace App\Entity;
 
 enum PageStatus: string
 {

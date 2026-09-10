@@ -1,10 +1,10 @@
 <?php
 
-namespace Plugin\I18n\Entity;
+namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Plugin\I18n\Repository\TranslationRepository;
+use App\Repository\TranslationRepository;
 
 /**
  * One translated string (step 08): a (lang, domain, key) triple mapping to

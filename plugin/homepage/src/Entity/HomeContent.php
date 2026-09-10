@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
  * content plugins (Page, Portfolio, News): there is always exactly
  * one row, auto-created on first read by HomeContentProvider, so there's no
  * status/slug/create-or-delete lifecycle to model. `content`/`builderData`
- * follow the same contract as Plugin\Page\Entity\Page: `content` is always
+ * follow the same contract as App\Entity\Page: `content` is always
  * the public-facing HTML, `builderData` is the raw builder JSON kept only
  * so the builder can re-open it for editing.
  */
@@ -61,7 +61,7 @@ class HomeContent
     #[Groups(['home:read', 'home:write'])]
     private string $content = '';
 
-    /** Raw builder JSON, kept alongside `content` so the builder can re-open the homepage for editing - see Plugin\Page\Entity\Page::$builderData. */
+    /** Raw builder JSON, kept alongside `content` so the builder can re-open the homepage for editing - see App\Entity\Page::$builderData. */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['home:read', 'home:write'])]
     private ?string $builderData = null;

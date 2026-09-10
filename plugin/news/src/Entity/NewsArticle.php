@@ -20,7 +20,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 /**
  * A blog/news article (steps 19-20, plugin renamed actualites -> news), same
  * admin/public CRUD shape as Plugin\Portfolio\Entity\PortfolioItem (itself a
- * copy of Plugin\Page\Entity\Page) - see Page for the reasoning behind the
+ * copy of App\Entity\Page) - see Page for the reasoning behind the
  * status/slug/builderData fields and PortfolioItem for the cover image
  * convention (plain URL via the shared media picker, not a File relation).
  */
@@ -93,7 +93,7 @@ class NewsArticle
     #[Groups(['news:read', 'news:write'])]
     private string $content = '';
 
-    /** Raw builder JSON, kept alongside `content` so the builder can re-open an article for editing - see Plugin\Page\Entity\Page::$builderData. */
+    /** Raw builder JSON, kept alongside `content` so the builder can re-open an article for editing - see App\Entity\Page::$builderData. */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['news:read', 'news:write'])]
     private ?string $builderData = null;

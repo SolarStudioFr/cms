@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import client from './api/client';
+import client from '../api/client';
 
 const STATUS_VARIANT = {
     draft: 'secondary',

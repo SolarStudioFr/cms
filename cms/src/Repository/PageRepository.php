@@ -1,11 +1,11 @@
 <?php
 
-namespace Plugin\Page\Repository;
+namespace App\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Plugin\Page\Entity\Page;
-use Plugin\Page\Entity\PageStatus;
+use App\Entity\Page;
+use App\Entity\PageStatus;
 
 /**
  * @extends ServiceEntityRepository<Page>

@@ -52,7 +52,7 @@ export default {
             filename: 'remoteEntry.js',
             exposes: {
                 './AdminModule': './assets/AdminModule.jsx',
-                // Consumed by content plugins (e.g. plugin/page, step 16)
+                // Consumed by content plugins (e.g. the core Page admin form, step 16/52)
                 // as a drop-in replacement for the fallback editor
                 // (RichTextEditor, step 09): same value/onChange(JSON
                 // string) contract.

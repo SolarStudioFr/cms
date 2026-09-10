@@ -1,13 +1,15 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import client from './api/client';
+import client from '../api/client';
+import RichTextEditor from '../components/RichTextEditor';
+import MediaPicker from '../components/MediaPicker';
 
-// Both consumed from other plugins' Module Federation remotes - lazy since
-// resolving a remote container is inherently async.
-const RichTextEditor = lazy(() => import('adm_host/RichTextEditor'));
+// The page builder plugin (step 10-16) is the one dependency still consumed
+// as a real Module Federation remote (see the `page_builder` static remote
+// in the root webpack.config.js) - lazy since resolving a remote container
+// is inherently async.
 const BuilderCanvas = lazy(() => import('page_builder/BuilderCanvas'));
-const MediaPicker = lazy(() => import('adm_host/MediaPicker'));
 
 /** Client-side preview only - the real slug is always recomputed server-side by Page::refreshSlug() on save. */
 function slugPreview(title) {
@@ -213,15 +215,13 @@ export default function PageForm() {
                                             {ogImageUrl ? "Changer l'image" : 'Choisir une image'}
                                         </Button>
                                         {ogPickerOpen && (
-                                            <Suspense fallback={null}>
-                                                <MediaPicker
-                                                    show={ogPickerOpen}
-                                                    onHide={() => setOgPickerOpen(false)}
-                                                    onSelect={(file) => setOgImageUrl(file.url)}
-                                                    types={['img']}
-                                                    title="Choisir une image OG"
-                                                />
-                                            </Suspense>
+                                            <MediaPicker
+                                                show={ogPickerOpen}
+                                                onHide={() => setOgPickerOpen(false)}
+                                                onSelect={(file) => setOgImageUrl(file.url)}
+                                                types={['img']}
+                                                title="Choisir une image OG"
+                                            />
                                         )}
                                     </div>
                                 </Form.Group>
@@ -280,18 +280,16 @@ export default function PageForm() {
                                     {featuredImageUrl ? "Changer l'image" : 'Choisir une image'}
                                 </Button>
                                 {featuredPickerOpen && (
-                                    <Suspense fallback={null}>
-                                        <MediaPicker
-                                            show={featuredPickerOpen}
-                                            onHide={() => setFeaturedPickerOpen(false)}
-                                            onSelect={(file) => {
-                                                setFeaturedImageUrl(file.url);
-                                                setFeaturedImageAlt(featuredImageAlt || file.name);
-                                            }}
-                                            types={['img']}
-                                            title="Choisir une image à la une"
-                                        />
-                                    </Suspense>
+                                    <MediaPicker
+                                        show={featuredPickerOpen}
+                                        onHide={() => setFeaturedPickerOpen(false)}
+                                        onSelect={(file) => {
+                                            setFeaturedImageUrl(file.url);
+                                            setFeaturedImageAlt(featuredImageAlt || file.name);
+                                        }}
+                                        types={['img']}
+                                        title="Choisir une image à la une"
+                                    />
                                 )}
                             </Card.Body>
                         </Card>

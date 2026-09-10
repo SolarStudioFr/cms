@@ -1,13 +1,13 @@
 <?php
 
-namespace Plugin\I18n\State;
+namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use Plugin\I18n\Repository\LangRepository;
+use App\Repository\LangRepository;
 
 /**
- * @implements ProviderInterface<\Plugin\I18n\Entity\Lang>
+ * @implements ProviderInterface<\App\Entity\Lang>
  */
 class ActiveLangCollectionProvider implements ProviderInterface
 {

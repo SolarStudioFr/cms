@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\I18n\Entity;
+namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -9,8 +9,8 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\ORM\Mapping as ORM;
-use Plugin\I18n\Repository\LangRepository;
-use Plugin\I18n\State\ActiveLangCollectionProvider;
+use App\Repository\LangRepository;
+use App\State\ActiveLangCollectionProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 /**

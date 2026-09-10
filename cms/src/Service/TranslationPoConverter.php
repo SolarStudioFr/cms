@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\I18n\Service;
+namespace App\Service;
 
 use Symfony\Component\Translation\Dumper\PoFileDumper;
 use Symfony\Component\Translation\Loader\PoFileLoader;

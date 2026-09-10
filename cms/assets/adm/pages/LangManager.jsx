@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Form, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import client from './api/client';
+import client from '../api/client';
 
 /**
  * Admin language manager (step 07): lists every Lang, lets the admin add
  * one, toggle it active/inactive, or delete it. Simple enough (2 editable
  * fields + a flag) that it doesn't need a separate create/edit route like
- * the Page plugin's PageForm.
+ * PageForm.
  */
 export default function LangManager() {
     const [langs, setLangs] = useState([]);

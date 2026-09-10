@@ -4,8 +4,8 @@ namespace App\Tests\Api;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
-use Plugin\Page\Entity\Page;
-use Plugin\Page\Entity\PageStatus;
+use App\Entity\Page;
+use App\Entity\PageStatus;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class PagePublicApiTest extends WebTestCase

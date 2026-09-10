@@ -32,14 +32,6 @@ services:
     App\:
         resource: '../src/'
 
-    # Page plugin backend, physically located in plugin/page/src/ (see CLAUDE.md).
-    Plugin\Page\:
-        resource: '../../plugin/page/src/'
-
-    # i18n plugin backend, physically located in plugin/i18n/src/.
-    Plugin\I18n\:
-        resource: '../../plugin/i18n/src/'
-
     # Portfolio plugin backend, physically located in plugin/portfolio/src/.
     Plugin\Portfolio\:
         resource: '../../plugin/portfolio/src/'

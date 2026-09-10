@@ -102,18 +102,23 @@ Encore
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
 
-    // Module Federation host: no static remotes (they're discovered and
-    // loaded dynamically at runtime, see cms/assets/adm/plugins/), this
-    // just exposes the __webpack_init_sharing__/__webpack_share_scopes__
+    // Module Federation host: most plugins are discovered and loaded
+    // dynamically at runtime (see cms/assets/adm/plugins/), but the Page
+    // admin form (static since step 52) still needs the page builder
+    // plugin's editor, hence the one static `remotes` entry below. This
+    // plugin also exposes the __webpack_init_sharing__/__webpack_share_scopes__
     // globals that dynamic remote loading needs, with React shared as a
     // singleton so plugin remotes reuse the host's instance. It also
     // exposes a small set of shared admin components (MediaPicker, step 03;
     // RichTextEditor, step 09) so plugins can consume them instead of
     // duplicating them - a plugin remote declares `remotes: { adm_host: ... }`
-    // pointing at this container's filename (see plugin/page/webpack.config.js).
+    // pointing at this container's filename (see plugin/page_builder/webpack.config.js).
     .addPlugin(new webpack.container.ModuleFederationPlugin({
         name: 'adm_host',
         filename: 'admHostRemoteEntry.js',
+        remotes: {
+            page_builder: 'page_builder@/build/plugins/page_builder/remoteEntry.js',
+        },
         exposes: {
             './MediaPicker': './cms/assets/adm/components/MediaPicker.jsx',
             './RichTextEditor': './cms/assets/adm/components/RichTextEditor.jsx',

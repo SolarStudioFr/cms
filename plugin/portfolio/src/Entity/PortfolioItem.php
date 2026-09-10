@@ -21,7 +21,7 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * A portfolio project (steps 17-18, plugin renamed realisations -> portfolio),
- * same admin/public CRUD shape as Plugin\Page\Entity\Page - see that class
+ * same admin/public CRUD shape as App\Entity\Page - see that class
  * for the reasoning behind the status/slug/builderData fields - plus an
  * optional cover image, set via the shared media picker (stored as a plain
  * URL, same convention as the builder's Image/Download modules, not a File
@@ -92,7 +92,7 @@ class PortfolioItem
     #[Groups(['portfolio:read', 'portfolio:write'])]
     private string $content = '';
 
-    /** Raw builder JSON, kept alongside `content` so the builder can re-open a portfolio item for editing - see Plugin\Page\Entity\Page::$builderData. */
+    /** Raw builder JSON, kept alongside `content` so the builder can re-open a portfolio item for editing - see App\Entity\Page::$builderData. */
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['portfolio:read', 'portfolio:write'])]
     private ?string $builderData = null;

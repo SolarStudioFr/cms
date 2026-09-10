@@ -5,7 +5,7 @@ import SubscriberList from './SubscriberList';
 
 /**
  * Contract exposed to the admin host via Module Federation, same shape as
- * every other content plugin (see plugin/page/assets/AdminModule.jsx).
+ * every other content plugin (see plugin/portfolio/assets/AdminModule.jsx).
  */
 export default {
     navItem: {

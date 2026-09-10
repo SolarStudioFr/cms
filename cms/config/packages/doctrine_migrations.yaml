@@ -3,8 +3,11 @@ doctrine_migrations:
         # namespace is arbitrary but should be different from App\Migrations
         # as migrations classes should NOT be autoloaded
         'DoctrineMigrations': '%kernel.project_dir%/migrations'
-        'Plugin\Page\Migrations': '%kernel.project_dir%/../plugin/page/migrations'
-        'Plugin\I18n\Migrations': '%kernel.project_dir%/../plugin/i18n/migrations'
+        # Page and i18n moved into the core (step 52): namespaces kept as-is so
+        # already-applied migration versions stay recognized, only the physical
+        # directory changed (was plugin/page|i18n/migrations).
+        'Plugin\Page\Migrations': '%kernel.project_dir%/migrations/Page'
+        'Plugin\I18n\Migrations': '%kernel.project_dir%/migrations/I18n'
         'Plugin\Portfolio\Migrations': '%kernel.project_dir%/../plugin/portfolio/migrations'
         'Plugin\News\Migrations': '%kernel.project_dir%/../plugin/news/migrations'
         'Plugin\Homepage\Migrations': '%kernel.project_dir%/../plugin/homepage/migrations'

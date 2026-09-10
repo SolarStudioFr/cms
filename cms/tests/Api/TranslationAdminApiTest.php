@@ -4,7 +4,7 @@ namespace App\Tests\Api;
 
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Connection;
-use Plugin\I18n\Service\TranslationPoConverter;
+use App\Service\TranslationPoConverter;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

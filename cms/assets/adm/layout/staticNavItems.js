@@ -7,10 +7,12 @@
  */
 export default [
     { key: 'dashboard', label: 'Dashboard', path: '/' },
+    { key: 'pages', label: 'Pages', path: '/pages' },
     { key: 'files', label: 'Fichiers', path: '/files' },
     { key: 'plugins', label: 'Plugins', path: '/plugins' },
     { key: 'menus', label: 'Menus', path: '/menus' },
     { key: 'users', label: 'Utilisateurs', path: '/users' },
+    { key: 'langs', label: 'Langues', path: '/langs' },
     { key: 'settings', label: 'Configuration', path: '/settings' },
     { key: 'admin-menu', label: 'Menu admin', path: '/admin-menu' },
 ];

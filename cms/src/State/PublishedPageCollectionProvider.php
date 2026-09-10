@@ -1,13 +1,13 @@
 <?php
 
-namespace Plugin\Page\State;
+namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use Plugin\Page\Repository\PageRepository;
+use App\Repository\PageRepository;
 
 /**
- * @implements ProviderInterface<\Plugin\Page\Entity\Page>
+ * @implements ProviderInterface<\App\Entity\Page>
  */
 class PublishedPageCollectionProvider implements ProviderInterface
 {

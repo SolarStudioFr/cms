@@ -1,10 +1,10 @@
 <?php
 
-namespace Plugin\I18n\Repository;
+namespace App\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Plugin\I18n\Entity\Lang;
+use App\Entity\Lang;
 
 /**
  * @extends ServiceEntityRepository<Lang>

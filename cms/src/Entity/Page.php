@@ -1,6 +1,6 @@
 <?php
 
-namespace Plugin\Page\Entity;
+namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
@@ -10,9 +10,9 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Plugin\Page\Repository\PageRepository;
-use Plugin\Page\State\PublishedPageCollectionProvider;
-use Plugin\Page\State\PublishedPageItemProvider;
+use App\Repository\PageRepository;
+use App\State\PublishedPageCollectionProvider;
+use App\State\PublishedPageItemProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 

@@ -4,10 +4,10 @@ namespace App\Tests\Service;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
-use Plugin\I18n\Entity\Translation;
-use Plugin\I18n\Repository\LangRepository;
-use Plugin\I18n\Repository\TranslationRepository;
-use Plugin\I18n\Twig\TranslationExtension;
+use App\Entity\Translation;
+use App\Repository\LangRepository;
+use App\Repository\TranslationRepository;
+use App\Twig\TranslationExtension;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
