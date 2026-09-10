@@ -19,10 +19,13 @@ import useSiteConfig from './useSiteConfig';
 import useMenus from './useMenus';
 import usePlugins from './usePlugins';
 import MenuHook from './MenuHook';
+import { TranslationProvider, useTranslator } from './i18n/TranslationContext';
+import LanguageSwitcher from './i18n/LanguageSwitcher';
 
 /** Right-hand side of the navbar: login/register links, or the current user + logout once authenticated. */
 function AuthNav() {
     const { user, loading, logout } = useAuth();
+    const { t } = useTranslator();
 
     if (loading) {
         return null;
@@ -32,10 +35,10 @@ function AuthNav() {
         return (
             <Nav>
                 <Nav.Link as={Link} to="/login">
-                    Connexion
+                    {t('nav.login')}
                 </Nav.Link>
                 <Nav.Link as={Link} to="/register">
-                    Inscription
+                    {t('nav.register')}
                 </Nav.Link>
             </Nav>
         );
@@ -46,7 +49,7 @@ function AuthNav() {
             <Nav.Link as={Link} to="/profile">
                 {user.email}
             </Nav.Link>
-            <Nav.Link onClick={logout}>Déconnexion</Nav.Link>
+            <Nav.Link onClick={logout}>{t('nav.logout')}</Nav.Link>
         </Nav>
     );
 }
@@ -55,6 +58,7 @@ function AppShell() {
     const siteConfig = useSiteConfig();
     const menus = useMenus();
     const { enabled: enabledPlugins } = usePlugins();
+    const { t } = useTranslator();
 
     return (
         <BrowserRouter>
@@ -66,23 +70,24 @@ function AppShell() {
                     </Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/">
-                            Accueil
+                            {t('nav.home')}
                         </Nav.Link>
                         <Nav.Link as={Link} to="/pages">
-                            Pages
+                            {t('nav.pages')}
                         </Nav.Link>
                         {enabledPlugins.has('portfolio') && (
                             <Nav.Link as={Link} to="/portfolio">
-                                Réalisations
+                                {t('nav.portfolio')}
                             </Nav.Link>
                         )}
                         {enabledPlugins.has('news') && (
                             <Nav.Link as={Link} to="/news">
-                                Actualités
+                                {t('nav.news')}
                             </Nav.Link>
                         )}
                         <MenuHook name="header-menu" menus={menus} />
                     </Nav>
+                    <LanguageSwitcher className="me-2" />
                     <AuthNav />
                 </Container>
             </Navbar>
@@ -92,7 +97,7 @@ function AppShell() {
                     path="/pages"
                     element={
                         <Container className="py-4">
-                            <h1>Pages</h1>
+                            <h1>{t('nav.pages')}</h1>
                             <PageList />
                         </Container>
                     }
@@ -101,7 +106,7 @@ function AppShell() {
                     path="/portfolio"
                     element={
                         <Container className="py-4">
-                            <h1>Réalisations</h1>
+                            <h1>{t('nav.portfolio')}</h1>
                             <PortfolioItemList />
                         </Container>
                     }
@@ -118,7 +123,7 @@ function AppShell() {
                     path="/news"
                     element={
                         <Container className="py-4">
-                            <h1>Actualités</h1>
+                            <h1>{t('nav.news')}</h1>
                             <NewsArticleList />
                         </Container>
                     }
@@ -148,8 +153,10 @@ function AppShell() {
 
 export default function App() {
     return (
-        <AuthProvider>
-            <AppShell />
-        </AuthProvider>
+        <TranslationProvider>
+            <AuthProvider>
+                <AppShell />
+            </AuthProvider>
+        </TranslationProvider>
     );
 }

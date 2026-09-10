@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import client from './api/client';
 import BuilderContent from './BuilderContent';
+import { useTranslator } from './i18n/TranslationContext';
 
 /**
  * Public homepage (step 21): renders the content configured via the
@@ -10,6 +11,7 @@ import BuilderContent from './BuilderContent';
  * homepage just renders as empty rather than erroring.
  */
 export default function Home() {
+    const { t } = useTranslator();
     const [content, setContent] = useState('');
     const [loading, setLoading] = useState(true);
 
@@ -21,11 +23,11 @@ export default function Home() {
     }, []);
 
     if (loading) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     if (!content) {
-        return <p>Bienvenue sur Solar CMS.</p>;
+        return <p>{t('home.welcome')}</p>;
     }
 
     // Admin-authored HTML (fallback editor or builder) - same trust boundary

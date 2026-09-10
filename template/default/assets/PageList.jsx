@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import client from './api/client';
 import BuilderContent from './BuilderContent';
+import { useTranslator } from './i18n/TranslationContext';
 
 export default function PageList() {
+    const { t } = useTranslator();
     const [pages, setPages] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -14,11 +16,11 @@ export default function PageList() {
     }, []);
 
     if (loading) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     if (pages.length === 0) {
-        return <p>Aucune page publiée pour le moment.</p>;
+        return <p>{t('pages.empty')}</p>;
     }
 
     return (

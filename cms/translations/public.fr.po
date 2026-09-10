@@ -1,0 +1,144 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.loading"
+msgstr "Chargement..."
+
+msgid "nav.home"
+msgstr "Accueil"
+
+msgid "nav.pages"
+msgstr "Pages"
+
+msgid "nav.portfolio"
+msgstr "Réalisations"
+
+msgid "nav.news"
+msgstr "Actualités"
+
+msgid "nav.login"
+msgstr "Connexion"
+
+msgid "nav.register"
+msgstr "Inscription"
+
+msgid "nav.logout"
+msgstr "Déconnexion"
+
+msgid "home.welcome"
+msgstr "Bienvenue sur Solar CMS."
+
+msgid "login.title"
+msgstr "Connexion"
+
+msgid "login.email"
+msgstr "Email"
+
+msgid "login.password"
+msgstr "Mot de passe"
+
+msgid "login.submit"
+msgstr "Se connecter"
+
+msgid "login.error"
+msgstr "Email ou mot de passe incorrect."
+
+msgid "login.noAccount"
+msgstr "Pas encore de compte ?"
+
+msgid "login.signUp"
+msgstr "S'inscrire"
+
+msgid "pages.empty"
+msgstr "Aucune page publiée pour le moment."
+
+msgid "portfolio.empty"
+msgstr "Aucune réalisation publiée pour le moment."
+
+msgid "portfolio.notFound"
+msgstr "Réalisation introuvable."
+
+msgid "portfolio.back"
+msgstr "Retour aux réalisations"
+
+msgid "news.empty"
+msgstr "Aucune actualité publiée pour le moment."
+
+msgid "news.notFound"
+msgstr "Actualité introuvable."
+
+msgid "news.back"
+msgstr "Retour aux actualités"
+
+msgid "newsletter.placeholder"
+msgstr "Votre email"
+
+msgid "newsletter.submit"
+msgstr "S'inscrire à la newsletter"
+
+msgid "newsletter.success"
+msgstr "Inscription réussie."
+
+msgid "newsletter.error"
+msgstr "Échec de l'inscription."
+
+msgid "profile.title"
+msgstr "Mon compte"
+
+msgid "profile.emailLabel"
+msgstr "Email :"
+
+msgid "profile.notVerified"
+msgstr "Votre adresse email n'est pas encore vérifiée. Consultez vos emails pour activer votre compte."
+
+msgid "profile.updateSuccess"
+msgstr "Mot de passe mis à jour."
+
+msgid "profile.updateError"
+msgstr "Échec de la mise à jour."
+
+msgid "profile.changePassword"
+msgstr "Changer de mot de passe"
+
+msgid "profile.currentPassword"
+msgstr "Mot de passe actuel"
+
+msgid "profile.newPassword"
+msgstr "Nouveau mot de passe"
+
+msgid "profile.submit"
+msgstr "Mettre à jour"
+
+msgid "register.title"
+msgstr "Inscription"
+
+msgid "register.submit"
+msgstr "S'inscrire"
+
+msgid "register.error"
+msgstr "Échec de l'inscription."
+
+msgid "register.alreadyRegistered"
+msgstr "Déjà inscrit ?"
+
+msgid "register.signIn"
+msgstr "Se connecter"
+
+msgid "register.verificationSent"
+msgstr "Un email de vérification a été envoyé à {{email}}. Cliquez sur le lien qu'il contient pour activer votre compte."
+
+msgid "verifyEmail.title"
+msgstr "Vérification de l'email"
+
+msgid "verifyEmail.checking"
+msgstr "Vérification en cours..."
+
+msgid "verifyEmail.success"
+msgstr "Votre adresse email a été vérifiée. Vous pouvez maintenant"
+
+msgid "verifyEmail.signIn"
+msgstr "vous connecter"
+
+msgid "verifyEmail.error"
+msgstr "Ce lien de vérification est invalide ou déjà utilisé."

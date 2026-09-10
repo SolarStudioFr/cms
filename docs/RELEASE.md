@@ -777,3 +777,22 @@ Lot autorisé explicitement par l'utilisateur ("Fait les étapes 53 à 58"). Dé
 
 **Décisions**
 - Aucune migration de données nécessaire : la table `lang` et son champ `active` existent depuis l'étape 07 et gardent exactement le même sens: seule l'UI qui les pilote a changé d'emplacement.
+
+## 0.37.0 — Étape 56 : `i18n-public-ui-translation`
+
+Lot autorisé explicitement par l'utilisateur ("Fait les étapes 53 à 58"). Traduit l'interface du thème public (FR + EN) et ajoute son sélecteur de langue, masqué automatiquement s'il n'y a qu'une langue active.
+
+**Réalisé**
+- `template/default/assets/i18n/TranslationContext.jsx` : même principe que l'étape 54 côté admin (`TranslationProvider`/`useTranslator()`, catalogue du domaine `public`, `t(key, params?)`, persistance `localStorage` sous `publicLocale`) mais combine aussi la récupération des langues actives (`GET /api/langs`, étape 55) dans le même provider : au montage, la locale stockée est validée contre les codes actifs (repli sur `fr` si absente/inconnue, ou sur le premier code actif si `fr` lui-même n'est pas actif) - un seul fetch partagé entre la validation de la langue et le sélecteur public, pas un hook séparé. Le contexte expose aussi `activeLangs` pour cette raison.
+- `template/default/assets/i18n/LanguageSwitcher.jsx` : un lien par langue active, **rendu `null` si moins de deux langues actives** (exigence explicite de l'étape) - monté dans `App.jsx` à côté de `AuthNav`.
+- `App.jsx` enveloppé dans `TranslationProvider`. Traduction effective de tout le thème : navigation (`Accueil`/`Pages`/`Réalisations`/`Actualités`/`Connexion`/`Inscription`/`Déconnexion`), `Home`, `Login`, `Register`, `Profile`, `VerifyEmail`, `NewsletterSignup`, `PageList`, `PortfolioItemList`/`PortfolioItemDetail`, `NewsArticleList`/`NewsArticleDetail`. `MenuHook.jsx` et `BuilderContent.jsx` n'avaient aucune chaîne statique (contenu entièrement piloté par les données admin) - non modifiés.
+- **Portée volontairement élargie à Portfolio/News côté rendu public** : bien que Portfolio et News restent de vrais plugins (`plugin/portfolio`, `plugin/news`), leurs vues **publiques** (`PortfolioItemList.jsx`, `NewsArticleList.jsx`, etc.) vivent physiquement dans `template/default/assets/` (choix déjà fait aux étapes 17-20, avant même l'existence du mécanisme de plugin dynamique côté public) - donc traitées ici comme chaîne du thème, pas comme fichier de langue de plugin (étape 57, qui couvre le côté **admin** de ces mêmes plugins - `plugin/{portfolio,news}/assets/*.jsx` - resté en français à cette étape, comme prévu).
+- `cms/translations/public.fr.po` / `public.en.po` (nouveaux, ~40 clés), domaine `public`.
+
+**Tests**
+- Aucun changement PHP - suite PHPUnit revérifiée verte (130 tests, 461 assertions).
+- **Vérification en navigateur réel** : sélecteur EN/FR visible (2 langues actives) et fonctionnel sur `/` et `/pages`, persistance après navigation client-side, retombée correcte sur le texte brut pour tout module de plugin non concerné par cette étape, aucune erreur console.
+
+**Décisions**
+- Locale publique et "langue de contenu" (étape 58) partagent délibérément le même état (`locale` du `TranslationContext`) plutôt que deux mécanismes séparés - c'est la réponse déjà confirmée par l'utilisateur à la question posée avant de démarrer ce lot ("le sélecteur d'interface doit-il aussi piloter la langue du contenu affiché ?" → oui).
+- Pas de négociation de langue basée sur `navigator.language` au premier chargement : repli simple sur `fr` (ou la première langue active) - cohérent avec le comportement déjà choisi côté admin (étape 54) plutôt que d'introduire un mécanisme différent entre les deux apps.

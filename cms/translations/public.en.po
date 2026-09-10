@@ -1,0 +1,144 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.loading"
+msgstr "Loading..."
+
+msgid "nav.home"
+msgstr "Home"
+
+msgid "nav.pages"
+msgstr "Pages"
+
+msgid "nav.portfolio"
+msgstr "Portfolio"
+
+msgid "nav.news"
+msgstr "News"
+
+msgid "nav.login"
+msgstr "Log in"
+
+msgid "nav.register"
+msgstr "Sign up"
+
+msgid "nav.logout"
+msgstr "Log out"
+
+msgid "home.welcome"
+msgstr "Welcome to Solar CMS."
+
+msgid "login.title"
+msgstr "Log in"
+
+msgid "login.email"
+msgstr "Email"
+
+msgid "login.password"
+msgstr "Password"
+
+msgid "login.submit"
+msgstr "Log in"
+
+msgid "login.error"
+msgstr "Incorrect email or password."
+
+msgid "login.noAccount"
+msgstr "No account yet?"
+
+msgid "login.signUp"
+msgstr "Sign up"
+
+msgid "pages.empty"
+msgstr "No page published yet."
+
+msgid "portfolio.empty"
+msgstr "No portfolio item published yet."
+
+msgid "portfolio.notFound"
+msgstr "Portfolio item not found."
+
+msgid "portfolio.back"
+msgstr "Back to portfolio"
+
+msgid "news.empty"
+msgstr "No news article published yet."
+
+msgid "news.notFound"
+msgstr "News article not found."
+
+msgid "news.back"
+msgstr "Back to news"
+
+msgid "newsletter.placeholder"
+msgstr "Your email"
+
+msgid "newsletter.submit"
+msgstr "Subscribe to the newsletter"
+
+msgid "newsletter.success"
+msgstr "Subscribed successfully."
+
+msgid "newsletter.error"
+msgstr "Failed to subscribe."
+
+msgid "profile.title"
+msgstr "My account"
+
+msgid "profile.emailLabel"
+msgstr "Email:"
+
+msgid "profile.notVerified"
+msgstr "Your email address isn't verified yet. Check your email to activate your account."
+
+msgid "profile.updateSuccess"
+msgstr "Password updated."
+
+msgid "profile.updateError"
+msgstr "Failed to update."
+
+msgid "profile.changePassword"
+msgstr "Change password"
+
+msgid "profile.currentPassword"
+msgstr "Current password"
+
+msgid "profile.newPassword"
+msgstr "New password"
+
+msgid "profile.submit"
+msgstr "Update"
+
+msgid "register.title"
+msgstr "Sign up"
+
+msgid "register.submit"
+msgstr "Sign up"
+
+msgid "register.error"
+msgstr "Failed to sign up."
+
+msgid "register.alreadyRegistered"
+msgstr "Already registered?"
+
+msgid "register.signIn"
+msgstr "Log in"
+
+msgid "register.verificationSent"
+msgstr "A verification email was sent to {{email}}. Click the link inside it to activate your account."
+
+msgid "verifyEmail.title"
+msgstr "Email verification"
+
+msgid "verifyEmail.checking"
+msgstr "Verifying..."
+
+msgid "verifyEmail.success"
+msgstr "Your email address has been verified. You can now"
+
+msgid "verifyEmail.signIn"
+msgstr "log in"
+
+msgid "verifyEmail.error"
+msgstr "This verification link is invalid or has already been used."

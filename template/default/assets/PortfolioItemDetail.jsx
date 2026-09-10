@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import client from './api/client';
 import BuilderContent from './BuilderContent';
+import { useTranslator } from './i18n/TranslationContext';
 
 /** Public detail view of one published PortfolioItem (step 18). */
 export default function PortfolioItemDetail() {
     const { id } = useParams();
+    const { t } = useTranslator();
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
@@ -21,17 +23,17 @@ export default function PortfolioItemDetail() {
     }, [id]);
 
     if (loading) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     if (notFound || !item) {
-        return <p>Réalisation introuvable.</p>;
+        return <p>{t('portfolio.notFound')}</p>;
     }
 
     return (
         <div>
             <p>
-                <Link to="/portfolio">&larr; Retour aux réalisations</Link>
+                <Link to="/portfolio">&larr; {t('portfolio.back')}</Link>
             </p>
             <h1>{item.title}</h1>
             {item.coverImageUrl && (

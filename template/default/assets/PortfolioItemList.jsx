@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import client from './api/client';
+import { useTranslator } from './i18n/TranslationContext';
 
 /** Public grid of every published PortfolioItem (step 18), same data-fetch shape as PageList. */
 export default function PortfolioItemList() {
+    const { t } = useTranslator();
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -15,11 +17,11 @@ export default function PortfolioItemList() {
     }, []);
 
     if (loading) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     if (items.length === 0) {
-        return <p>Aucune réalisation publiée pour le moment.</p>;
+        return <p>{t('portfolio.empty')}</p>;
     }
 
     return (

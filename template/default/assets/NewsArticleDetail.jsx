@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import client from './api/client';
 import BuilderContent from './BuilderContent';
+import { useTranslator } from './i18n/TranslationContext';
 
 /** Public detail view of one published NewsArticle (step 20). */
 export default function NewsArticleDetail() {
     const { id } = useParams();
+    const { t } = useTranslator();
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
@@ -21,17 +23,17 @@ export default function NewsArticleDetail() {
     }, [id]);
 
     if (loading) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     if (notFound || !article) {
-        return <p>Actualité introuvable.</p>;
+        return <p>{t('news.notFound')}</p>;
     }
 
     return (
         <div>
             <p>
-                <Link to="/news">&larr; Retour aux actualités</Link>
+                <Link to="/news">&larr; {t('news.back')}</Link>
             </p>
             <h1>{article.title}</h1>
             <p className="text-muted">{new Date(article.createdAt).toLocaleDateString()}</p>

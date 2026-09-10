@@ -3,6 +3,7 @@ import { Button, Container, Form } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from './auth/AuthContext';
 import client from './api/client';
+import { useTranslator } from './i18n/TranslationContext';
 
 /**
  * Member profile/account editing (step 27). Password change only - email
@@ -11,6 +12,7 @@ import client from './api/client';
  */
 export default function Profile() {
     const { user, loading, refresh } = useAuth();
+    const { t } = useTranslator();
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [status, setStatus] = useState('idle'); // idle | saving | done | error
@@ -37,27 +39,25 @@ export default function Profile() {
             setStatus('done');
         } catch (err) {
             setStatus('error');
-            setError(err.response?.data?.error ?? 'Échec de la mise à jour.');
+            setError(err.response?.data?.error ?? t('profile.updateError'));
         }
     };
 
     return (
         <Container className="py-4" style={{ maxWidth: '420px' }}>
-            <h1>Mon compte</h1>
-            <p>Email : {user.email}</p>
+            <h1>{t('profile.title')}</h1>
+            <p>{t('profile.emailLabel')} {user.email}</p>
             {!user.verified && (
-                <div className="alert alert-warning">
-                    Votre adresse email n'est pas encore vérifiée. Consultez vos emails pour activer votre compte.
-                </div>
+                <div className="alert alert-warning">{t('profile.notVerified')}</div>
             )}
 
             {error && <div className="alert alert-danger">{error}</div>}
-            {'done' === status && <div className="alert alert-success">Mot de passe mis à jour.</div>}
+            {'done' === status && <div className="alert alert-success">{t('profile.updateSuccess')}</div>}
 
-            <h2 className="h5 mt-4">Changer de mot de passe</h2>
+            <h2 className="h5 mt-4">{t('profile.changePassword')}</h2>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="profileCurrentPassword">
-                    <Form.Label>Mot de passe actuel</Form.Label>
+                    <Form.Label>{t('profile.currentPassword')}</Form.Label>
                     <Form.Control
                         type="password"
                         value={currentPassword}
@@ -66,7 +66,7 @@ export default function Profile() {
                     />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="profileNewPassword">
-                    <Form.Label>Nouveau mot de passe</Form.Label>
+                    <Form.Label>{t('profile.newPassword')}</Form.Label>
                     <Form.Control
                         type="password"
                         value={newPassword}
@@ -76,7 +76,7 @@ export default function Profile() {
                     />
                 </Form.Group>
                 <Button type="submit" variant="primary" disabled={'saving' === status}>
-                    Mettre à jour
+                    {t('profile.submit')}
                 </Button>
             </Form>
         </Container>

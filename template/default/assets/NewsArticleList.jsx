@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import client from './api/client';
+import { useTranslator } from './i18n/TranslationContext';
 
 /** Public list of every published NewsArticle (step 20), same data-fetch shape as PortfolioItemList. */
 export default function NewsArticleList() {
+    const { t } = useTranslator();
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -15,11 +17,11 @@ export default function NewsArticleList() {
     }, []);
 
     if (loading) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     if (articles.length === 0) {
-        return <p>Aucune actualité publiée pour le moment.</p>;
+        return <p>{t('news.empty')}</p>;
     }
 
     return (
