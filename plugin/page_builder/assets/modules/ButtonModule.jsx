@@ -1,18 +1,21 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
+import useDomainTranslator from '../useDomainTranslator';
 
 const COLORS = ['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'dark'];
-const SIZES = { small: 'Petit', medium: 'Moyen', large: 'Grand' };
-const TARGETS = { self: 'Même onglet', blank: 'Nouvel onglet' };
+const SIZES = { small: 'module.button.sizeSmall', medium: 'module.button.sizeMedium', large: 'module.button.sizeLarge' };
+const TARGETS = { self: 'module.button.targetSelf', blank: 'module.button.targetBlank' };
 
 /** Admin editor for one Button block (step 47): label, URL, Bootstrap color, size, link target. */
 function ButtonEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
+
     return (
         <div className="d-flex flex-column gap-2">
             <Form.Control
                 size="sm"
-                placeholder="Texte du bouton"
+                placeholder={t('module.buttonText')}
                 value={props.text}
                 onChange={(event) => onChange({ ...props, text: event.target.value })}
             />
@@ -31,16 +34,16 @@ function ButtonEdit({ props, onChange }) {
                     ))}
                 </Form.Select>
                 <Form.Select size="sm" value={props.size} onChange={(event) => onChange({ ...props, size: event.target.value })}>
-                    {Object.entries(SIZES).map(([value, label]) => (
+                    {Object.entries(SIZES).map(([value, key]) => (
                         <option key={value} value={value}>
-                            {label}
+                            {t(key)}
                         </option>
                     ))}
                 </Form.Select>
                 <Form.Select size="sm" value={props.target} onChange={(event) => onChange({ ...props, target: event.target.value })}>
-                    {Object.entries(TARGETS).map(([value, label]) => (
+                    {Object.entries(TARGETS).map(([value, key]) => (
                         <option key={value} value={value}>
-                            {label}
+                            {t(key)}
                         </option>
                     ))}
                 </Form.Select>
@@ -52,7 +55,7 @@ function ButtonEdit({ props, onChange }) {
 /** Registry entry for the builder's Button module (step 47). */
 export default {
     type: 'button',
-    label: 'Bouton',
+    label: 'module.button.label',
     defaultProps: { text: '', url: '', color: 'primary', size: 'medium', target: 'self' },
     Edit: ButtonEdit,
     /**

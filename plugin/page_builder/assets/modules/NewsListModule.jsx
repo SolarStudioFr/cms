@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
 import client from './api/client';
+import useDomainTranslator from '../useDomainTranslator';
 
-const ORDERS = { desc: 'Plus récent en premier', asc: 'Plus ancien en premier' };
+const ORDERS = { desc: 'module.list.orderDesc', asc: 'module.list.orderAsc' };
 
 /**
  * Admin editor for one News list block (step 50): display options only, no
@@ -15,6 +16,7 @@ const ORDERS = { desc: 'Plus récent en premier', asc: 'Plus ancien en premier' 
  * plugin were ever removed.
  */
 function NewsListEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -27,7 +29,7 @@ function NewsListEdit({ props, onChange }) {
     return (
         <div className="d-flex flex-column gap-2">
             <Form.Group className="d-flex align-items-center gap-2">
-                <Form.Label className="mb-0 small">Nombre d'articles</Form.Label>
+                <Form.Label className="mb-0 small">{t('module.list.articleCount')}</Form.Label>
                 <Form.Control
                     type="number"
                     size="sm"
@@ -44,9 +46,9 @@ function NewsListEdit({ props, onChange }) {
                 value={props.order}
                 onChange={(event) => onChange({ ...props, order: event.target.value })}
             >
-                {Object.entries(ORDERS).map(([value, label]) => (
+                {Object.entries(ORDERS).map(([value, key]) => (
                     <option key={value} value={value}>
-                        {label}
+                        {t(key)}
                     </option>
                 ))}
             </Form.Select>
@@ -56,7 +58,7 @@ function NewsListEdit({ props, onChange }) {
                 value={props.categoryId}
                 onChange={(event) => onChange({ ...props, categoryId: event.target.value })}
             >
-                <option value="">Toutes les catégories</option>
+                <option value="">{t('module.list.allCategories')}</option>
                 {categories.map((category) => (
                     <option key={category.id} value={category.id}>
                         {category.name}
@@ -70,7 +72,7 @@ function NewsListEdit({ props, onChange }) {
 /** Registry entry for the builder's News list module (step 50). */
 export default {
     type: 'news-list',
-    label: 'Actualités (liste)',
+    label: 'module.newsList.label',
     defaultProps: { count: 6, order: 'desc', categoryId: '' },
     Edit: NewsListEdit,
     /**

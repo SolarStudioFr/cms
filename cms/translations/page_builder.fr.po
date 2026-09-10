@@ -1,0 +1,240 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "module.addModule"
+msgstr "Ajouter un module"
+
+msgid "module.empty"
+msgstr "Aucun module. Utilisez « Ajouter un module » pour commencer."
+
+msgid "module.remove"
+msgstr "Retirer"
+
+msgid "module.unknown"
+msgstr "Module inconnu : {{type}}"
+
+msgid "module.loadingEditor"
+msgstr "Chargement de l'éditeur..."
+
+msgid "module.titleField"
+msgstr "Titre"
+
+msgid "module.description"
+msgstr "Description"
+
+msgid "module.introText"
+msgstr "Texte d'introduction"
+
+msgid "module.buttonText"
+msgstr "Texte du bouton"
+
+msgid "module.linkUrl"
+msgstr "Lien (URL)"
+
+msgid "module.altText"
+msgstr "Texte alternatif"
+
+msgid "module.noImageSelected"
+msgstr "Aucune image sélectionnée."
+
+msgid "module.changeImage"
+msgstr "Changer l'image"
+
+msgid "module.chooseImage"
+msgstr "Choisir une image"
+
+msgid "module.chooseImageTitle"
+msgstr "Choisir une image"
+
+msgid "module.text.label"
+msgstr "Texte"
+
+msgid "module.text.placeholder"
+msgstr "Texte..."
+
+msgid "module.cta.label"
+msgstr "Appel à l'action"
+
+msgid "module.heading.label"
+msgstr "Titre"
+
+msgid "module.heading.placeholder"
+msgstr "Texte du titre"
+
+msgid "module.download.label"
+msgstr "Télécharger un fichier"
+
+msgid "module.download.file"
+msgstr "Fichier :"
+
+msgid "module.download.noFile"
+msgstr "Aucun fichier sélectionné."
+
+msgid "module.download.changeFile"
+msgstr "Changer le fichier"
+
+msgid "module.download.chooseFile"
+msgstr "Choisir un fichier"
+
+msgid "module.download.pickerTitle"
+msgstr "Choisir un fichier à télécharger"
+
+msgid "module.image.label"
+msgstr "Image"
+
+msgid "module.hero.label"
+msgstr "Héro"
+
+msgid "module.hero.eyebrow"
+msgstr "Eyebrow"
+
+msgid "module.hero.title"
+msgstr "Titre principal (h1)"
+
+msgid "module.hero.lead"
+msgstr "Texte d'accroche"
+
+msgid "module.hero.primaryText"
+msgstr "Bouton principal - texte"
+
+msgid "module.hero.primaryUrl"
+msgstr "Bouton principal - URL"
+
+msgid "module.hero.secondaryText"
+msgstr "Bouton secondaire - texte"
+
+msgid "module.hero.secondaryUrl"
+msgstr "Bouton secondaire - URL"
+
+msgid "module.trustedBy.label"
+msgstr "Ils nous font confiance"
+
+msgid "module.trustedBy.clientName"
+msgstr "Nom du client"
+
+msgid "module.trustedBy.addClient"
+msgstr "Ajouter un client"
+
+msgid "module.serviceCard.label"
+msgstr "Service (carte seule)"
+
+msgid "module.button.label"
+msgstr "Bouton"
+
+msgid "module.button.sizeSmall"
+msgstr "Petit"
+
+msgid "module.button.sizeMedium"
+msgstr "Moyen"
+
+msgid "module.button.sizeLarge"
+msgstr "Grand"
+
+msgid "module.button.targetSelf"
+msgstr "Même onglet"
+
+msgid "module.button.targetBlank"
+msgstr "Nouvel onglet"
+
+msgid "module.iconPicker.choose"
+msgstr "Choisir une icône"
+
+msgid "module.iconPicker.search"
+msgstr "Rechercher une icône..."
+
+msgid "module.iconPicker.noResults"
+msgstr "Aucune icône trouvée."
+
+msgid "module.feed.backgroundWhite"
+msgstr "Blanc"
+
+msgid "module.feed.backgroundMuted"
+msgstr "Gris doux"
+
+msgid "module.feed.eyebrow"
+msgstr "Eyebrow"
+
+msgid "module.feed.sectionTitle"
+msgstr "Titre de section"
+
+msgid "module.feed.count"
+msgstr "Nombre à afficher"
+
+msgid "module.feed.seeAllText"
+msgstr "Texte du lien \"Tout voir\""
+
+msgid "module.newsFeed.label"
+msgstr "Actualités (dynamique)"
+
+msgid "module.portfolioFeed.label"
+msgstr "Réalisations (dynamique)"
+
+msgid "module.slider.label"
+msgstr "Slider"
+
+msgid "module.slider.empty"
+msgstr "Aucune image dans ce slider."
+
+msgid "module.slider.addImage"
+msgstr "Ajouter une image"
+
+msgid "module.slider.pickerTitle"
+msgstr "Ajouter une image au slider"
+
+msgid "module.processSteps.label"
+msgstr "Notre approche"
+
+msgid "module.processSteps.eyebrow"
+msgstr "Eyebrow"
+
+msgid "module.processSteps.number"
+msgstr "N°"
+
+msgid "module.processSteps.stepTitle"
+msgstr "Titre de l'étape"
+
+msgid "module.list.orderDesc"
+msgstr "Plus récent en premier"
+
+msgid "module.list.orderAsc"
+msgstr "Plus ancien en premier"
+
+msgid "module.list.articleCount"
+msgstr "Nombre d'articles"
+
+msgid "module.list.itemCount"
+msgstr "Nombre de réalisations"
+
+msgid "module.list.allCategories"
+msgstr "Toutes les catégories"
+
+msgid "module.list.noTags"
+msgstr "Aucun tag disponible."
+
+msgid "module.newsList.label"
+msgstr "Actualités (liste)"
+
+msgid "module.portfolioList.label"
+msgstr "Réalisations (liste)"
+
+msgid "module.servicesGrid.label"
+msgstr "Grille des services"
+
+msgid "module.servicesGrid.serviceTitle"
+msgstr "Titre du service"
+
+msgid "module.servicesGrid.addService"
+msgstr "Ajouter un service"
+
+msgid "module.pricing.label"
+msgstr "Tarifs"
+
+msgid "module.pricing.price"
+msgstr "Tarif"
+
+msgid "module.pricing.option"
+msgstr "Option incluse"
+
+msgid "module.pricing.addOption"
+msgstr "Ajouter une option"

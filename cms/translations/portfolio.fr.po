@@ -1,0 +1,132 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.loading"
+msgstr "Chargement..."
+
+msgid "common.edit"
+msgstr "Éditer"
+
+msgid "common.delete"
+msgstr "Supprimer"
+
+msgid "common.add"
+msgstr "Ajouter"
+
+msgid "common.save"
+msgstr "Enregistrer"
+
+msgid "common.cancel"
+msgstr "Annuler"
+
+msgid "common.saveError"
+msgstr "Échec de l'enregistrement."
+
+msgid "portfolio.title"
+msgstr "Réalisations"
+
+msgid "portfolio.create"
+msgstr "Créer une réalisation"
+
+msgid "portfolio.titleColumn"
+msgstr "Titre"
+
+msgid "portfolio.createdAt"
+msgstr "Créée le"
+
+msgid "portfolio.status"
+msgstr "Statut"
+
+msgid "portfolio.archive"
+msgstr "Archiver"
+
+msgid "portfolio.confirmDelete"
+msgstr "Supprimer cette réalisation ?"
+
+msgid "portfolio.statusDraft"
+msgstr "Brouillon"
+
+msgid "portfolio.statusPublished"
+msgstr "Publiée"
+
+msgid "portfolio.statusArchived"
+msgstr "Archivée"
+
+msgid "portfolio.loadError"
+msgstr "Impossible de charger la réalisation."
+
+msgid "portfolio.tagCreateError"
+msgstr "Échec de la création du tag."
+
+msgid "portfolio.editTitle"
+msgstr "Modifier la réalisation"
+
+msgid "portfolio.newTitle"
+msgstr "Nouvelle réalisation"
+
+msgid "portfolio.identity"
+msgstr "Identité"
+
+msgid "portfolio.slug"
+msgstr "Slug"
+
+msgid "portfolio.slugHint"
+msgstr "Généré automatiquement à partir du titre."
+
+msgid "portfolio.content"
+msgstr "Contenu"
+
+msgid "portfolio.loadingEditor"
+msgstr "Chargement de l'éditeur..."
+
+msgid "portfolio.contentPlaceholder"
+msgstr "Contenu de la réalisation..."
+
+msgid "portfolio.seo"
+msgstr "S.E.O. & réseaux sociaux"
+
+msgid "portfolio.seoTitle"
+msgstr "Titre S.E.O."
+
+msgid "portfolio.metaDescription"
+msgstr "Meta description"
+
+msgid "portfolio.ogImage"
+msgstr "Image OG"
+
+msgid "portfolio.noImageSelected"
+msgstr "Aucune image sélectionnée."
+
+msgid "portfolio.changeImage"
+msgstr "Changer l'image"
+
+msgid "portfolio.chooseImage"
+msgstr "Choisir une image"
+
+msgid "portfolio.chooseOgImageTitle"
+msgstr "Choisir une image OG"
+
+msgid "portfolio.ogType"
+msgstr "Type OG"
+
+msgid "portfolio.canonicalUrl"
+msgstr "URL canonique"
+
+msgid "portfolio.publication"
+msgstr "Publication"
+
+msgid "portfolio.coverImage"
+msgstr "Image à la une"
+
+msgid "portfolio.chooseCoverImageTitle"
+msgstr "Choisir une image de couverture"
+
+msgid "portfolio.tags"
+msgstr "Tags"
+
+msgid "portfolio.noTags"
+msgstr "Aucun tag disponible."
+
+msgid "portfolio.newTag"
+msgstr "Nouveau tag"

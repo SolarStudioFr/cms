@@ -1,0 +1,240 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "module.addModule"
+msgstr "Add a module"
+
+msgid "module.empty"
+msgstr "No module yet. Use \"Add a module\" to get started."
+
+msgid "module.remove"
+msgstr "Remove"
+
+msgid "module.unknown"
+msgstr "Unknown module: {{type}}"
+
+msgid "module.loadingEditor"
+msgstr "Loading the editor..."
+
+msgid "module.titleField"
+msgstr "Title"
+
+msgid "module.description"
+msgstr "Description"
+
+msgid "module.introText"
+msgstr "Intro text"
+
+msgid "module.buttonText"
+msgstr "Button text"
+
+msgid "module.linkUrl"
+msgstr "Link (URL)"
+
+msgid "module.altText"
+msgstr "Alt text"
+
+msgid "module.noImageSelected"
+msgstr "No image selected."
+
+msgid "module.changeImage"
+msgstr "Change image"
+
+msgid "module.chooseImage"
+msgstr "Choose an image"
+
+msgid "module.chooseImageTitle"
+msgstr "Choose an image"
+
+msgid "module.text.label"
+msgstr "Text"
+
+msgid "module.text.placeholder"
+msgstr "Text..."
+
+msgid "module.cta.label"
+msgstr "Call to action"
+
+msgid "module.heading.label"
+msgstr "Heading"
+
+msgid "module.heading.placeholder"
+msgstr "Heading text"
+
+msgid "module.download.label"
+msgstr "Download a file"
+
+msgid "module.download.file"
+msgstr "File:"
+
+msgid "module.download.noFile"
+msgstr "No file selected."
+
+msgid "module.download.changeFile"
+msgstr "Change file"
+
+msgid "module.download.chooseFile"
+msgstr "Choose a file"
+
+msgid "module.download.pickerTitle"
+msgstr "Choose a file to download"
+
+msgid "module.image.label"
+msgstr "Image"
+
+msgid "module.hero.label"
+msgstr "Hero"
+
+msgid "module.hero.eyebrow"
+msgstr "Eyebrow"
+
+msgid "module.hero.title"
+msgstr "Main title (h1)"
+
+msgid "module.hero.lead"
+msgstr "Lead text"
+
+msgid "module.hero.primaryText"
+msgstr "Primary button - text"
+
+msgid "module.hero.primaryUrl"
+msgstr "Primary button - URL"
+
+msgid "module.hero.secondaryText"
+msgstr "Secondary button - text"
+
+msgid "module.hero.secondaryUrl"
+msgstr "Secondary button - URL"
+
+msgid "module.trustedBy.label"
+msgstr "Trusted by"
+
+msgid "module.trustedBy.clientName"
+msgstr "Client name"
+
+msgid "module.trustedBy.addClient"
+msgstr "Add a client"
+
+msgid "module.serviceCard.label"
+msgstr "Service (standalone card)"
+
+msgid "module.button.label"
+msgstr "Button"
+
+msgid "module.button.sizeSmall"
+msgstr "Small"
+
+msgid "module.button.sizeMedium"
+msgstr "Medium"
+
+msgid "module.button.sizeLarge"
+msgstr "Large"
+
+msgid "module.button.targetSelf"
+msgstr "Same tab"
+
+msgid "module.button.targetBlank"
+msgstr "New tab"
+
+msgid "module.iconPicker.choose"
+msgstr "Choose an icon"
+
+msgid "module.iconPicker.search"
+msgstr "Search for an icon..."
+
+msgid "module.iconPicker.noResults"
+msgstr "No icon found."
+
+msgid "module.feed.backgroundWhite"
+msgstr "White"
+
+msgid "module.feed.backgroundMuted"
+msgstr "Soft gray"
+
+msgid "module.feed.eyebrow"
+msgstr "Eyebrow"
+
+msgid "module.feed.sectionTitle"
+msgstr "Section title"
+
+msgid "module.feed.count"
+msgstr "Number to display"
+
+msgid "module.feed.seeAllText"
+msgstr "\"See all\" link text"
+
+msgid "module.newsFeed.label"
+msgstr "News (dynamic)"
+
+msgid "module.portfolioFeed.label"
+msgstr "Portfolio (dynamic)"
+
+msgid "module.slider.label"
+msgstr "Slider"
+
+msgid "module.slider.empty"
+msgstr "No image in this slider."
+
+msgid "module.slider.addImage"
+msgstr "Add an image"
+
+msgid "module.slider.pickerTitle"
+msgstr "Add an image to the slider"
+
+msgid "module.processSteps.label"
+msgstr "Our approach"
+
+msgid "module.processSteps.eyebrow"
+msgstr "Eyebrow"
+
+msgid "module.processSteps.number"
+msgstr "No."
+
+msgid "module.processSteps.stepTitle"
+msgstr "Step title"
+
+msgid "module.list.orderDesc"
+msgstr "Newest first"
+
+msgid "module.list.orderAsc"
+msgstr "Oldest first"
+
+msgid "module.list.articleCount"
+msgstr "Number of articles"
+
+msgid "module.list.itemCount"
+msgstr "Number of portfolio items"
+
+msgid "module.list.allCategories"
+msgstr "All categories"
+
+msgid "module.list.noTags"
+msgstr "No tag available."
+
+msgid "module.newsList.label"
+msgstr "News (list)"
+
+msgid "module.portfolioList.label"
+msgstr "Portfolio (list)"
+
+msgid "module.servicesGrid.label"
+msgstr "Services grid"
+
+msgid "module.servicesGrid.serviceTitle"
+msgstr "Service title"
+
+msgid "module.servicesGrid.addService"
+msgstr "Add a service"
+
+msgid "module.pricing.label"
+msgstr "Pricing"
+
+msgid "module.pricing.price"
+msgstr "Price"
+
+msgid "module.pricing.option"
+msgstr "Included option"
+
+msgid "module.pricing.addOption"
+msgstr "Add an option"

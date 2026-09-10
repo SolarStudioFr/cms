@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import client from './api/client';
+import useDomainTranslator from './useDomainTranslator';
 
 // Both consumed from other plugins' Module Federation remotes - lazy since
 // resolving a remote container is inherently async.
@@ -14,6 +15,7 @@ const BuilderCanvas = lazy(() => import('page_builder/BuilderCanvas'));
  * PATCHing the same `/admin/homepage` resource (auto-created on first read).
  */
 export default function HomepageForm() {
+    const { t } = useDomainTranslator('homepage');
     // Whichever editor is active, this holds its native value: builder JSON
     // when the builder is active, plain HTML otherwise.
     const [contentValue, setContentValue] = useState('');
@@ -42,9 +44,9 @@ export default function HomepageForm() {
         client
             .get('/admin/homepage')
             .then(({ data }) => setContentValue(builderActive && data.builderData ? data.builderData : data.content))
-            .catch(() => setError("Impossible de charger le contenu de la page d'accueil."))
+            .catch(() => setError(t('homepage.loadError')))
             .finally(() => setLoading(false));
-    }, [builderActive]);
+    }, [builderActive, t]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -70,37 +72,37 @@ export default function HomepageForm() {
             );
             setSaved(true);
         } catch {
-            setError("Échec de l'enregistrement.");
+            setError(t('homepage.saveError'));
         }
     };
 
     if (loading || null === builderActive) {
-        return <p>Chargement...</p>;
+        return <p>{t('homepage.loading')}</p>;
     }
 
     return (
         <div>
-            <h1>Page d'accueil</h1>
+            <h1>{t('homepage.title')}</h1>
 
             {error && <div className="alert alert-danger">{error}</div>}
-            {saved && <div className="alert alert-success">Page d'accueil enregistrée.</div>}
+            {saved && <div className="alert alert-success">{t('homepage.saved')}</div>}
 
             <Form onSubmit={handleSubmit} style={{ maxWidth: '640px' }}>
                 <Form.Group className="mb-3" controlId="homepageContent">
-                    <Form.Label>Contenu</Form.Label>
+                    <Form.Label>{t('homepage.content')}</Form.Label>
                     {/* Editor only mounts once `loading`/`builderActive` are settled
                         above, so its initial value is already the real content. */}
-                    <Suspense fallback={<p>Chargement de l'éditeur...</p>}>
+                    <Suspense fallback={<p>{t('homepage.loadingEditor')}</p>}>
                         {builderActive ? (
                             <BuilderCanvas value={contentValue} onChange={setContentValue} />
                         ) : (
-                            <RichTextEditor value={contentValue} onChange={setContentValue} placeholder="Contenu de la page d'accueil..." />
+                            <RichTextEditor value={contentValue} onChange={setContentValue} placeholder={t('homepage.contentPlaceholder')} />
                         )}
                     </Suspense>
                 </Form.Group>
 
                 <Button type="submit" variant="primary">
-                    Enregistrer
+                    {t('common.save')}
                 </Button>
             </Form>
         </div>

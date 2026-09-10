@@ -1,22 +1,25 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
+import useDomainTranslator from '../useDomainTranslator';
 
 const STYLES = ['primary', 'secondary', 'outline'];
 
 /** Admin editor for one CTA block (step 14): button text, link target, visual style. */
 function CtaEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
+
     return (
         <div className="d-flex flex-column gap-2">
             <Form.Control
                 size="sm"
-                placeholder="Texte du bouton"
+                placeholder={t('module.buttonText')}
                 value={props.text}
                 onChange={(event) => onChange({ ...props, text: event.target.value })}
             />
             <Form.Control
                 size="sm"
-                placeholder="Lien (URL)"
+                placeholder={t('module.linkUrl')}
                 value={props.url}
                 onChange={(event) => onChange({ ...props, url: event.target.value })}
             />
@@ -39,7 +42,7 @@ function CtaEdit({ props, onChange }) {
 /** Registry entry for the builder's call-to-action module (step 14). */
 export default {
     type: 'cta',
-    label: 'Appel à l’action',
+    label: 'module.cta.label',
     defaultProps: { text: 'En savoir plus', url: '', style: 'primary' },
     Edit: CtaEdit,
     /** @param {{text: string, url: string, style: string}} props */

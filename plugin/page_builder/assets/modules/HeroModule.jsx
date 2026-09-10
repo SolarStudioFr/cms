@@ -1,23 +1,25 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
+import useDomainTranslator from '../useDomainTranslator';
 
 /** Admin editor for one Hero block (step 40): eyebrow, h1 title, lead text, two optional CTA buttons. */
 function HeroEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
     const set = (field) => (event) => onChange({ ...props, [field]: event.target.value });
 
     return (
         <div className="d-flex flex-column gap-2">
-            <Form.Control size="sm" placeholder="Eyebrow" value={props.eyebrow} onChange={set('eyebrow')} />
-            <Form.Control placeholder="Titre principal (h1)" value={props.title} onChange={set('title')} />
-            <Form.Control as="textarea" rows={2} placeholder="Texte d'accroche" value={props.lead} onChange={set('lead')} />
+            <Form.Control size="sm" placeholder={t('module.hero.eyebrow')} value={props.eyebrow} onChange={set('eyebrow')} />
+            <Form.Control placeholder={t('module.hero.title')} value={props.title} onChange={set('title')} />
+            <Form.Control as="textarea" rows={2} placeholder={t('module.hero.lead')} value={props.lead} onChange={set('lead')} />
             <div className="d-flex gap-2">
-                <Form.Control size="sm" placeholder="Bouton principal - texte" value={props.primaryText} onChange={set('primaryText')} />
-                <Form.Control size="sm" placeholder="Bouton principal - URL" value={props.primaryUrl} onChange={set('primaryUrl')} />
+                <Form.Control size="sm" placeholder={t('module.hero.primaryText')} value={props.primaryText} onChange={set('primaryText')} />
+                <Form.Control size="sm" placeholder={t('module.hero.primaryUrl')} value={props.primaryUrl} onChange={set('primaryUrl')} />
             </div>
             <div className="d-flex gap-2">
-                <Form.Control size="sm" placeholder="Bouton secondaire - texte" value={props.secondaryText} onChange={set('secondaryText')} />
-                <Form.Control size="sm" placeholder="Bouton secondaire - URL" value={props.secondaryUrl} onChange={set('secondaryUrl')} />
+                <Form.Control size="sm" placeholder={t('module.hero.secondaryText')} value={props.secondaryText} onChange={set('secondaryText')} />
+                <Form.Control size="sm" placeholder={t('module.hero.secondaryUrl')} value={props.secondaryUrl} onChange={set('secondaryUrl')} />
             </div>
         </div>
     );
@@ -26,7 +28,7 @@ function HeroEdit({ props, onChange }) {
 /** Registry entry for the builder's Hero module (step 40). */
 export default {
     type: 'hero',
-    label: 'Héro',
+    label: 'module.hero.label',
     defaultProps: {
         eyebrow: '',
         title: '',

@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import client from './api/client';
+import useDomainTranslator from './useDomainTranslator';
 
 // Both consumed from other plugins' Module Federation remotes - lazy since
 // resolving a remote container is inherently async.
@@ -32,6 +33,7 @@ function slugPreview(title) {
 export default function NewsArticleForm() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { t } = useDomainTranslator('news');
     const isEditing = Boolean(id);
 
     const [title, setTitle] = useState('');
@@ -98,9 +100,9 @@ export default function NewsArticleForm() {
                 setCanonicalUrl(data.canonicalUrl || '');
                 setCategoryId(data.category ? String(data.category.id) : '');
             })
-            .catch(() => setError("Impossible de charger l'actualité."))
+            .catch(() => setError(t('news.loadError')))
             .finally(() => setLoading(false));
-    }, [id, isEditing, builderActive]);
+    }, [id, isEditing, builderActive, t]);
 
     const handleCreateCategory = async () => {
         const name = newCategoryName.trim();
@@ -115,7 +117,7 @@ export default function NewsArticleForm() {
             setCategoryId(String(data.id));
             setNewCategoryName('');
         } catch {
-            setCategoryError('Échec de la création de la catégorie.');
+            setCategoryError(t('news.categoryCreateError'));
         }
     };
 
@@ -161,17 +163,17 @@ export default function NewsArticleForm() {
             }
             navigate('/news');
         } catch {
-            setError("Échec de l'enregistrement.");
+            setError(t('common.saveError'));
         }
     };
 
     if (loading || null === builderActive) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     return (
         <div>
-            <h1>{isEditing ? "Modifier l'actualité" : 'Nouvelle actualité'}</h1>
+            <h1>{isEditing ? t('news.editTitle') : t('news.newTitle')}</h1>
 
             {error && <div className="alert alert-danger">{error}</div>}
 
@@ -179,10 +181,10 @@ export default function NewsArticleForm() {
                 <Row>
                     <Col lg={8}>
                         <Card className="mb-3">
-                            <Card.Header>Identité</Card.Header>
+                            <Card.Header>{t('news.identity')}</Card.Header>
                             <Card.Body>
                                 <Form.Group className="mb-3" controlId="newsArticleTitle">
-                                    <Form.Label>Titre</Form.Label>
+                                    <Form.Label>{t('news.titleColumn')}</Form.Label>
                                     <Form.Control
                                         type="text"
                                         value={title}
@@ -191,37 +193,37 @@ export default function NewsArticleForm() {
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="newsArticleSlug">
-                                    <Form.Label>Slug</Form.Label>
+                                    <Form.Label>{t('news.slug')}</Form.Label>
                                     <Form.Control type="text" value={slugPreview(title)} disabled readOnly />
-                                    <Form.Text className="text-muted">Généré automatiquement à partir du titre.</Form.Text>
+                                    <Form.Text className="text-muted">{t('news.slugHint')}</Form.Text>
                                 </Form.Group>
                             </Card.Body>
                         </Card>
 
                         <Card className="mb-3">
-                            <Card.Header>Contenu</Card.Header>
+                            <Card.Header>{t('news.content')}</Card.Header>
                             <Card.Body>
                                 {/* Editor only mounts once `loading`/`builderActive` are settled
                                     above, so its initial value is already the real content. */}
-                                <Suspense fallback={<p>Chargement de l'éditeur...</p>}>
+                                <Suspense fallback={<p>{t('news.loadingEditor')}</p>}>
                                     {builderActive ? (
                                         <BuilderCanvas value={contentValue} onChange={setContentValue} />
                                     ) : (
-                                        <RichTextEditor value={contentValue} onChange={setContentValue} placeholder="Contenu de l'actualité..." />
+                                        <RichTextEditor value={contentValue} onChange={setContentValue} placeholder={t('news.contentPlaceholder')} />
                                     )}
                                 </Suspense>
                             </Card.Body>
                         </Card>
 
                         <Card className="mb-3">
-                            <Card.Header>S.E.O. &amp; réseaux sociaux</Card.Header>
+                            <Card.Header>{t('news.seo')}</Card.Header>
                             <Card.Body>
                                 <Form.Group className="mb-3" controlId="newsArticleSeoTitle">
-                                    <Form.Label>Titre S.E.O.</Form.Label>
+                                    <Form.Label>{t('news.seoTitle')}</Form.Label>
                                     <Form.Control type="text" value={seoTitle} onChange={(e) => setSeoTitle(e.target.value)} />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="newsArticleSeoDescription">
-                                    <Form.Label>Meta description</Form.Label>
+                                    <Form.Label>{t('news.metaDescription')}</Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={3}
@@ -230,7 +232,7 @@ export default function NewsArticleForm() {
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="newsArticleOgImage">
-                                    <Form.Label>Image OG</Form.Label>
+                                    <Form.Label>{t('news.ogImage')}</Form.Label>
                                     <div>
                                         {ogImageUrl ? (
                                             <img
@@ -239,10 +241,10 @@ export default function NewsArticleForm() {
                                                 style={{ maxWidth: '240px', maxHeight: '160px', display: 'block', marginBottom: '8px' }}
                                             />
                                         ) : (
-                                            <p className="text-muted small">Aucune image sélectionnée.</p>
+                                            <p className="text-muted small">{t('news.noImageSelected')}</p>
                                         )}
                                         <Button size="sm" variant="outline-secondary" onClick={() => setOgPickerOpen(true)}>
-                                            {ogImageUrl ? "Changer l'image" : 'Choisir une image'}
+                                            {ogImageUrl ? t('news.changeImage') : t('news.chooseImage')}
                                         </Button>
                                         {ogPickerOpen && (
                                             <Suspense fallback={null}>
@@ -251,14 +253,14 @@ export default function NewsArticleForm() {
                                                     onHide={() => setOgPickerOpen(false)}
                                                     onSelect={(file) => setOgImageUrl(file.url)}
                                                     types={['img']}
-                                                    title="Choisir une image OG"
+                                                    title={t('news.chooseOgImageTitle')}
                                                 />
                                             </Suspense>
                                         )}
                                     </div>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="newsArticleOgType">
-                                    <Form.Label>Type OG</Form.Label>
+                                    <Form.Label>{t('news.ogType')}</Form.Label>
                                     <Form.Select value={ogType} onChange={(e) => setOgType(e.target.value)}>
                                         <option value="website">Website</option>
                                         <option value="article">Article</option>
@@ -267,7 +269,7 @@ export default function NewsArticleForm() {
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group controlId="newsArticleCanonicalUrl">
-                                    <Form.Label>URL canonique</Form.Label>
+                                    <Form.Label>{t('news.canonicalUrl')}</Form.Label>
                                     <Form.Control
                                         type="url"
                                         value={canonicalUrl}
@@ -282,14 +284,14 @@ export default function NewsArticleForm() {
                     <Col lg={4}>
                         {isEditing && (
                             <Card className="mb-3">
-                                <Card.Header>Publication</Card.Header>
+                                <Card.Header>{t('news.publication')}</Card.Header>
                                 <Card.Body>
                                     <Form.Group controlId="newsArticleStatus">
-                                        <Form.Label>Statut</Form.Label>
+                                        <Form.Label>{t('news.status')}</Form.Label>
                                         <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                                            <option value="draft">Brouillon</option>
-                                            <option value="published">Publiée</option>
-                                            <option value="archived">Archivée</option>
+                                            <option value="draft">{t('news.statusDraft')}</option>
+                                            <option value="published">{t('news.statusPublished')}</option>
+                                            <option value="archived">{t('news.statusArchived')}</option>
                                         </Form.Select>
                                     </Form.Group>
                                 </Card.Body>
@@ -297,7 +299,7 @@ export default function NewsArticleForm() {
                         )}
 
                         <Card className="mb-3">
-                            <Card.Header>Image à la une</Card.Header>
+                            <Card.Header>{t('news.coverImage')}</Card.Header>
                             <Card.Body>
                                 {coverImageUrl ? (
                                     <img
@@ -306,10 +308,10 @@ export default function NewsArticleForm() {
                                         style={{ maxWidth: '100%', display: 'block', marginBottom: '8px' }}
                                     />
                                 ) : (
-                                    <p className="text-muted small">Aucune image sélectionnée.</p>
+                                    <p className="text-muted small">{t('news.noImageSelected')}</p>
                                 )}
                                 <Button size="sm" variant="outline-secondary" className="mb-2" onClick={() => setPickerOpen(true)}>
-                                    {coverImageUrl ? "Changer l'image" : 'Choisir une image'}
+                                    {coverImageUrl ? t('news.changeImage') : t('news.chooseImage')}
                                 </Button>
                                 {pickerOpen && (
                                     <Suspense fallback={null}>
@@ -321,7 +323,7 @@ export default function NewsArticleForm() {
                                                 setCoverImageAlt(coverImageAlt || file.name);
                                             }}
                                             types={['img']}
-                                            title="Choisir une image de couverture"
+                                            title={t('news.chooseCoverImageTitle')}
                                         />
                                     </Suspense>
                                 )}
@@ -329,12 +331,12 @@ export default function NewsArticleForm() {
                         </Card>
 
                         <Card className="mb-3">
-                            <Card.Header>Catégorie</Card.Header>
+                            <Card.Header>{t('news.category')}</Card.Header>
                             <Card.Body>
                                 {categoryError && <div className="alert alert-danger py-1 px-2 small">{categoryError}</div>}
                                 <Form.Group className="mb-2" controlId="newsArticleCategory">
                                     <Form.Select value={categoryId} onChange={(e) => setCategoryId(e.target.value)}>
-                                        <option value="">Aucune catégorie</option>
+                                        <option value="">{t('news.noCategory')}</option>
                                         {allCategories.map((category) => (
                                             <option key={category.id} value={category.id}>
                                                 {category.name}
@@ -346,12 +348,12 @@ export default function NewsArticleForm() {
                                     <Form.Control
                                         type="text"
                                         size="sm"
-                                        placeholder="Nouvelle catégorie"
+                                        placeholder={t('news.newCategory')}
                                         value={newCategoryName}
                                         onChange={(e) => setNewCategoryName(e.target.value)}
                                     />
                                     <Button size="sm" variant="outline-secondary" type="button" onClick={handleCreateCategory}>
-                                        Ajouter
+                                        {t('common.add')}
                                     </Button>
                                 </Form.Group>
                             </Card.Body>
@@ -360,10 +362,10 @@ export default function NewsArticleForm() {
                 </Row>
 
                 <Button type="submit" variant="primary">
-                    Enregistrer
+                    {t('common.save')}
                 </Button>
                 <Button type="button" variant="link" onClick={() => navigate('/news')}>
-                    Annuler
+                    {t('common.cancel')}
                 </Button>
             </Form>
         </div>

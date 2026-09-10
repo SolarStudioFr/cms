@@ -1,0 +1,132 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.loading"
+msgstr "Loading..."
+
+msgid "common.edit"
+msgstr "Edit"
+
+msgid "common.delete"
+msgstr "Delete"
+
+msgid "common.add"
+msgstr "Add"
+
+msgid "common.save"
+msgstr "Save"
+
+msgid "common.cancel"
+msgstr "Cancel"
+
+msgid "common.saveError"
+msgstr "Failed to save."
+
+msgid "news.title"
+msgstr "News"
+
+msgid "news.create"
+msgstr "Create a news article"
+
+msgid "news.titleColumn"
+msgstr "Title"
+
+msgid "news.createdAt"
+msgstr "Created on"
+
+msgid "news.status"
+msgstr "Status"
+
+msgid "news.archive"
+msgstr "Archive"
+
+msgid "news.confirmDelete"
+msgstr "Delete this news article?"
+
+msgid "news.statusDraft"
+msgstr "Draft"
+
+msgid "news.statusPublished"
+msgstr "Published"
+
+msgid "news.statusArchived"
+msgstr "Archived"
+
+msgid "news.loadError"
+msgstr "Failed to load the news article."
+
+msgid "news.categoryCreateError"
+msgstr "Failed to create the category."
+
+msgid "news.editTitle"
+msgstr "Edit news article"
+
+msgid "news.newTitle"
+msgstr "New news article"
+
+msgid "news.identity"
+msgstr "Identity"
+
+msgid "news.slug"
+msgstr "Slug"
+
+msgid "news.slugHint"
+msgstr "Automatically generated from the title."
+
+msgid "news.content"
+msgstr "Content"
+
+msgid "news.loadingEditor"
+msgstr "Loading the editor..."
+
+msgid "news.contentPlaceholder"
+msgstr "News article content..."
+
+msgid "news.seo"
+msgstr "S.E.O. & social networks"
+
+msgid "news.seoTitle"
+msgstr "S.E.O. title"
+
+msgid "news.metaDescription"
+msgstr "Meta description"
+
+msgid "news.ogImage"
+msgstr "OG image"
+
+msgid "news.noImageSelected"
+msgstr "No image selected."
+
+msgid "news.changeImage"
+msgstr "Change image"
+
+msgid "news.chooseImage"
+msgstr "Choose an image"
+
+msgid "news.chooseOgImageTitle"
+msgstr "Choose an OG image"
+
+msgid "news.ogType"
+msgstr "OG type"
+
+msgid "news.canonicalUrl"
+msgstr "Canonical URL"
+
+msgid "news.publication"
+msgstr "Publishing"
+
+msgid "news.coverImage"
+msgstr "Featured image"
+
+msgid "news.chooseCoverImageTitle"
+msgstr "Choose a cover image"
+
+msgid "news.category"
+msgstr "Category"
+
+msgid "news.noCategory"
+msgstr "No category"
+
+msgid "news.newCategory"
+msgstr "New category"

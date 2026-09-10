@@ -3,27 +3,28 @@ import { Button, Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
 import IconPicker from './IconPicker';
 import renderServiceCard from './serviceCard';
+import useDomainTranslator from '../useDomainTranslator';
 
 /** Admin editor for one service row: icon (searchable picker), title, description, remove button. */
-function ServiceRow({ service, onChange, onRemove }) {
+function ServiceRow({ service, onChange, onRemove, t }) {
     return (
         <div className="border rounded p-2 mb-2 d-flex flex-column gap-2">
             <div className="d-flex justify-content-between align-items-center">
                 <IconPicker value={service.icon} onChange={(icon) => onChange({ ...service, icon })} />
                 <Button size="sm" variant="outline-danger" onClick={onRemove}>
-                    Retirer
+                    {t('module.remove')}
                 </Button>
             </div>
             <Form.Control
                 size="sm"
-                placeholder="Titre du service"
+                placeholder={t('module.servicesGrid.serviceTitle')}
                 value={service.title}
                 onChange={(event) => onChange({ ...service, title: event.target.value })}
             />
             <Form.Control
                 as="textarea"
                 rows={2}
-                placeholder="Description"
+                placeholder={t('module.description')}
                 value={service.description}
                 onChange={(event) => onChange({ ...service, description: event.target.value })}
             />
@@ -33,6 +34,7 @@ function ServiceRow({ service, onChange, onRemove }) {
 
 /** Admin editor for one Services grid block (step 42): section header + a dynamically added list of services. */
 function ServicesGridEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
     const services = props.services ?? [];
 
     const addService = () =>
@@ -45,19 +47,19 @@ function ServicesGridEdit({ props, onChange }) {
         <div className="d-flex flex-column gap-2">
             <Form.Control
                 size="sm"
-                placeholder="Eyebrow"
+                placeholder={t('module.feed.eyebrow')}
                 value={props.eyebrow}
                 onChange={(event) => onChange({ ...props, eyebrow: event.target.value })}
             />
             <Form.Control
-                placeholder="Titre de section"
+                placeholder={t('module.feed.sectionTitle')}
                 value={props.title}
                 onChange={(event) => onChange({ ...props, title: event.target.value })}
             />
             <Form.Control
                 as="textarea"
                 rows={2}
-                placeholder="Texte d'introduction"
+                placeholder={t('module.introText')}
                 value={props.lead}
                 onChange={(event) => onChange({ ...props, lead: event.target.value })}
             />
@@ -68,10 +70,11 @@ function ServicesGridEdit({ props, onChange }) {
                     service={service}
                     onChange={(next) => updateService(index, next)}
                     onRemove={() => removeService(index)}
+                    t={t}
                 />
             ))}
             <Button size="sm" variant="outline-secondary" onClick={addService} className="align-self-start">
-                Ajouter un service
+                {t('module.servicesGrid.addService')}
             </Button>
         </div>
     );
@@ -80,7 +83,7 @@ function ServicesGridEdit({ props, onChange }) {
 /** Registry entry for the builder's Services grid module (step 42). Card markup shared with the standalone Service card module (step 48) via ./serviceCard. */
 export default {
     type: 'services-grid',
-    label: 'Grille des services',
+    label: 'module.servicesGrid.label',
     defaultProps: { eyebrow: '', title: '', lead: '', services: [] },
     Edit: ServicesGridEdit,
     /**

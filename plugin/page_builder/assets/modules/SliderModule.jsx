@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
+import useDomainTranslator from '../useDomainTranslator';
 
 // Consumed from the admin host's Module Federation remote (step 09), lazy
 // since resolving a cross-container remote is inherently async.
@@ -8,6 +9,7 @@ const MediaPicker = lazy(() => import('adm_host/MediaPicker'));
 
 /** Admin editor for one Slider block (step 12): an ordered list of images, added/removed individually. */
 function SliderEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
     const [pickerOpen, setPickerOpen] = useState(false);
     const images = props.images ?? [];
 
@@ -25,7 +27,7 @@ function SliderEdit({ props, onChange }) {
 
     return (
         <div>
-            {0 === images.length && <p className="text-muted small">Aucune image dans ce slider.</p>}
+            {0 === images.length && <p className="text-muted small">{t('module.slider.empty')}</p>}
             {images.map((image, index) => (
                 <div key={index} className="d-flex align-items-center gap-2 mb-2">
                     <img
@@ -36,16 +38,16 @@ function SliderEdit({ props, onChange }) {
                     <Form.Control
                         size="sm"
                         value={image.alt}
-                        placeholder="Texte alternatif"
+                        placeholder={t('module.altText')}
                         onChange={(event) => updateAlt(index, event.target.value)}
                     />
                     <Button size="sm" variant="outline-danger" onClick={() => removeImage(index)}>
-                        Retirer
+                        {t('module.remove')}
                     </Button>
                 </div>
             ))}
             <Button size="sm" variant="outline-secondary" onClick={() => setPickerOpen(true)}>
-                Ajouter une image
+                {t('module.slider.addImage')}
             </Button>
             {pickerOpen && (
                 <Suspense fallback={null}>
@@ -54,7 +56,7 @@ function SliderEdit({ props, onChange }) {
                         onHide={() => setPickerOpen(false)}
                         onSelect={addImage}
                         types={['img']}
-                        title="Ajouter une image au slider"
+                        title={t('module.slider.pickerTitle')}
                     />
                 </Suspense>
             )}
@@ -65,7 +67,7 @@ function SliderEdit({ props, onChange }) {
 /** Registry entry for the builder's Slider module (step 12). */
 export default {
     type: 'slider',
-    label: 'Slider',
+    label: 'module.slider.label',
     defaultProps: { images: [] },
     Edit: SliderEdit,
     /**

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
 import client from './api/client';
+import useDomainTranslator from '../useDomainTranslator';
 
-const ORDERS = { desc: 'Plus récent en premier', asc: 'Plus ancien en premier' };
+const ORDERS = { desc: 'module.list.orderDesc', asc: 'module.list.orderAsc' };
 
 /**
  * Admin editor for one Portfolio list block (step 51): display options
@@ -14,6 +15,7 @@ const ORDERS = { desc: 'Plus récent en premier', asc: 'Plus ancien en premier' 
  * HTTP call, not an import.
  */
 function PortfolioListEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
     const [tags, setTags] = useState([]);
     const selectedTagIds = props.tagIds ?? [];
 
@@ -32,7 +34,7 @@ function PortfolioListEdit({ props, onChange }) {
     return (
         <div className="d-flex flex-column gap-2">
             <Form.Group className="d-flex align-items-center gap-2">
-                <Form.Label className="mb-0 small">Nombre de réalisations</Form.Label>
+                <Form.Label className="mb-0 small">{t('module.list.itemCount')}</Form.Label>
                 <Form.Control
                     type="number"
                     size="sm"
@@ -49,14 +51,14 @@ function PortfolioListEdit({ props, onChange }) {
                 value={props.order}
                 onChange={(event) => onChange({ ...props, order: event.target.value })}
             >
-                {Object.entries(ORDERS).map(([value, label]) => (
+                {Object.entries(ORDERS).map(([value, key]) => (
                     <option key={value} value={value}>
-                        {label}
+                        {t(key)}
                     </option>
                 ))}
             </Form.Select>
             {0 === tags.length ? (
-                <p className="text-muted small mb-0">Aucun tag disponible.</p>
+                <p className="text-muted small mb-0">{t('module.list.noTags')}</p>
             ) : (
                 <div className="d-flex flex-wrap gap-3">
                     {tags.map((tag) => (
@@ -78,7 +80,7 @@ function PortfolioListEdit({ props, onChange }) {
 /** Registry entry for the builder's Portfolio list module (step 51). */
 export default {
     type: 'portfolio-list',
-    label: 'Réalisations (liste)',
+    label: 'module.portfolioList.label',
     defaultProps: { count: 6, order: 'desc', tagIds: [] },
     Edit: PortfolioListEdit,
     /**

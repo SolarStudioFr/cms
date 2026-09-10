@@ -1,0 +1,102 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.edit"
+msgstr "Edit"
+
+msgid "common.delete"
+msgstr "Delete"
+
+msgid "common.save"
+msgstr "Save"
+
+msgid "common.cancel"
+msgstr "Cancel"
+
+msgid "newsletter.loading"
+msgstr "Loading..."
+
+msgid "newsletter.confirmDeleteCampaign"
+msgstr "Delete this campaign?"
+
+msgid "newsletter.subscribers"
+msgstr "Subscribers"
+
+msgid "newsletter.newCampaign"
+msgstr "New campaign"
+
+msgid "newsletter.subject"
+msgstr "Subject"
+
+msgid "newsletter.createdAt"
+msgstr "Created on"
+
+msgid "newsletter.status"
+msgstr "Status"
+
+msgid "newsletter.statusDraft"
+msgstr "Draft"
+
+msgid "newsletter.statusSending"
+msgstr "Sending"
+
+msgid "newsletter.statusSent"
+msgstr "Sent"
+
+msgid "newsletter.resumeSend"
+msgstr "Resume sending"
+
+msgid "newsletter.send"
+msgstr "Send"
+
+msgid "newsletter.loadError"
+msgstr "Failed to load the campaign."
+
+msgid "newsletter.saveError"
+msgstr "Failed to save."
+
+msgid "newsletter.editCampaign"
+msgstr "Edit campaign"
+
+msgid "newsletter.content"
+msgstr "Content"
+
+msgid "newsletter.loadingEditor"
+msgstr "Loading the editor..."
+
+msgid "newsletter.contentPlaceholder"
+msgstr "Campaign content..."
+
+msgid "newsletter.sendError"
+msgstr "Failed to send - you can retry, sending will resume where it stopped."
+
+msgid "newsletter.sendTitle"
+msgstr "Sending:"
+
+msgid "newsletter.sentProgress"
+msgstr "{{sent}} / {{total}} sent"
+
+msgid "newsletter.sendDone"
+msgstr "Sending complete."
+
+msgid "newsletter.sending"
+msgstr "Sending..."
+
+msgid "newsletter.startSend"
+msgstr "Start sending"
+
+msgid "newsletter.backToCampaigns"
+msgstr "Back to campaigns"
+
+msgid "newsletter.confirmDeleteSubscriber"
+msgstr "Delete this subscriber?"
+
+msgid "newsletter.subscribersTitle"
+msgstr "Newsletter subscribers"
+
+msgid "newsletter.email"
+msgstr "Email"
+
+msgid "newsletter.subscribedAt"
+msgstr "Subscribed on"

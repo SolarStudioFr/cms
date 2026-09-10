@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Card, Col, Row, Table } from 'react-bootstrap';
 import client from './api/client';
+import useDomainTranslator from './useDomainTranslator';
 
 /** Renders a `{value, count}` breakdown list as a small table - shared shape used by every "by X" section below. */
-function BreakdownTable({ title, rows, valueLabel }) {
+function BreakdownTable({ title, rows, valueLabel, t }) {
     return (
         <Card className="mb-3">
             <Card.Header>{title}</Card.Header>
@@ -11,20 +12,20 @@ function BreakdownTable({ title, rows, valueLabel }) {
                 <thead>
                     <tr>
                         <th>{valueLabel}</th>
-                        <th className="text-end">Vues</th>
+                        <th className="text-end">{t('stats.views')}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {rows.length === 0 && (
                         <tr>
                             <td colSpan={2} className="text-muted">
-                                Aucune donnée
+                                {t('stats.noData')}
                             </td>
                         </tr>
                     )}
                     {rows.map((row) => (
                         <tr key={String(row.value ?? row.name)}>
-                            <td>{row.value ?? row.name ?? 'Inconnu'}</td>
+                            <td>{row.value ?? row.name ?? t('stats.unknown')}</td>
                             <td className="text-end">{row.count}</td>
                         </tr>
                     ))}
@@ -56,6 +57,7 @@ function formatPercent(value) {
  * the roadmap asked for a specific range UI).
  */
 export default function Dashboard() {
+    const { t } = useDomainTranslator('stats');
     const [summary, setSummary] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -72,30 +74,30 @@ export default function Dashboard() {
     }, [load]);
 
     if (loading || !summary) {
-        return <p>Chargement...</p>;
+        return <p>{t('stats.loading')}</p>;
     }
 
     return (
         <div>
-            <h1 className="mb-4">Statistiques</h1>
+            <h1 className="mb-4">{t('stats.title')}</h1>
 
             <Row className="mb-3">
                 <Col md={4}>
                     <Card body className="text-center">
                         <div className="fs-3">{summary.totalPageViews}</div>
-                        <div className="text-muted">Pages vues</div>
+                        <div className="text-muted">{t('stats.pageViews')}</div>
                     </Card>
                 </Col>
                 <Col md={4}>
                     <Card body className="text-center">
                         <div className="fs-3">{formatSeconds(summary.avgTimeOnPageSeconds)}</div>
-                        <div className="text-muted">Temps moyen par page</div>
+                        <div className="text-muted">{t('stats.avgTimeOnPage')}</div>
                     </Card>
                 </Col>
                 <Col md={4}>
                     <Card body className="text-center">
                         <div className="fs-3">{formatPercent(summary.avgScrollPercent)}</div>
-                        <div className="text-muted">Scroll moyen</div>
+                        <div className="text-muted">{t('stats.avgScroll')}</div>
                     </Card>
                 </Col>
             </Row>
@@ -104,32 +106,32 @@ export default function Dashboard() {
                 <Col md={4}>
                     <Card body className="text-center">
                         <div className="fs-3">{summary.botVsHuman.human}</div>
-                        <div className="text-muted">Visites humaines</div>
+                        <div className="text-muted">{t('stats.humanVisits')}</div>
                     </Card>
                 </Col>
                 <Col md={4}>
                     <Card body className="text-center">
                         <div className="fs-3">{summary.botVsHuman.bot}</div>
-                        <div className="text-muted">Visites de robots</div>
+                        <div className="text-muted">{t('stats.botVisits')}</div>
                     </Card>
                 </Col>
             </Row>
 
             <Card className="mb-3">
-                <Card.Header>Pages les plus vues</Card.Header>
+                <Card.Header>{t('stats.topPages')}</Card.Header>
                 <Table size="sm" className="mb-0">
                     <thead>
                         <tr>
                             <th>URL</th>
-                            <th className="text-end">Vues</th>
-                            <th className="text-end">Temps moyen</th>
+                            <th className="text-end">{t('stats.views')}</th>
+                            <th className="text-end">{t('stats.avgTime')}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {summary.topPages.length === 0 && (
                             <tr>
                                 <td colSpan={3} className="text-muted">
-                                    Aucune donnée
+                                    {t('stats.noData')}
                                 </td>
                             </tr>
                         )}
@@ -146,41 +148,41 @@ export default function Dashboard() {
 
             <Row>
                 <Col md={4}>
-                    <BreakdownTable title="Navigateurs" rows={summary.browsers} valueLabel="Navigateur" />
+                    <BreakdownTable title={t('stats.browsers')} rows={summary.browsers} valueLabel={t('stats.browser')} t={t} />
                 </Col>
                 <Col md={4}>
-                    <BreakdownTable title="Systèmes d'exploitation" rows={summary.operatingSystems} valueLabel="OS" />
+                    <BreakdownTable title={t('stats.operatingSystems')} rows={summary.operatingSystems} valueLabel="OS" t={t} />
                 </Col>
                 <Col md={4}>
-                    <BreakdownTable title="Appareils" rows={summary.deviceTypes} valueLabel="Type" />
+                    <BreakdownTable title={t('stats.deviceTypes')} rows={summary.deviceTypes} valueLabel={t('stats.type')} t={t} />
                 </Col>
                 <Col md={4}>
-                    <BreakdownTable title="Langues" rows={summary.languages} valueLabel="Langue" />
+                    <BreakdownTable title={t('stats.languages')} rows={summary.languages} valueLabel={t('stats.language')} t={t} />
                 </Col>
                 <Col md={4}>
-                    <BreakdownTable title="Pays" rows={summary.countries} valueLabel="Pays" />
+                    <BreakdownTable title={t('stats.countries')} rows={summary.countries} valueLabel={t('stats.country')} t={t} />
                 </Col>
                 <Col md={4}>
-                    <BreakdownTable title="Robots détectés" rows={summary.topBots} valueLabel="Robot" />
+                    <BreakdownTable title={t('stats.topBots')} rows={summary.topBots} valueLabel={t('stats.bot')} t={t} />
                 </Col>
             </Row>
 
             <Card>
-                <Card.Header>Clics les plus fréquents</Card.Header>
+                <Card.Header>{t('stats.topClicks')}</Card.Header>
                 <Table size="sm" className="mb-0">
                     <thead>
                         <tr>
-                            <th>Type</th>
-                            <th>Libellé</th>
-                            <th>Cible</th>
-                            <th className="text-end">Clics</th>
+                            <th>{t('stats.type')}</th>
+                            <th>{t('stats.label')}</th>
+                            <th>{t('stats.target')}</th>
+                            <th className="text-end">{t('stats.clicks')}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {summary.topClicks.length === 0 && (
                             <tr>
                                 <td colSpan={4} className="text-muted">
-                                    Aucune donnée
+                                    {t('stats.noData')}
                                 </td>
                             </tr>
                         )}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
+import useDomainTranslator from '../useDomainTranslator';
 
 const STEP_COUNT = 4;
 
@@ -14,6 +15,7 @@ function defaultSteps() {
  * add/remove button, unlike the dynamic lists of 41/42/49.
  */
 function ProcessStepsEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
     // Defensive against a block created before this file existed, or any
     // future manual edit of the stored JSON - always render exactly 4 rows.
     const steps = props.steps && props.steps.length === STEP_COUNT ? props.steps : defaultSteps();
@@ -25,12 +27,12 @@ function ProcessStepsEdit({ props, onChange }) {
         <div className="d-flex flex-column gap-2">
             <Form.Control
                 size="sm"
-                placeholder="Eyebrow"
+                placeholder={t('module.processSteps.eyebrow')}
                 value={props.eyebrow}
                 onChange={(event) => onChange({ ...props, eyebrow: event.target.value })}
             />
             <Form.Control
-                placeholder="Titre"
+                placeholder={t('module.titleField')}
                 value={props.title}
                 onChange={(event) => onChange({ ...props, title: event.target.value })}
             />
@@ -40,20 +42,20 @@ function ProcessStepsEdit({ props, onChange }) {
                     <Form.Control
                         size="sm"
                         style={{ maxWidth: '100px' }}
-                        placeholder="N°"
+                        placeholder={t('module.processSteps.number')}
                         value={step.number}
                         onChange={(event) => updateStep(index, 'number', event.target.value)}
                     />
                     <Form.Control
                         size="sm"
-                        placeholder="Titre de l'étape"
+                        placeholder={t('module.processSteps.stepTitle')}
                         value={step.title}
                         onChange={(event) => updateStep(index, 'title', event.target.value)}
                     />
                     <Form.Control
                         as="textarea"
                         rows={2}
-                        placeholder="Description"
+                        placeholder={t('module.description')}
                         value={step.description}
                         onChange={(event) => updateStep(index, 'description', event.target.value)}
                     />
@@ -66,7 +68,7 @@ function ProcessStepsEdit({ props, onChange }) {
 /** Registry entry for the builder's "Our approach" module (step 43). */
 export default {
     type: 'process-steps',
-    label: 'Notre approche',
+    label: 'module.processSteps.label',
     defaultProps: { eyebrow: '', title: '', steps: defaultSteps() },
     Edit: ProcessStepsEdit,
     /** @param {{eyebrow: string, title: string, steps: {number: string, title: string, description: string}[]}} props */

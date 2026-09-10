@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from 'react';
+import useDomainTranslator from '../useDomainTranslator';
 
 // Consumed from the admin host's Module Federation remote (step 09), lazy
 // since resolving a cross-container remote is inherently async. `full`
@@ -8,12 +9,14 @@ const RichTextEditor = lazy(() => import('adm_host/RichTextEditor'));
 
 /** Admin editor for one Text block (step 15): the full WYSIWYG editor, HTML output. */
 function TextEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
+
     return (
-        <Suspense fallback={<p className="text-muted small mb-0">Chargement de l'éditeur...</p>}>
+        <Suspense fallback={<p className="text-muted small mb-0">{t('module.loadingEditor')}</p>}>
             <RichTextEditor
                 value={props.html}
                 onChange={(html) => onChange({ ...props, html })}
-                placeholder="Texte..."
+                placeholder={t('module.text.placeholder')}
                 full
             />
         </Suspense>
@@ -23,7 +26,7 @@ function TextEdit({ props, onChange }) {
 /** Registry entry for the builder's Text module (step 15) - full WYSIWYG, the most complex module. */
 export default {
     type: 'text',
-    label: 'Texte',
+    label: 'module.text.label',
     defaultProps: { html: '' },
     Edit: TextEdit,
     // The editor already outputs sanitized-by-Quill HTML meant to be

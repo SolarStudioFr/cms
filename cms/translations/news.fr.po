@@ -1,0 +1,132 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.loading"
+msgstr "Chargement..."
+
+msgid "common.edit"
+msgstr "Éditer"
+
+msgid "common.delete"
+msgstr "Supprimer"
+
+msgid "common.add"
+msgstr "Ajouter"
+
+msgid "common.save"
+msgstr "Enregistrer"
+
+msgid "common.cancel"
+msgstr "Annuler"
+
+msgid "common.saveError"
+msgstr "Échec de l'enregistrement."
+
+msgid "news.title"
+msgstr "Actualités"
+
+msgid "news.create"
+msgstr "Créer une actualité"
+
+msgid "news.titleColumn"
+msgstr "Titre"
+
+msgid "news.createdAt"
+msgstr "Créée le"
+
+msgid "news.status"
+msgstr "Statut"
+
+msgid "news.archive"
+msgstr "Archiver"
+
+msgid "news.confirmDelete"
+msgstr "Supprimer cette actualité ?"
+
+msgid "news.statusDraft"
+msgstr "Brouillon"
+
+msgid "news.statusPublished"
+msgstr "Publiée"
+
+msgid "news.statusArchived"
+msgstr "Archivée"
+
+msgid "news.loadError"
+msgstr "Impossible de charger l'actualité."
+
+msgid "news.categoryCreateError"
+msgstr "Échec de la création de la catégorie."
+
+msgid "news.editTitle"
+msgstr "Modifier l'actualité"
+
+msgid "news.newTitle"
+msgstr "Nouvelle actualité"
+
+msgid "news.identity"
+msgstr "Identité"
+
+msgid "news.slug"
+msgstr "Slug"
+
+msgid "news.slugHint"
+msgstr "Généré automatiquement à partir du titre."
+
+msgid "news.content"
+msgstr "Contenu"
+
+msgid "news.loadingEditor"
+msgstr "Chargement de l'éditeur..."
+
+msgid "news.contentPlaceholder"
+msgstr "Contenu de l'actualité..."
+
+msgid "news.seo"
+msgstr "S.E.O. & réseaux sociaux"
+
+msgid "news.seoTitle"
+msgstr "Titre S.E.O."
+
+msgid "news.metaDescription"
+msgstr "Meta description"
+
+msgid "news.ogImage"
+msgstr "Image OG"
+
+msgid "news.noImageSelected"
+msgstr "Aucune image sélectionnée."
+
+msgid "news.changeImage"
+msgstr "Changer l'image"
+
+msgid "news.chooseImage"
+msgstr "Choisir une image"
+
+msgid "news.chooseOgImageTitle"
+msgstr "Choisir une image OG"
+
+msgid "news.ogType"
+msgstr "Type OG"
+
+msgid "news.canonicalUrl"
+msgstr "URL canonique"
+
+msgid "news.publication"
+msgstr "Publication"
+
+msgid "news.coverImage"
+msgstr "Image à la une"
+
+msgid "news.chooseCoverImageTitle"
+msgstr "Choisir une image de couverture"
+
+msgid "news.category"
+msgstr "Catégorie"
+
+msgid "news.noCategory"
+msgstr "Aucune catégorie"
+
+msgid "news.newCategory"
+msgstr "Nouvelle catégorie"

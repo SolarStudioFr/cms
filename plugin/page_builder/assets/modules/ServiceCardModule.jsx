@@ -2,11 +2,14 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import IconPicker from './IconPicker';
 import renderServiceCard from './serviceCard';
+import useDomainTranslator from '../useDomainTranslator';
 
 const COLORS = ['primary', 'secondary', 'success', 'warning', 'danger', 'info', 'light', 'dark'];
 
 /** Admin editor for one standalone Service card block (step 48): background color, icon, title, description. */
 function ServiceCardEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
+
     return (
         <div className="d-flex flex-column gap-2">
             <div className="d-flex justify-content-between align-items-center">
@@ -26,14 +29,14 @@ function ServiceCardEdit({ props, onChange }) {
             </div>
             <Form.Control
                 size="sm"
-                placeholder="Titre"
+                placeholder={t('module.titleField')}
                 value={props.title}
                 onChange={(event) => onChange({ ...props, title: event.target.value })}
             />
             <Form.Control
                 as="textarea"
                 rows={2}
-                placeholder="Description"
+                placeholder={t('module.description')}
                 value={props.description}
                 onChange={(event) => onChange({ ...props, description: event.target.value })}
             />
@@ -49,7 +52,7 @@ function ServiceCardEdit({ props, onChange }) {
  */
 export default {
     type: 'service-card',
-    label: 'Service (carte seule)',
+    label: 'module.serviceCard.label',
     defaultProps: { color: 'light', icon: '', title: '', description: '' },
     Edit: ServiceCardEdit,
     /** @param {{color: string, icon: string, title: string, description: string}} props */

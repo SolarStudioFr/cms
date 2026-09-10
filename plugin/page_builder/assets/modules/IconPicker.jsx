@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { getIconComponent, iconNames } from './icons';
+import useDomainTranslator from '../useDomainTranslator';
 
 // Search is a plain substring match on the name with its "Bs" prefix
 // stripped (e.g. "rocket" matches "BsRocketTakeoff") - capped so a broad
@@ -17,6 +18,7 @@ const MAX_RESULTS = 48;
  * @param {(name: string) => void} onChange
  */
 export default function IconPicker({ value, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
     const [show, setShow] = useState(false);
     const [query, setQuery] = useState('');
 
@@ -40,17 +42,17 @@ export default function IconPicker({ value, onChange }) {
         <>
             <Button size="sm" variant="outline-secondary" onClick={() => setShow(true)} className="d-inline-flex align-items-center gap-2">
                 {SelectedIcon ? <SelectedIcon /> : null}
-                {value || 'Choisir une icône'}
+                {value || t('module.iconPicker.choose')}
             </Button>
 
             <Modal show={show} onHide={() => setShow(false)} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Choisir une icône</Modal.Title>
+                    <Modal.Title>{t('module.iconPicker.choose')}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Control
                         type="search"
-                        placeholder="Rechercher une icône..."
+                        placeholder={t('module.iconPicker.search')}
                         value={query}
                         onChange={(event) => setQuery(event.target.value)}
                         className="mb-3"
@@ -74,7 +76,7 @@ export default function IconPicker({ value, onChange }) {
                                 </Button>
                             );
                         })}
-                        {0 === results.length && <p className="text-muted small mb-0">Aucune icône trouvée.</p>}
+                        {0 === results.length && <p className="text-muted small mb-0">{t('module.iconPicker.noResults')}</p>}
                     </div>
                 </Modal.Body>
             </Modal>

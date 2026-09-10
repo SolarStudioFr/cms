@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, ProgressBar } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import client from './api/client';
+import useDomainTranslator from './useDomainTranslator';
 
 /**
  * Browser-driven bulk send (step 24): one fetch per recipient, calling
@@ -13,6 +14,7 @@ import client from './api/client';
  */
 export default function CampaignSend() {
     const { id } = useParams();
+    const { t } = useDomainTranslator('newsletter');
     const [campaign, setCampaign] = useState(null);
     const [progress, setProgress] = useState(null); // {sentCount, total, done}
     const [sending, setSending] = useState(false);
@@ -45,7 +47,7 @@ export default function CampaignSend() {
                 result = await sendNext();
             }
         } catch {
-            setError("Échec de l'envoi - vous pouvez relancer, l'envoi reprendra là où il s'est arrêté.");
+            setError(t('newsletter.sendError'));
         } finally {
             sendingRef.current = false;
             setSending(false);
@@ -53,7 +55,7 @@ export default function CampaignSend() {
     };
 
     if (!campaign) {
-        return <p>Chargement...</p>;
+        return <p>{t('newsletter.loading')}</p>;
     }
 
     const percent = progress && progress.total > 0 ? Math.round((100 * progress.sentCount) / progress.total) : 0;
@@ -61,7 +63,7 @@ export default function CampaignSend() {
 
     return (
         <div>
-            <h1>Envoi : {campaign.subject}</h1>
+            <h1>{t('newsletter.sendTitle')} {campaign.subject}</h1>
 
             {error && <div className="alert alert-danger">{error}</div>}
 
@@ -69,22 +71,22 @@ export default function CampaignSend() {
                 <div className="mb-3" style={{ maxWidth: '480px' }}>
                     <ProgressBar now={percent} label={`${percent}%`} />
                     <p className="mt-2">
-                        {progress.sentCount} / {progress.total} envoyés
+                        {t('newsletter.sentProgress', { sent: progress.sentCount, total: progress.total })}
                     </p>
                 </div>
             )}
 
             {done ? (
-                <p className="text-success">Envoi terminé.</p>
+                <p className="text-success">{t('newsletter.sendDone')}</p>
             ) : (
                 <Button variant="primary" onClick={startSending} disabled={sending}>
-                    {sending ? 'Envoi en cours...' : "sending" === campaign.status ? "Reprendre l'envoi" : "Démarrer l'envoi"}
+                    {sending ? t('newsletter.sending') : 'sending' === campaign.status ? t('newsletter.resumeSend') : t('newsletter.startSend')}
                 </Button>
             )}
 
             <div className="mt-3">
                 <Button as={Link} to="/newsletter" variant="link">
-                    Retour aux campagnes
+                    {t('newsletter.backToCampaigns')}
                 </Button>
             </div>
         </div>

@@ -1,0 +1,102 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.edit"
+msgstr "Éditer"
+
+msgid "common.delete"
+msgstr "Supprimer"
+
+msgid "common.save"
+msgstr "Enregistrer"
+
+msgid "common.cancel"
+msgstr "Annuler"
+
+msgid "newsletter.loading"
+msgstr "Chargement..."
+
+msgid "newsletter.confirmDeleteCampaign"
+msgstr "Supprimer cette campagne ?"
+
+msgid "newsletter.subscribers"
+msgstr "Abonnés"
+
+msgid "newsletter.newCampaign"
+msgstr "Nouvelle campagne"
+
+msgid "newsletter.subject"
+msgstr "Sujet"
+
+msgid "newsletter.createdAt"
+msgstr "Créée le"
+
+msgid "newsletter.status"
+msgstr "Statut"
+
+msgid "newsletter.statusDraft"
+msgstr "Brouillon"
+
+msgid "newsletter.statusSending"
+msgstr "Envoi en cours"
+
+msgid "newsletter.statusSent"
+msgstr "Envoyée"
+
+msgid "newsletter.resumeSend"
+msgstr "Reprendre l'envoi"
+
+msgid "newsletter.send"
+msgstr "Envoyer"
+
+msgid "newsletter.loadError"
+msgstr "Impossible de charger la campagne."
+
+msgid "newsletter.saveError"
+msgstr "Échec de l'enregistrement."
+
+msgid "newsletter.editCampaign"
+msgstr "Modifier la campagne"
+
+msgid "newsletter.content"
+msgstr "Contenu"
+
+msgid "newsletter.loadingEditor"
+msgstr "Chargement de l'éditeur..."
+
+msgid "newsletter.contentPlaceholder"
+msgstr "Contenu de la campagne..."
+
+msgid "newsletter.sendError"
+msgstr "Échec de l'envoi - vous pouvez relancer, l'envoi reprendra là où il s'est arrêté."
+
+msgid "newsletter.sendTitle"
+msgstr "Envoi :"
+
+msgid "newsletter.sentProgress"
+msgstr "{{sent}} / {{total}} envoyés"
+
+msgid "newsletter.sendDone"
+msgstr "Envoi terminé."
+
+msgid "newsletter.sending"
+msgstr "Envoi en cours..."
+
+msgid "newsletter.startSend"
+msgstr "Démarrer l'envoi"
+
+msgid "newsletter.backToCampaigns"
+msgstr "Retour aux campagnes"
+
+msgid "newsletter.confirmDeleteSubscriber"
+msgstr "Supprimer cet abonné ?"
+
+msgid "newsletter.subscribersTitle"
+msgstr "Abonnés newsletter"
+
+msgid "newsletter.email"
+msgstr "Email"
+
+msgid "newsletter.subscribedAt"
+msgstr "Inscrit le"

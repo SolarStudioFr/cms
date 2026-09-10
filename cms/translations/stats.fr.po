@@ -1,0 +1,84 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "stats.loading"
+msgstr "Chargement..."
+
+msgid "stats.title"
+msgstr "Statistiques"
+
+msgid "stats.views"
+msgstr "Vues"
+
+msgid "stats.noData"
+msgstr "Aucune donnée"
+
+msgid "stats.unknown"
+msgstr "Inconnu"
+
+msgid "stats.pageViews"
+msgstr "Pages vues"
+
+msgid "stats.avgTimeOnPage"
+msgstr "Temps moyen par page"
+
+msgid "stats.avgScroll"
+msgstr "Scroll moyen"
+
+msgid "stats.humanVisits"
+msgstr "Visites humaines"
+
+msgid "stats.botVisits"
+msgstr "Visites de robots"
+
+msgid "stats.topPages"
+msgstr "Pages les plus vues"
+
+msgid "stats.avgTime"
+msgstr "Temps moyen"
+
+msgid "stats.browsers"
+msgstr "Navigateurs"
+
+msgid "stats.browser"
+msgstr "Navigateur"
+
+msgid "stats.operatingSystems"
+msgstr "Systèmes d'exploitation"
+
+msgid "stats.deviceTypes"
+msgstr "Appareils"
+
+msgid "stats.type"
+msgstr "Type"
+
+msgid "stats.languages"
+msgstr "Langues"
+
+msgid "stats.language"
+msgstr "Langue"
+
+msgid "stats.countries"
+msgstr "Pays"
+
+msgid "stats.country"
+msgstr "Pays"
+
+msgid "stats.topBots"
+msgstr "Robots détectés"
+
+msgid "stats.bot"
+msgstr "Robot"
+
+msgid "stats.topClicks"
+msgstr "Clics les plus fréquents"
+
+msgid "stats.label"
+msgstr "Libellé"
+
+msgid "stats.target"
+msgstr "Cible"
+
+msgid "stats.clicks"
+msgstr "Clics"

@@ -1,26 +1,29 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
+import useDomainTranslator from '../useDomainTranslator';
 
-const BACKGROUNDS = { white: 'Blanc', muted: 'Gris doux' };
+const BACKGROUNDS = { white: 'module.feed.backgroundWhite', muted: 'module.feed.backgroundMuted' };
 
 /** Admin editor for one News feed block (step 45) - same fields/layout as PortfolioFeedModule (step 44). */
 function NewsFeedEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
+
     return (
         <div className="d-flex flex-column gap-2">
             <Form.Control
                 size="sm"
-                placeholder="Eyebrow"
+                placeholder={t('module.feed.eyebrow')}
                 value={props.eyebrow}
                 onChange={(event) => onChange({ ...props, eyebrow: event.target.value })}
             />
             <Form.Control
-                placeholder="Titre de section"
+                placeholder={t('module.feed.sectionTitle')}
                 value={props.title}
                 onChange={(event) => onChange({ ...props, title: event.target.value })}
             />
             <Form.Group className="d-flex align-items-center gap-2">
-                <Form.Label className="mb-0 small">Nombre à afficher</Form.Label>
+                <Form.Label className="mb-0 small">{t('module.feed.count')}</Form.Label>
                 <Form.Control
                     type="number"
                     size="sm"
@@ -33,7 +36,7 @@ function NewsFeedEdit({ props, onChange }) {
             </Form.Group>
             <Form.Control
                 size="sm"
-                placeholder='Texte du lien "Tout voir"'
+                placeholder={t('module.feed.seeAllText')}
                 value={props.seeAllText}
                 onChange={(event) => onChange({ ...props, seeAllText: event.target.value })}
             />
@@ -43,9 +46,9 @@ function NewsFeedEdit({ props, onChange }) {
                 onChange={(event) => onChange({ ...props, background: event.target.value })}
                 style={{ maxWidth: '180px' }}
             >
-                {Object.entries(BACKGROUNDS).map(([value, label]) => (
+                {Object.entries(BACKGROUNDS).map(([value, key]) => (
                     <option key={value} value={value}>
-                        {label}
+                        {t(key)}
                     </option>
                 ))}
             </Form.Select>
@@ -56,7 +59,7 @@ function NewsFeedEdit({ props, onChange }) {
 /** Registry entry for the builder's News feed module (step 45). */
 export default {
     type: 'news-feed',
-    label: 'Actualités (dynamique)',
+    label: 'module.newsFeed.label',
     defaultProps: { eyebrow: '', title: '', count: 3, seeAllText: 'Tout voir', background: 'white' },
     Edit: NewsFeedEdit,
     /**

@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.save"
+msgstr "Enregistrer"
+
+msgid "homepage.loading"
+msgstr "Chargement..."
+
+msgid "homepage.loadingEditor"
+msgstr "Chargement de l'éditeur..."
+
+msgid "homepage.loadError"
+msgstr "Impossible de charger le contenu de la page d'accueil."
+
+msgid "homepage.saveError"
+msgstr "Échec de l'enregistrement."
+
+msgid "homepage.title"
+msgstr "Page d'accueil"
+
+msgid "homepage.saved"
+msgstr "Page d'accueil enregistrée."
+
+msgid "homepage.content"
+msgstr "Contenu"
+
+msgid "homepage.contentPlaceholder"
+msgstr "Contenu de la page d'accueil..."

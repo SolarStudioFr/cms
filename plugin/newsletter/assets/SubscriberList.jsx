@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import client from './api/client';
+import useDomainTranslator from './useDomainTranslator';
 
 /**
  * Admin list of newsletter subscribers (step 23): read + remove only -
@@ -10,6 +11,7 @@ import client from './api/client';
  * was asked for.
  */
 export default function SubscriberList() {
+    const { t } = useDomainTranslator('newsletter');
     const [subscribers, setSubscribers] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -26,7 +28,7 @@ export default function SubscriberList() {
     }, [load]);
 
     const remove = async (id) => {
-        if (!window.confirm('Supprimer cet abonné ?')) {
+        if (!window.confirm(t('newsletter.confirmDeleteSubscriber'))) {
             return;
         }
         await client.delete(`/admin/newsletter/subscribers/${id}`);
@@ -36,20 +38,20 @@ export default function SubscriberList() {
     return (
         <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1>Abonnés newsletter</h1>
+                <h1>{t('newsletter.subscribersTitle')}</h1>
                 <Button as={Link} to="/newsletter" variant="outline-secondary">
-                    Retour aux campagnes
+                    {t('newsletter.backToCampaigns')}
                 </Button>
             </div>
 
             {loading ? (
-                <p>Chargement...</p>
+                <p>{t('newsletter.loading')}</p>
             ) : (
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Email</th>
-                            <th>Inscrit le</th>
+                            <th>{t('newsletter.email')}</th>
+                            <th>{t('newsletter.subscribedAt')}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -60,7 +62,7 @@ export default function SubscriberList() {
                                 <td>{new Date(subscriber.subscribedAt).toLocaleDateString()}</td>
                                 <td>
                                     <Button size="sm" variant="outline-danger" onClick={() => remove(subscriber.id)}>
-                                        Supprimer
+                                        {t('common.delete')}
                                     </Button>
                                 </td>
                             </tr>

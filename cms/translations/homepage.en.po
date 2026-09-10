@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.save"
+msgstr "Save"
+
+msgid "homepage.loading"
+msgstr "Loading..."
+
+msgid "homepage.loadingEditor"
+msgstr "Loading the editor..."
+
+msgid "homepage.loadError"
+msgstr "Failed to load the homepage content."
+
+msgid "homepage.saveError"
+msgstr "Failed to save."
+
+msgid "homepage.title"
+msgstr "Homepage"
+
+msgid "homepage.saved"
+msgstr "Homepage saved."
+
+msgid "homepage.content"
+msgstr "Content"
+
+msgid "homepage.contentPlaceholder"
+msgstr "Homepage content..."

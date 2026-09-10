@@ -1,0 +1,84 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "stats.loading"
+msgstr "Loading..."
+
+msgid "stats.title"
+msgstr "Statistics"
+
+msgid "stats.views"
+msgstr "Views"
+
+msgid "stats.noData"
+msgstr "No data"
+
+msgid "stats.unknown"
+msgstr "Unknown"
+
+msgid "stats.pageViews"
+msgstr "Page views"
+
+msgid "stats.avgTimeOnPage"
+msgstr "Average time on page"
+
+msgid "stats.avgScroll"
+msgstr "Average scroll"
+
+msgid "stats.humanVisits"
+msgstr "Human visits"
+
+msgid "stats.botVisits"
+msgstr "Bot visits"
+
+msgid "stats.topPages"
+msgstr "Most viewed pages"
+
+msgid "stats.avgTime"
+msgstr "Average time"
+
+msgid "stats.browsers"
+msgstr "Browsers"
+
+msgid "stats.browser"
+msgstr "Browser"
+
+msgid "stats.operatingSystems"
+msgstr "Operating systems"
+
+msgid "stats.deviceTypes"
+msgstr "Devices"
+
+msgid "stats.type"
+msgstr "Type"
+
+msgid "stats.languages"
+msgstr "Languages"
+
+msgid "stats.language"
+msgstr "Language"
+
+msgid "stats.countries"
+msgstr "Countries"
+
+msgid "stats.country"
+msgstr "Country"
+
+msgid "stats.topBots"
+msgstr "Detected bots"
+
+msgid "stats.bot"
+msgstr "Bot"
+
+msgid "stats.topClicks"
+msgstr "Most frequent clicks"
+
+msgid "stats.label"
+msgstr "Label"
+
+msgid "stats.target"
+msgstr "Target"
+
+msgid "stats.clicks"
+msgstr "Clicks"

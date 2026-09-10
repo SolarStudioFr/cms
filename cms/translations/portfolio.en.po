@@ -1,0 +1,132 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+
+msgid "common.loading"
+msgstr "Loading..."
+
+msgid "common.edit"
+msgstr "Edit"
+
+msgid "common.delete"
+msgstr "Delete"
+
+msgid "common.add"
+msgstr "Add"
+
+msgid "common.save"
+msgstr "Save"
+
+msgid "common.cancel"
+msgstr "Cancel"
+
+msgid "common.saveError"
+msgstr "Failed to save."
+
+msgid "portfolio.title"
+msgstr "Portfolio"
+
+msgid "portfolio.create"
+msgstr "Create a portfolio item"
+
+msgid "portfolio.titleColumn"
+msgstr "Title"
+
+msgid "portfolio.createdAt"
+msgstr "Created on"
+
+msgid "portfolio.status"
+msgstr "Status"
+
+msgid "portfolio.archive"
+msgstr "Archive"
+
+msgid "portfolio.confirmDelete"
+msgstr "Delete this portfolio item?"
+
+msgid "portfolio.statusDraft"
+msgstr "Draft"
+
+msgid "portfolio.statusPublished"
+msgstr "Published"
+
+msgid "portfolio.statusArchived"
+msgstr "Archived"
+
+msgid "portfolio.loadError"
+msgstr "Failed to load the portfolio item."
+
+msgid "portfolio.tagCreateError"
+msgstr "Failed to create the tag."
+
+msgid "portfolio.editTitle"
+msgstr "Edit portfolio item"
+
+msgid "portfolio.newTitle"
+msgstr "New portfolio item"
+
+msgid "portfolio.identity"
+msgstr "Identity"
+
+msgid "portfolio.slug"
+msgstr "Slug"
+
+msgid "portfolio.slugHint"
+msgstr "Automatically generated from the title."
+
+msgid "portfolio.content"
+msgstr "Content"
+
+msgid "portfolio.loadingEditor"
+msgstr "Loading the editor..."
+
+msgid "portfolio.contentPlaceholder"
+msgstr "Portfolio item content..."
+
+msgid "portfolio.seo"
+msgstr "S.E.O. & social networks"
+
+msgid "portfolio.seoTitle"
+msgstr "S.E.O. title"
+
+msgid "portfolio.metaDescription"
+msgstr "Meta description"
+
+msgid "portfolio.ogImage"
+msgstr "OG image"
+
+msgid "portfolio.noImageSelected"
+msgstr "No image selected."
+
+msgid "portfolio.changeImage"
+msgstr "Change image"
+
+msgid "portfolio.chooseImage"
+msgstr "Choose an image"
+
+msgid "portfolio.chooseOgImageTitle"
+msgstr "Choose an OG image"
+
+msgid "portfolio.ogType"
+msgstr "OG type"
+
+msgid "portfolio.canonicalUrl"
+msgstr "Canonical URL"
+
+msgid "portfolio.publication"
+msgstr "Publishing"
+
+msgid "portfolio.coverImage"
+msgstr "Featured image"
+
+msgid "portfolio.chooseCoverImageTitle"
+msgstr "Choose a cover image"
+
+msgid "portfolio.tags"
+msgstr "Tags"
+
+msgid "portfolio.noTags"
+msgstr "No tag available."
+
+msgid "portfolio.newTag"
+msgstr "New tag"

@@ -1,11 +1,14 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
+import useDomainTranslator from '../useDomainTranslator';
 
 const LEVELS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
 
 /** Admin editor for one Heading block (step 46): heading level (h1-h6) + text. */
 function HeadingEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
+
     return (
         <div className="d-flex gap-2">
             <Form.Select
@@ -21,7 +24,7 @@ function HeadingEdit({ props, onChange }) {
                 ))}
             </Form.Select>
             <Form.Control
-                placeholder="Texte du titre"
+                placeholder={t('module.heading.placeholder')}
                 value={props.text}
                 onChange={(event) => onChange({ ...props, text: event.target.value })}
             />
@@ -32,7 +35,7 @@ function HeadingEdit({ props, onChange }) {
 /** Registry entry for the builder's Heading module (step 46). */
 export default {
     type: 'heading',
-    label: 'Titre',
+    label: 'module.heading.label',
     defaultProps: { level: 'h2', text: '' },
     Edit: HeadingEdit,
     /**

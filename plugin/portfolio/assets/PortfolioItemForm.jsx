@@ -2,6 +2,7 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { Badge, Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import client from './api/client';
+import useDomainTranslator from './useDomainTranslator';
 
 // Both consumed from other plugins' Module Federation remotes - lazy since
 // resolving a remote container is inherently async.
@@ -32,6 +33,7 @@ function slugPreview(title) {
 export default function PortfolioItemForm() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { t } = useDomainTranslator('portfolio');
     const isEditing = Boolean(id);
 
     const [title, setTitle] = useState('');
@@ -98,9 +100,9 @@ export default function PortfolioItemForm() {
                 setCanonicalUrl(data.canonicalUrl || '');
                 setSelectedTagIds((data.tags || []).map((tag) => tag.id));
             })
-            .catch(() => setError('Impossible de charger la réalisation.'))
+            .catch(() => setError(t('portfolio.loadError')))
             .finally(() => setLoading(false));
-    }, [id, isEditing, builderActive]);
+    }, [id, isEditing, builderActive, t]);
 
     const toggleTag = (tagId) => {
         setSelectedTagIds((current) =>
@@ -121,7 +123,7 @@ export default function PortfolioItemForm() {
             setSelectedTagIds((current) => [...current, data.id]);
             setNewTagName('');
         } catch {
-            setTagError('Échec de la création du tag.');
+            setTagError(t('portfolio.tagCreateError'));
         }
     };
 
@@ -167,17 +169,17 @@ export default function PortfolioItemForm() {
             }
             navigate('/portfolio');
         } catch {
-            setError("Échec de l'enregistrement.");
+            setError(t('common.saveError'));
         }
     };
 
     if (loading || null === builderActive) {
-        return <p>Chargement...</p>;
+        return <p>{t('common.loading')}</p>;
     }
 
     return (
         <div>
-            <h1>{isEditing ? 'Modifier la réalisation' : 'Nouvelle réalisation'}</h1>
+            <h1>{isEditing ? t('portfolio.editTitle') : t('portfolio.newTitle')}</h1>
 
             {error && <div className="alert alert-danger">{error}</div>}
 
@@ -185,10 +187,10 @@ export default function PortfolioItemForm() {
                 <Row>
                     <Col lg={8}>
                         <Card className="mb-3">
-                            <Card.Header>Identité</Card.Header>
+                            <Card.Header>{t('portfolio.identity')}</Card.Header>
                             <Card.Body>
                                 <Form.Group className="mb-3" controlId="portfolioItemTitle">
-                                    <Form.Label>Titre</Form.Label>
+                                    <Form.Label>{t('portfolio.titleColumn')}</Form.Label>
                                     <Form.Control
                                         type="text"
                                         value={title}
@@ -197,37 +199,37 @@ export default function PortfolioItemForm() {
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="portfolioItemSlug">
-                                    <Form.Label>Slug</Form.Label>
+                                    <Form.Label>{t('portfolio.slug')}</Form.Label>
                                     <Form.Control type="text" value={slugPreview(title)} disabled readOnly />
-                                    <Form.Text className="text-muted">Généré automatiquement à partir du titre.</Form.Text>
+                                    <Form.Text className="text-muted">{t('portfolio.slugHint')}</Form.Text>
                                 </Form.Group>
                             </Card.Body>
                         </Card>
 
                         <Card className="mb-3">
-                            <Card.Header>Contenu</Card.Header>
+                            <Card.Header>{t('portfolio.content')}</Card.Header>
                             <Card.Body>
                                 {/* Editor only mounts once `loading`/`builderActive` are settled
                                     above, so its initial value is already the real content. */}
-                                <Suspense fallback={<p>Chargement de l'éditeur...</p>}>
+                                <Suspense fallback={<p>{t('portfolio.loadingEditor')}</p>}>
                                     {builderActive ? (
                                         <BuilderCanvas value={contentValue} onChange={setContentValue} />
                                     ) : (
-                                        <RichTextEditor value={contentValue} onChange={setContentValue} placeholder="Contenu de la réalisation..." />
+                                        <RichTextEditor value={contentValue} onChange={setContentValue} placeholder={t('portfolio.contentPlaceholder')} />
                                     )}
                                 </Suspense>
                             </Card.Body>
                         </Card>
 
                         <Card className="mb-3">
-                            <Card.Header>S.E.O. &amp; réseaux sociaux</Card.Header>
+                            <Card.Header>{t('portfolio.seo')}</Card.Header>
                             <Card.Body>
                                 <Form.Group className="mb-3" controlId="portfolioItemSeoTitle">
-                                    <Form.Label>Titre S.E.O.</Form.Label>
+                                    <Form.Label>{t('portfolio.seoTitle')}</Form.Label>
                                     <Form.Control type="text" value={seoTitle} onChange={(e) => setSeoTitle(e.target.value)} />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="portfolioItemSeoDescription">
-                                    <Form.Label>Meta description</Form.Label>
+                                    <Form.Label>{t('portfolio.metaDescription')}</Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={3}
@@ -236,7 +238,7 @@ export default function PortfolioItemForm() {
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="portfolioItemOgImage">
-                                    <Form.Label>Image OG</Form.Label>
+                                    <Form.Label>{t('portfolio.ogImage')}</Form.Label>
                                     <div>
                                         {ogImageUrl ? (
                                             <img
@@ -245,10 +247,10 @@ export default function PortfolioItemForm() {
                                                 style={{ maxWidth: '240px', maxHeight: '160px', display: 'block', marginBottom: '8px' }}
                                             />
                                         ) : (
-                                            <p className="text-muted small">Aucune image sélectionnée.</p>
+                                            <p className="text-muted small">{t('portfolio.noImageSelected')}</p>
                                         )}
                                         <Button size="sm" variant="outline-secondary" onClick={() => setOgPickerOpen(true)}>
-                                            {ogImageUrl ? "Changer l'image" : 'Choisir une image'}
+                                            {ogImageUrl ? t('portfolio.changeImage') : t('portfolio.chooseImage')}
                                         </Button>
                                         {ogPickerOpen && (
                                             <Suspense fallback={null}>
@@ -257,14 +259,14 @@ export default function PortfolioItemForm() {
                                                     onHide={() => setOgPickerOpen(false)}
                                                     onSelect={(file) => setOgImageUrl(file.url)}
                                                     types={['img']}
-                                                    title="Choisir une image OG"
+                                                    title={t('portfolio.chooseOgImageTitle')}
                                                 />
                                             </Suspense>
                                         )}
                                     </div>
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="portfolioItemOgType">
-                                    <Form.Label>Type OG</Form.Label>
+                                    <Form.Label>{t('portfolio.ogType')}</Form.Label>
                                     <Form.Select value={ogType} onChange={(e) => setOgType(e.target.value)}>
                                         <option value="website">Website</option>
                                         <option value="article">Article</option>
@@ -273,7 +275,7 @@ export default function PortfolioItemForm() {
                                     </Form.Select>
                                 </Form.Group>
                                 <Form.Group controlId="portfolioItemCanonicalUrl">
-                                    <Form.Label>URL canonique</Form.Label>
+                                    <Form.Label>{t('portfolio.canonicalUrl')}</Form.Label>
                                     <Form.Control
                                         type="url"
                                         value={canonicalUrl}
@@ -288,14 +290,14 @@ export default function PortfolioItemForm() {
                     <Col lg={4}>
                         {isEditing && (
                             <Card className="mb-3">
-                                <Card.Header>Publication</Card.Header>
+                                <Card.Header>{t('portfolio.publication')}</Card.Header>
                                 <Card.Body>
                                     <Form.Group controlId="portfolioItemStatus">
-                                        <Form.Label>Statut</Form.Label>
+                                        <Form.Label>{t('portfolio.status')}</Form.Label>
                                         <Form.Select value={status} onChange={(e) => setStatus(e.target.value)}>
-                                            <option value="draft">Brouillon</option>
-                                            <option value="published">Publiée</option>
-                                            <option value="archived">Archivée</option>
+                                            <option value="draft">{t('portfolio.statusDraft')}</option>
+                                            <option value="published">{t('portfolio.statusPublished')}</option>
+                                            <option value="archived">{t('portfolio.statusArchived')}</option>
                                         </Form.Select>
                                     </Form.Group>
                                 </Card.Body>
@@ -303,7 +305,7 @@ export default function PortfolioItemForm() {
                         )}
 
                         <Card className="mb-3">
-                            <Card.Header>Image à la une</Card.Header>
+                            <Card.Header>{t('portfolio.coverImage')}</Card.Header>
                             <Card.Body>
                                 {coverImageUrl ? (
                                     <img
@@ -312,10 +314,10 @@ export default function PortfolioItemForm() {
                                         style={{ maxWidth: '100%', display: 'block', marginBottom: '8px' }}
                                     />
                                 ) : (
-                                    <p className="text-muted small">Aucune image sélectionnée.</p>
+                                    <p className="text-muted small">{t('portfolio.noImageSelected')}</p>
                                 )}
                                 <Button size="sm" variant="outline-secondary" className="mb-2" onClick={() => setPickerOpen(true)}>
-                                    {coverImageUrl ? "Changer l'image" : 'Choisir une image'}
+                                    {coverImageUrl ? t('portfolio.changeImage') : t('portfolio.chooseImage')}
                                 </Button>
                                 {pickerOpen && (
                                     <Suspense fallback={null}>
@@ -327,7 +329,7 @@ export default function PortfolioItemForm() {
                                                 setCoverImageAlt(coverImageAlt || file.name);
                                             }}
                                             types={['img']}
-                                            title="Choisir une image de couverture"
+                                            title={t('portfolio.chooseCoverImageTitle')}
                                         />
                                     </Suspense>
                                 )}
@@ -335,11 +337,11 @@ export default function PortfolioItemForm() {
                         </Card>
 
                         <Card className="mb-3">
-                            <Card.Header>Tags</Card.Header>
+                            <Card.Header>{t('portfolio.tags')}</Card.Header>
                             <Card.Body>
                                 {tagError && <div className="alert alert-danger py-1 px-2 small">{tagError}</div>}
                                 <div className="mb-2">
-                                    {0 === allTags.length && <p className="text-muted small">Aucun tag disponible.</p>}
+                                    {0 === allTags.length && <p className="text-muted small">{t('portfolio.noTags')}</p>}
                                     {allTags.map((tag) => {
                                         const active = selectedTagIds.includes(tag.id);
                                         return (
@@ -359,12 +361,12 @@ export default function PortfolioItemForm() {
                                     <Form.Control
                                         type="text"
                                         size="sm"
-                                        placeholder="Nouveau tag"
+                                        placeholder={t('portfolio.newTag')}
                                         value={newTagName}
                                         onChange={(e) => setNewTagName(e.target.value)}
                                     />
                                     <Button size="sm" variant="outline-secondary" type="button" onClick={handleCreateTag}>
-                                        Ajouter
+                                        {t('common.add')}
                                     </Button>
                                 </Form.Group>
                             </Card.Body>
@@ -373,10 +375,10 @@ export default function PortfolioItemForm() {
                 </Row>
 
                 <Button type="submit" variant="primary">
-                    Enregistrer
+                    {t('common.save')}
                 </Button>
                 <Button type="button" variant="link" onClick={() => navigate('/portfolio')}>
-                    Annuler
+                    {t('common.cancel')}
                 </Button>
             </Form>
         </div>

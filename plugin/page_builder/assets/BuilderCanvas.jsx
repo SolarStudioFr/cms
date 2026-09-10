@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Button, Dropdown } from 'react-bootstrap';
 import registry, { getModule } from './modules/registry';
+import useDomainTranslator from './useDomainTranslator';
 
 /**
  * Drag & drop page builder canvas (step 10): an ordered list of module
@@ -16,6 +17,7 @@ import registry, { getModule } from './modules/registry';
  * @param {(json: string) => void} onChange called with the updated JSON on every edit
  */
 export default function BuilderCanvas({ value, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
     const [modules, setModules] = useState(() => {
         try {
             return value ? (JSON.parse(value).modules ?? []) : [];
@@ -58,12 +60,12 @@ export default function BuilderCanvas({ value, onChange }) {
             <div className="d-flex justify-content-end mb-2">
                 <Dropdown>
                     <Dropdown.Toggle variant="outline-primary" size="sm" disabled={0 === registry.length}>
-                        Ajouter un module
+                        {t('module.addModule')}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         {registry.map((module) => (
                             <Dropdown.Item key={module.type} onClick={() => addModule(module.type)}>
-                                {module.label}
+                                {t(module.label)}
                             </Dropdown.Item>
                         ))}
                     </Dropdown.Menu>
@@ -72,7 +74,7 @@ export default function BuilderCanvas({ value, onChange }) {
 
             {0 === modules.length && (
                 <p className="text-muted border rounded p-3 text-center">
-                    Aucun module. Utilisez « Ajouter un module » pour commencer.
+                    {t('module.empty')}
                 </p>
             )}
 
@@ -100,16 +102,16 @@ export default function BuilderCanvas({ value, onChange }) {
                     >
                         <div className="d-flex justify-content-between align-items-center mb-2">
                             <strong className="small text-uppercase text-muted" style={{ cursor: 'move' }}>
-                                ⠿ {definition?.label ?? block.type}
+                                ⠿ {definition?.label ? t(definition.label) : block.type}
                             </strong>
                             <Button size="sm" variant="outline-danger" onClick={() => removeModule(block.id)}>
-                                Supprimer
+                                {t('module.remove')}
                             </Button>
                         </div>
                         {EditComponent ? (
                             <EditComponent props={block.props} onChange={(props) => updateModule(block.id, props)} />
                         ) : (
-                            <p className="text-danger small mb-0">Module inconnu : {block.type}</p>
+                            <p className="text-danger small mb-0">{t('module.unknown', { type: block.type })}</p>
                         )}
                     </div>
                 );

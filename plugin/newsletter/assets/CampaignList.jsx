@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import client from './api/client';
+import useDomainTranslator from './useDomainTranslator';
 
 const STATUS_VARIANT = {
     draft: 'secondary',
@@ -9,13 +10,14 @@ const STATUS_VARIANT = {
     sent: 'success',
 };
 
-const STATUS_LABEL = {
-    draft: 'Brouillon',
-    sending: 'Envoi en cours',
-    sent: 'Envoyée',
+const STATUS_KEY = {
+    draft: 'newsletter.statusDraft',
+    sending: 'newsletter.statusSending',
+    sent: 'newsletter.statusSent',
 };
 
 export default function CampaignList() {
+    const { t } = useDomainTranslator('newsletter');
     const [campaigns, setCampaigns] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -32,7 +34,7 @@ export default function CampaignList() {
     }, [load]);
 
     const remove = async (id) => {
-        if (!window.confirm('Supprimer cette campagne ?')) {
+        if (!window.confirm(t('newsletter.confirmDeleteCampaign'))) {
             return;
         }
         await client.delete(`/admin/newsletter/campaigns/${id}`);
@@ -45,23 +47,23 @@ export default function CampaignList() {
                 <h1>Newsletter</h1>
                 <div>
                     <Button as={Link} to="/newsletter/subscribers" variant="outline-secondary" className="me-2">
-                        Abonnés
+                        {t('newsletter.subscribers')}
                     </Button>
                     <Button as={Link} to="/newsletter/new" variant="primary">
-                        Nouvelle campagne
+                        {t('newsletter.newCampaign')}
                     </Button>
                 </div>
             </div>
 
             {loading ? (
-                <p>Chargement...</p>
+                <p>{t('newsletter.loading')}</p>
             ) : (
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Sujet</th>
-                            <th>Créée le</th>
-                            <th>Statut</th>
+                            <th>{t('newsletter.subject')}</th>
+                            <th>{t('newsletter.createdAt')}</th>
+                            <th>{t('newsletter.status')}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -72,7 +74,7 @@ export default function CampaignList() {
                                 <td>{new Date(campaign.createdAt).toLocaleDateString()}</td>
                                 <td>
                                     <Badge bg={STATUS_VARIANT[campaign.status] ?? 'secondary'}>
-                                        {STATUS_LABEL[campaign.status] ?? campaign.status}
+                                        {STATUS_KEY[campaign.status] ? t(STATUS_KEY[campaign.status]) : campaign.status}
                                     </Badge>
                                 </td>
                                 <td>
@@ -84,7 +86,7 @@ export default function CampaignList() {
                                             variant="outline-secondary"
                                             className="me-2"
                                         >
-                                            Éditer
+                                            {t('common.edit')}
                                         </Button>
                                     )}
                                     {'sent' !== campaign.status && (
@@ -95,11 +97,11 @@ export default function CampaignList() {
                                             variant="outline-success"
                                             className="me-2"
                                         >
-                                            {'sending' === campaign.status ? "Reprendre l'envoi" : 'Envoyer'}
+                                            {'sending' === campaign.status ? t('newsletter.resumeSend') : t('newsletter.send')}
                                         </Button>
                                     )}
                                     <Button size="sm" variant="outline-danger" onClick={() => remove(campaign.id)}>
-                                        Supprimer
+                                        {t('common.delete')}
                                     </Button>
                                 </td>
                             </tr>

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import client from './api/client';
+import useDomainTranslator from './useDomainTranslator';
 
 const STATUS_VARIANT = {
     draft: 'secondary',
@@ -9,8 +10,15 @@ const STATUS_VARIANT = {
     archived: 'dark',
 };
 
+const STATUS_KEY = {
+    draft: 'news.statusDraft',
+    published: 'news.statusPublished',
+    archived: 'news.statusArchived',
+};
+
 /** Admin list of every NewsArticle (step 19), same shape as Plugin\Portfolio's PortfolioItemList. */
 export default function NewsArticleList() {
+    const { t } = useDomainTranslator('news');
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -36,7 +44,7 @@ export default function NewsArticleList() {
     };
 
     const remove = async (id) => {
-        if (!window.confirm('Supprimer cette actualité ?')) {
+        if (!window.confirm(t('news.confirmDelete'))) {
             return;
         }
         await client.delete(`/admin/news/${id}`);
@@ -46,22 +54,22 @@ export default function NewsArticleList() {
     return (
         <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1>Actualités</h1>
+                <h1>{t('news.title')}</h1>
                 <Button as={Link} to="/news/new" variant="primary">
-                    Créer une actualité
+                    {t('news.create')}
                 </Button>
             </div>
 
             {loading ? (
-                <p>Chargement...</p>
+                <p>{t('common.loading')}</p>
             ) : (
                 <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Titre</th>
-                            <th>Créée le</th>
-                            <th>Statut</th>
+                            <th>{t('news.titleColumn')}</th>
+                            <th>{t('news.createdAt')}</th>
+                            <th>{t('news.status')}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -81,7 +89,7 @@ export default function NewsArticleList() {
                                 <td>{new Date(article.createdAt).toLocaleDateString()}</td>
                                 <td>
                                     <Badge bg={STATUS_VARIANT[article.status] ?? 'secondary'}>
-                                        {article.status}
+                                        {STATUS_KEY[article.status] ? t(STATUS_KEY[article.status]) : article.status}
                                     </Badge>
                                 </td>
                                 <td>
@@ -92,7 +100,7 @@ export default function NewsArticleList() {
                                         variant="outline-secondary"
                                         className="me-2"
                                     >
-                                        Éditer
+                                        {t('common.edit')}
                                     </Button>
                                     <Button
                                         size="sm"
@@ -100,10 +108,10 @@ export default function NewsArticleList() {
                                         className="me-2"
                                         onClick={() => archive(article.id)}
                                     >
-                                        Archiver
+                                        {t('news.archive')}
                                     </Button>
                                     <Button size="sm" variant="outline-danger" onClick={() => remove(article.id)}>
-                                        Supprimer
+                                        {t('common.delete')}
                                     </Button>
                                 </td>
                             </tr>

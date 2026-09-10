@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
+import useDomainTranslator from '../useDomainTranslator';
 
 /**
  * Admin editor for one "trusted by" block (step 41): an intro text plus a
@@ -9,6 +10,7 @@ import htmlEscape from './htmlEscape';
  * plain client-name text, not a media-picker upload).
  */
 function TrustedByEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
     const clients = props.clients ?? [];
 
     const addClient = () => onChange({ ...props, clients: [...clients, ''] });
@@ -21,7 +23,7 @@ function TrustedByEdit({ props, onChange }) {
             <Form.Control
                 as="textarea"
                 rows={2}
-                placeholder="Texte d'introduction"
+                placeholder={t('module.introText')}
                 value={props.intro}
                 onChange={(event) => onChange({ ...props, intro: event.target.value })}
             />
@@ -30,17 +32,17 @@ function TrustedByEdit({ props, onChange }) {
                 <div key={index} className="d-flex align-items-center gap-2">
                     <Form.Control
                         size="sm"
-                        placeholder="Nom du client"
+                        placeholder={t('module.trustedBy.clientName')}
                         value={client}
                         onChange={(event) => updateClient(index, event.target.value)}
                     />
                     <Button size="sm" variant="outline-danger" onClick={() => removeClient(index)}>
-                        Retirer
+                        {t('module.remove')}
                     </Button>
                 </div>
             ))}
             <Button size="sm" variant="outline-secondary" onClick={addClient} className="align-self-start">
-                Ajouter un client
+                {t('module.trustedBy.addClient')}
             </Button>
         </div>
     );
@@ -49,7 +51,7 @@ function TrustedByEdit({ props, onChange }) {
 /** Registry entry for the builder's "trusted by" module (step 41). */
 export default {
     type: 'trusted-by',
-    label: 'Ils nous font confiance',
+    label: 'module.trustedBy.label',
     defaultProps: { intro: '', clients: [] },
     Edit: TrustedByEdit,
     /** @param {{intro: string, clients: string[]}} props */

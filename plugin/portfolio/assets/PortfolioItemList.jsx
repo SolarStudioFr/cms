@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Badge, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import client from './api/client';
+import useDomainTranslator from './useDomainTranslator';
 
 const STATUS_VARIANT = {
     draft: 'secondary',
@@ -9,8 +10,15 @@ const STATUS_VARIANT = {
     archived: 'dark',
 };
 
+const STATUS_KEY = {
+    draft: 'portfolio.statusDraft',
+    published: 'portfolio.statusPublished',
+    archived: 'portfolio.statusArchived',
+};
+
 /** Admin list of every PortfolioItem (step 17), same shape as Plugin\Page's PageList. */
 export default function PortfolioItemList() {
+    const { t } = useDomainTranslator('portfolio');
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -36,7 +44,7 @@ export default function PortfolioItemList() {
     };
 
     const remove = async (id) => {
-        if (!window.confirm('Supprimer cette réalisation ?')) {
+        if (!window.confirm(t('portfolio.confirmDelete'))) {
             return;
         }
         await client.delete(`/admin/portfolio/${id}`);
@@ -46,22 +54,22 @@ export default function PortfolioItemList() {
     return (
         <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1>Réalisations</h1>
+                <h1>{t('portfolio.title')}</h1>
                 <Button as={Link} to="/portfolio/new" variant="primary">
-                    Créer une réalisation
+                    {t('portfolio.create')}
                 </Button>
             </div>
 
             {loading ? (
-                <p>Chargement...</p>
+                <p>{t('common.loading')}</p>
             ) : (
                 <Table striped bordered hover>
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Titre</th>
-                            <th>Créée le</th>
-                            <th>Statut</th>
+                            <th>{t('portfolio.titleColumn')}</th>
+                            <th>{t('portfolio.createdAt')}</th>
+                            <th>{t('portfolio.status')}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -81,7 +89,7 @@ export default function PortfolioItemList() {
                                 <td>{new Date(item.createdAt).toLocaleDateString()}</td>
                                 <td>
                                     <Badge bg={STATUS_VARIANT[item.status] ?? 'secondary'}>
-                                        {item.status}
+                                        {STATUS_KEY[item.status] ? t(STATUS_KEY[item.status]) : item.status}
                                     </Badge>
                                 </td>
                                 <td>
@@ -92,7 +100,7 @@ export default function PortfolioItemList() {
                                         variant="outline-secondary"
                                         className="me-2"
                                     >
-                                        Éditer
+                                        {t('common.edit')}
                                     </Button>
                                     <Button
                                         size="sm"
@@ -100,10 +108,10 @@ export default function PortfolioItemList() {
                                         className="me-2"
                                         onClick={() => archive(item.id)}
                                     >
-                                        Archiver
+                                        {t('portfolio.archive')}
                                     </Button>
                                     <Button size="sm" variant="outline-danger" onClick={() => remove(item.id)}>
-                                        Supprimer
+                                        {t('common.delete')}
                                     </Button>
                                 </td>
                             </tr>

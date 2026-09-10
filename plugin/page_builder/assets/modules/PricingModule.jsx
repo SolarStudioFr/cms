@@ -3,6 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 import htmlEscape from './htmlEscape';
 import IconPicker from './IconPicker';
 import renderIcon from './renderIcon';
+import useDomainTranslator from '../useDomainTranslator';
 
 const CARD_COUNT = 3;
 
@@ -17,7 +18,7 @@ function defaultCards() {
 }
 
 /** Admin editor for one pricing card: icon, title, price, description, and a dynamically added/removed list of included options. */
-function PricingCardEdit({ card, onChange }) {
+function PricingCardEdit({ card, onChange, t }) {
     const options = card.options ?? [];
 
     const addOption = () => onChange({ ...card, options: [...options, ''] });
@@ -29,20 +30,20 @@ function PricingCardEdit({ card, onChange }) {
             <IconPicker value={card.icon} onChange={(icon) => onChange({ ...card, icon })} />
             <Form.Control
                 size="sm"
-                placeholder="Titre"
+                placeholder={t('module.titleField')}
                 value={card.title}
                 onChange={(event) => onChange({ ...card, title: event.target.value })}
             />
             <Form.Control
                 size="sm"
-                placeholder="Tarif"
+                placeholder={t('module.pricing.price')}
                 value={card.price}
                 onChange={(event) => onChange({ ...card, price: event.target.value })}
             />
             <Form.Control
                 as="textarea"
                 rows={2}
-                placeholder="Description"
+                placeholder={t('module.description')}
                 value={card.description}
                 onChange={(event) => onChange({ ...card, description: event.target.value })}
             />
@@ -51,17 +52,17 @@ function PricingCardEdit({ card, onChange }) {
                 <div key={index} className="d-flex align-items-center gap-2">
                     <Form.Control
                         size="sm"
-                        placeholder="Option incluse"
+                        placeholder={t('module.pricing.option')}
                         value={option}
                         onChange={(event) => updateOption(index, event.target.value)}
                     />
                     <Button size="sm" variant="outline-danger" onClick={() => removeOption(index)}>
-                        Retirer
+                        {t('module.remove')}
                     </Button>
                 </div>
             ))}
             <Button size="sm" variant="outline-secondary" onClick={addOption} className="align-self-start">
-                Ajouter une option
+                {t('module.pricing.addOption')}
             </Button>
         </div>
     );
@@ -74,6 +75,7 @@ function PricingCardEdit({ card, onChange }) {
  * list pattern as TrustedByModule/ServicesGridModule, steps 41/42).
  */
 function PricingEdit({ props, onChange }) {
+    const { t } = useDomainTranslator('page_builder');
     const cards = props.cards && CARD_COUNT === props.cards.length ? props.cards : defaultCards();
 
     const updateCard = (index, card) => onChange({ ...props, cards: cards.map((c, i) => (i === index ? card : c)) });
@@ -81,7 +83,7 @@ function PricingEdit({ props, onChange }) {
     return (
         <div className="d-flex flex-column gap-3">
             {cards.map((card, index) => (
-                <PricingCardEdit key={index} card={card} onChange={(next) => updateCard(index, next)} />
+                <PricingCardEdit key={index} card={card} onChange={(next) => updateCard(index, next)} t={t} />
             ))}
         </div>
     );
@@ -90,7 +92,7 @@ function PricingEdit({ props, onChange }) {
 /** Registry entry for the builder's Pricing module (step 49). */
 export default {
     type: 'pricing',
-    label: 'Tarifs',
+    label: 'module.pricing.label',
     defaultProps: { cards: defaultCards() },
     Edit: PricingEdit,
     /**
